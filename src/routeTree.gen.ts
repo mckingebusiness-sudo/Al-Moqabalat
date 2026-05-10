@@ -9,38 +9,166 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as InterviewRouteImport } from './routes/interview'
+import { Route as CvBuilderRouteImport } from './routes/cv-builder'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InterviewSessionRouteImport } from './routes/interview.session'
+import { Route as InterviewReportRouteImport } from './routes/interview.report'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InterviewRoute = InterviewRouteImport.update({
+  id: '/interview',
+  path: '/interview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CvBuilderRoute = CvBuilderRouteImport.update({
+  id: '/cv-builder',
+  path: '/cv-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InterviewSessionRoute = InterviewSessionRouteImport.update({
+  id: '/session',
+  path: '/session',
+  getParentRoute: () => InterviewRoute,
+} as any)
+const InterviewReportRoute = InterviewReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => InterviewRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/cv-builder': typeof CvBuilderRoute
+  '/interview': typeof InterviewRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/interview/report': typeof InterviewReportRoute
+  '/interview/session': typeof InterviewSessionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/cv-builder': typeof CvBuilderRoute
+  '/interview': typeof InterviewRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/interview/report': typeof InterviewReportRoute
+  '/interview/session': typeof InterviewSessionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/cv-builder': typeof CvBuilderRoute
+  '/interview': typeof InterviewRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/interview/report': typeof InterviewReportRoute
+  '/interview/session': typeof InterviewSessionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/cv-builder'
+    | '/interview'
+    | '/privacy'
+    | '/terms'
+    | '/interview/report'
+    | '/interview/session'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/cv-builder'
+    | '/interview'
+    | '/privacy'
+    | '/terms'
+    | '/interview/report'
+    | '/interview/session'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/cv-builder'
+    | '/interview'
+    | '/privacy'
+    | '/terms'
+    | '/interview/report'
+    | '/interview/session'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  CvBuilderRoute: typeof CvBuilderRoute
+  InterviewRoute: typeof InterviewRouteWithChildren
+  PrivacyRoute: typeof PrivacyRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/interview': {
+      id: '/interview'
+      path: '/interview'
+      fullPath: '/interview'
+      preLoaderRoute: typeof InterviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cv-builder': {
+      id: '/cv-builder'
+      path: '/cv-builder'
+      fullPath: '/cv-builder'
+      preLoaderRoute: typeof CvBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +176,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/interview/session': {
+      id: '/interview/session'
+      path: '/session'
+      fullPath: '/interview/session'
+      preLoaderRoute: typeof InterviewSessionRouteImport
+      parentRoute: typeof InterviewRoute
+    }
+    '/interview/report': {
+      id: '/interview/report'
+      path: '/report'
+      fullPath: '/interview/report'
+      preLoaderRoute: typeof InterviewReportRouteImport
+      parentRoute: typeof InterviewRoute
+    }
   }
 }
 
+interface InterviewRouteChildren {
+  InterviewReportRoute: typeof InterviewReportRoute
+  InterviewSessionRoute: typeof InterviewSessionRoute
+}
+
+const InterviewRouteChildren: InterviewRouteChildren = {
+  InterviewReportRoute: InterviewReportRoute,
+  InterviewSessionRoute: InterviewSessionRoute,
+}
+
+const InterviewRouteWithChildren = InterviewRoute._addFileChildren(
+  InterviewRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  CvBuilderRoute: CvBuilderRoute,
+  InterviewRoute: InterviewRouteWithChildren,
+  PrivacyRoute: PrivacyRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
