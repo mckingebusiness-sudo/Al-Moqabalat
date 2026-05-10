@@ -138,6 +138,7 @@ function Footer() {
               <li><Link to="/" className="hover:text-foreground">{t("nav_home")}</Link></li>
               <li><Link to="/interview" className="hover:text-foreground">{t("nav_interview")}</Link></li>
               <li><Link to="/cv-builder" className="hover:text-foreground">{t("nav_cv")}</Link></li>
+              <li><Link to="/cv-improve" className="hover:text-foreground">{t("nav_improve")}</Link></li>
               <li><Link to="/about" className="hover:text-foreground">{t("nav_about")}</Link></li>
             </ul>
           </div>
