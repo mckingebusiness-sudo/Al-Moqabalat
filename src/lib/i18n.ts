@@ -15,28 +15,36 @@ export const dict: Dict = {
   language: { ar: "اللغة", en: "Language" },
   theme: { ar: "الوضع", en: "Theme" },
 
-  hero_title: { ar: "استعد للشغل بذكاء", en: "Get job-ready with AI" },
+  hero_title: { ar: "ادخل المقابلة وأنت جاهز", en: "Walk into your interview ready" },
   hero_sub: {
-    ar: "تدرّب على مقابلة العمل أو أنشئ CV احترافي — بالعربي والإنجليزي.",
-    en: "Practice interviews or create a professional CV — in Arabic and English.",
+    ar: "تدرّب مع HR ذكي بسؤال 8 جداد لكل وظيفة، وارفع CV ليتقاله بالعيوب ويصلحه. عربي وإنجليزي، مجاني، بدون تسجيل.",
+    en: "Train with a smart HR coach (8 fresh questions per job), and upload your CV to get its real flaws fixed. Arabic & English, free, no signup.",
   },
   hero_desc: {
-    ar: "موقع بسيط يساعدك تدخل مقابلة العمل بثقة، وتجهز CV منظم بدون تعقيد.",
-    en: "A simple platform to help you prepare for interviews and build a clean CV with confidence.",
+    ar: "الذكاء الاصطناعي يقرأ سيرتك ويفهم وظيفتك، ويسألك أسئلة المقابلة الحقيقية اللي بتتقال في السوق.",
+    en: "AI reads your CV, understands your target job, and asks the real interview questions employers actually ask.",
   },
+  hero_cta_primary: { ar: "ابدأ مقابلة الآن", en: "Start mock interview" },
+  hero_cta_secondary: { ar: "حسّن CV بالـ AI", en: "Improve my CV" },
 
   card_interview_title: { ar: "تدرّب على مقابلة", en: "Practice Interview" },
   card_interview_desc: {
-    ar: "خلي AI يعملك مقابلة حقيقية لأي وظيفة.",
-    en: "Train with an AI interviewer for any job.",
+    ar: "8 أسئلة حقيقية مخصصة لوظيفتك. ارفع CV عشان الأسئلة تكون أدق.",
+    en: "8 real questions tailored to your job. Upload your CV for sharper questions.",
   },
-  card_interview_btn: { ar: "ابدأ المقابلة", en: "Start Interview" },
+  card_interview_btn: { ar: "ابدأ المقابلة", en: "Start interview" },
   card_cv_title: { ar: "اعمل CV", en: "Create CV" },
   card_cv_desc: {
-    ar: "أنشئ CV أوروبي منظم في دقائق.",
+    ar: "أنشئ CV أوروبي منظم بكل الأقسام في دقائق.",
     en: "Build a clean European-style CV in minutes.",
   },
-  card_cv_btn: { ar: "إنشاء CV", en: "Create CV" },
+  card_cv_btn: { ar: "ابدأ الإنشاء", en: "Start building" },
+  card_improve_title: { ar: "حسّن CV", en: "Improve CV" },
+  card_improve_desc: {
+    ar: "ارفع CV بصيغة PDF أو نص، نطلعلك العيوب وننصلحها ونديك نسخة محسّنة.",
+    en: "Upload your CV (PDF or text). We list every flaw and give you a fully improved version.",
+  },
+  card_improve_btn: { ar: "حسّن الـ CV", en: "Improve CV" },
 
   how_title: { ar: "كيف يشتغل؟", en: "How it works" },
   how_step1: { ar: "اختر هدفك: مقابلة أو CV", en: "Pick your goal: interview or CV" },
