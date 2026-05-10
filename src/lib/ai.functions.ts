@@ -402,7 +402,7 @@ Rules: Do not invent. Make weak experience sound professional without lying. Con
       finalTips: string[];
     }>({
       messages: [
-        { role: "system", content: SYS_BASE },
+        { role: "system", content: SYS_CV_EXPERT },
         { role: "user", content: prompt },
       ],
       maxTokens: 2000,
