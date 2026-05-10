@@ -24,13 +24,11 @@ async function extractPdfText(file: File): Promise<string> {
   // Lazy import to avoid pulling pdfjs into the initial bundle.
   const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
   // Disable the worker; do everything on main thread (fine for single CV).
-  // @ts-expect-error - GlobalWorkerOptions exists at runtime
   pdfjs.GlobalWorkerOptions.workerSrc = "";
 
   const buf = await file.arrayBuffer();
   const loadingTask = pdfjs.getDocument({
-    data: buf,
-    disableWorker: true,
+    data: new Uint8Array(buf),
     isEvalSupported: false,
     useSystemFonts: true,
   });
