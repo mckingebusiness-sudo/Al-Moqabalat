@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as InterviewRouteImport } from './routes/interview'
+import { Route as CvImproveRouteImport } from './routes/cv-improve'
 import { Route as CvBuilderRouteImport } from './routes/cv-builder'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -31,6 +32,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const InterviewRoute = InterviewRouteImport.update({
   id: '/interview',
   path: '/interview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CvImproveRoute = CvImproveRouteImport.update({
+  id: '/cv-improve',
+  path: '/cv-improve',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CvBuilderRoute = CvBuilderRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cv-builder': typeof CvBuilderRoute
+  '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cv-builder': typeof CvBuilderRoute
+  '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cv-builder': typeof CvBuilderRoute
+  '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cv-builder'
+    | '/cv-improve'
     | '/interview'
     | '/privacy'
     | '/terms'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cv-builder'
+    | '/cv-improve'
     | '/interview'
     | '/privacy'
     | '/terms'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cv-builder'
+    | '/cv-improve'
     | '/interview'
     | '/privacy'
     | '/terms'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CvBuilderRoute: typeof CvBuilderRoute
+  CvImproveRoute: typeof CvImproveRoute
   InterviewRoute: typeof InterviewRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
@@ -153,6 +166,13 @@ declare module '@tanstack/react-router' {
       path: '/interview'
       fullPath: '/interview'
       preLoaderRoute: typeof InterviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cv-improve': {
+      id: '/cv-improve'
+      path: '/cv-improve'
+      fullPath: '/cv-improve'
+      preLoaderRoute: typeof CvImproveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cv-builder': {
@@ -211,6 +231,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CvBuilderRoute: CvBuilderRoute,
+  CvImproveRoute: CvImproveRoute,
   InterviewRoute: InterviewRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
@@ -218,3 +239,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
