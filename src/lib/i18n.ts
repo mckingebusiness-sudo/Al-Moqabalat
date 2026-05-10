@@ -281,6 +281,7 @@ export const dict: Dict = {
   proof_3_d: { ar: "ما بنقول لك \"شكله حلو\". بنطلع كل عيب ونصلحه ونرجعلك نسخة جديدة.", en: "We don't say \"looks great\". We surface every flaw, fix it, and return a new version." },
   cta_strip_title: { ar: "جاهز تدخل المقابلة بثقة؟", en: "Ready to walk in confident?" },
   cta_strip_sub: { ar: "كل اللي محتاج تعمله: 30 ثانية إعداد، وبعدين ابدأ.", en: "30 seconds of setup, then start." },
+};
 
 export const useLang = create<{ lang: Lang; setLang: (l: Lang) => void }>()(
   persist(
