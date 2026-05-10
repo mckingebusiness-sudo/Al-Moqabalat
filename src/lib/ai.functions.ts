@@ -229,34 +229,40 @@ export const generateQuestion = createServerFn({ method: "POST" })
     const ip = getIp(getRequest().headers);
     // rate limiting disabled
     const topicGuide = [
-      "intro & motivation for THIS specific job",
-      "concrete past experience or daily task example",
-      "handling a difficult situation / conflict / customer / mistake",
-      "core skill or technical depth required by the job",
-      "future growth, learning, and fit with the company",
+      "introduce yourself & WHY this exact role at this exact company (test motivation depth)",
+      "deepest concrete past experience example tied DIRECTLY to a core duty of the target job (demand numbers/results)",
+      "a real conflict, mistake, or failure — what happened, what you did, what you learned (push for honesty)",
+      "a hard technical / practical skill the job requires — test depth, ask a mini scenario or how-would-you-handle question",
+      "handling a difficult customer, manager, deadline, or pressure situation",
+      "tradeoffs / decision-making question specific to the role (priorities under limited time/resources)",
+      "weaknesses, gaps, or risks you'd bring — and how you'd manage them",
+      "growth, salary expectation, why we should hire YOU over other candidates, and your questions for us",
     ];
     const focusTopic = topicGuide[(data.currentQuestionNumber - 1) % topicGuide.length];
     const prevList = (data.previousQuestions || []).map((q, i) => `${i + 1}. ${q}`).join("\n") || "(none)";
-    const prompt = `You are a realistic interviewer conducting question ${data.currentQuestionNumber} of ${data.totalQuestions}.
+    const prompt = `You are conducting a REAL job interview. Question ${data.currentQuestionNumber} of ${data.totalQuestions}.
 Language: ${data.language}
-Interview type: ${data.interviewType}
+Interview type/style: ${data.interviewType}
 Application context: ${JSON.stringify(data.applicationContext)}
-Candidate profile: ${JSON.stringify(data.candidateProfile)}
-Previous interview summary: ${data.previousSummary}
+Candidate profile (from their CV/info): ${JSON.stringify(data.candidateProfile)}
+Previous summary: ${data.previousSummary}
 
-PREVIOUSLY ASKED QUESTIONS (DO NOT repeat, rephrase, or ask anything semantically similar):
+PREVIOUSLY ASKED (do NOT repeat, rephrase, or ask anything similar):
 ${prevList}
 
 This question MUST focus on a NEW theme: "${focusTopic}".
-The new question must be clearly different from every previous question above — different topic, different angle, different wording.
 
 Return JSON only: {"question":"","questionType":"hr|practical|technical|behavioral|company_fit","whyThisQuestion":"","expectedGoodAnswerPoints":[]}
-Rules:
-- Tailor to the exact target job.
-- For simple jobs ask about responsibility, customer handling, punctuality, practical skills.
-- For technical jobs ask relevant technical depth.
-- ONE question only. Keep it short and natural.
-- Never repeat or rephrase any previously asked question.`;
+
+CRITICAL RULES:
+- Make the question REALISTIC and SPECIFIC to the EXACT target job. Not generic.
+- Use real things from the candidate's CV / context (a specific skill, project, gap, company, or duty they mentioned). Reference them by name when possible.
+- For technical/professional jobs: ask a mini scenario or "how would you do X" — test depth, not memorization.
+- For manual / service jobs: ask about a real on-the-job situation (a difficult customer, a busy shift, a missing inventory, etc.).
+- Push the candidate. A good interviewer's question makes the candidate think 3 seconds before answering.
+- ONE clear question. 1-3 sentences max. Natural conversational tone in the chosen language.
+- expectedGoodAnswerPoints: 3-5 specific things a great answer should contain.
+- Never repeat or rephrase any previous question.`;
     const q = await callJson<InterviewQuestion>({
       messages: [
         { role: "system", content: SYS_BASE },
