@@ -415,3 +415,108 @@ Rules: Do not invent. Make weak experience sound professional without lying. Con
       finalTips: [data.language === "ar" ? "جرّب مرة أخرى بعد قليل." : "Please try again shortly."],
     }));
   });
+
+// ============================================================
+// Analyze a raw CV (uploaded file or pasted text). Returns the
+// flaws found AND a fully rewritten/fixed version of the CV.
+// ============================================================
+const analyzeSchema = z.object({
+  cvText: z.string().min(20).max(MAX_CV),
+  language: z.enum(["ar", "en"]),
+  targetJob: z.string().max(120).optional(),
+});
+
+export type CvAnalysis = {
+  overallScore: number;
+  atsScore: number;
+  shortVerdict: string;
+  flaws: Array<{ title: string; severity: "high" | "medium" | "low"; explanation: string; fix: string }>;
+  missingSections: string[];
+  weakPhrases: Array<{ original: string; better: string }>;
+  improvedSummary: string;
+  improvedFullCv: string;
+  topActionItems: string[];
+};
+
+export const analyzeCv = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => analyzeSchema.parse(d))
+  .handler(async ({ data }) => {
+    const ip = getIp(getRequest().headers);
+    void ip;
+    const prompt = `You are reviewing a real candidate CV. Find every flaw and rewrite it.
+Language for ALL output: ${data.language}
+Optional target job: ${data.targetJob || "(general)"}
+
+CV TEXT:
+"""
+${data.cvText.slice(0, MAX_CV)}
+"""
+
+Return JSON only with this exact shape:
+{
+  "overallScore": 0,
+  "atsScore": 0,
+  "shortVerdict": "",
+  "flaws": [{"title":"","severity":"high|medium|low","explanation":"","fix":""}],
+  "missingSections": [],
+  "weakPhrases": [{"original":"","better":""}],
+  "improvedSummary": "",
+  "improvedFullCv": "",
+  "topActionItems": []
+}
+
+CRITICAL RULES:
+- overallScore and atsScore are 0-10. Be honest. A weak CV gets 4. A perfect one gets 9-10.
+- "flaws" must contain 4-8 SPECIFIC, REAL problems found in THIS CV (not generic advice). For each: title (short), severity, explanation (1-2 sentences why it hurts), fix (1-2 sentences exactly how to fix).
+- "weakPhrases" must extract 3-6 actual weak/vague phrases from the CV and rewrite each one as a stronger version. Use the candidate's REAL words.
+- "improvedSummary" = a fully written 3-4 sentence professional summary in ${data.language}.
+- "improvedFullCv" = a COMPLETE rewritten CV in clean plain text with clear section headers (CONTACT, SUMMARY, EXPERIENCE, EDUCATION, SKILLS, etc.). No markdown symbols. Multi-line. Tailored to the target job if provided. DO NOT invent fake jobs, dates, or numbers — only rewrite/strengthen what exists.
+- "topActionItems" = 4-6 concrete next steps the candidate should do today.
+- Write everything in the chosen Language.
+- All array items must be plain objects/strings as specified, never nested arrays.`;
+
+    const fallback: CvAnalysis = {
+      overallScore: 6,
+      atsScore: 5,
+      shortVerdict: data.language === "ar" ? "تم تحليل مبدئي. حاول مرة أخرى للحصول على تحليل أعمق." : "Initial analysis. Please retry for deeper review.",
+      flaws: [],
+      missingSections: [],
+      weakPhrases: [],
+      improvedSummary: "",
+      improvedFullCv: data.cvText,
+      topActionItems: [data.language === "ar" ? "حاول مرة أخرى بعد قليل." : "Please try again shortly."],
+    };
+
+    const raw = await callJson<CvAnalysis>({
+      messages: [
+        { role: "system", content: SYS_CV_EXPERT },
+        { role: "user", content: prompt },
+      ],
+      maxTokens: 3500,
+      temperature: 0.3,
+    }, () => fallback);
+
+    return {
+      overallScore: asScore(raw.overallScore, fallback.overallScore),
+      atsScore: asScore(raw.atsScore, fallback.atsScore),
+      shortVerdict: asText(raw.shortVerdict, fallback.shortVerdict),
+      flaws: Array.isArray(raw.flaws)
+        ? raw.flaws.slice(0, 10).map((f) => ({
+            title: asText(f?.title, ""),
+            severity: (["high", "medium", "low"].includes(f?.severity) ? f.severity : "medium") as "high" | "medium" | "low",
+            explanation: asText(f?.explanation, ""),
+            fix: asText(f?.fix, ""),
+          })).filter((f) => f.title)
+        : [],
+      missingSections: asList(raw.missingSections, []),
+      weakPhrases: Array.isArray(raw.weakPhrases)
+        ? raw.weakPhrases.slice(0, 8).map((w) => ({
+            original: asText(w?.original, ""),
+            better: asText(w?.better, ""),
+          })).filter((w) => w.original && w.better)
+        : [],
+      improvedSummary: asText(raw.improvedSummary, ""),
+      improvedFullCv: asText(raw.improvedFullCv, fallback.improvedFullCv),
+      topActionItems: asList(raw.topActionItems, fallback.topActionItems),
+    };
+  });
