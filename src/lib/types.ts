@@ -93,5 +93,5 @@ export type InterviewSetup = {
   cvText?: string;
   language: Language;
   interviewType: InterviewType;
-  totalQuestions: 5;
+  totalQuestions: 5 | 8 | 10;
 };
