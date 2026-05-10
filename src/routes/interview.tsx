@@ -45,11 +45,30 @@ function InterviewSetupPage() {
     motivation: "",
   });
   const [cvText, setCvText] = useState("");
+  const [cvFileName, setCvFileName] = useState<string | null>(null);
+  const [cvParsing, setCvParsing] = useState(false);
   const [language, setLanguage] = useState<Language>(lang === "en" ? "en" : "ar");
   const [interviewType, setInterviewType] = useState<InterviewType>("friendly_hr");
-  const totalQuestions = 5 as const;
+  const [totalQuestions, setTotalQuestions] = useState<5 | 8 | 10>(8);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function onFile(file: File | null) {
+    if (!file) return;
+    setError(null);
+    setCvFileName(file.name);
+    setCvParsing(true);
+    try {
+      const text = await extractTextFromFile(file);
+      setCvText(text.slice(0, 12000));
+    } catch {
+      setError(t("cv_parse_error"));
+      setCvFileName(null);
+    } finally {
+      setCvParsing(false);
+    }
+  }
 
   const set = <K extends keyof ApplicationContext>(k: K, v: ApplicationContext[K]) =>
     setForm((p) => ({ ...p, [k]: v }));
