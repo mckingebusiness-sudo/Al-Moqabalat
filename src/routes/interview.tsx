@@ -1,12 +1,13 @@
 import { createFileRoute, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Play } from "lucide-react";
+import { CheckCircle2, Loader2, Play, Upload } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
-import { GlassCard, GradientButton, FieldLabel, TextInput, TextArea, Select } from "@/components/UI";
+import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea, Select } from "@/components/UI";
 import { useT, useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session-store";
 import { startInterview } from "@/lib/ai.functions";
+import { extractTextFromFile } from "@/lib/pdf-parse.client";
 import type { ApplicationContext, InterviewType, Language } from "@/lib/types";
 
 export const Route = createFileRoute("/interview")({
