@@ -61,8 +61,9 @@ let rrIndex = 0;
 
 function getApiKeys(): string[] {
   const keys = [
-    process.env.MISTRAL_API_KEY,
+    process.env.MISTRAL_API_KEY_1,
     process.env.MISTRAL_API_KEY_2,
+    process.env.MISTRAL_API_KEY,
     process.env.MISTRAL_API_KEY_3,
   ].filter((k): k is string => !!k && k.length > 0);
   return keys;
@@ -102,7 +103,8 @@ export async function callMistral({
   json?: boolean;
 }): Promise<AiResult> {
   const keys = getApiKeys();
-  const model = process.env.MISTRAL_MODEL || "mistral-large-latest";
+  // Default to a fast, low-cost specialized model. Big enough for HR/CV reasoning, ~3-5x faster than mistral-large.
+  const model = process.env.MISTRAL_MODEL || "mistral-small-latest";
   if (keys.length === 0) throw new Error("MISTRAL_API_KEY missing");
 
   checkGlobalBudget(maxTokens + 500);

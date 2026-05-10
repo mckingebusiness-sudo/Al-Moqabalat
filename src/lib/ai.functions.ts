@@ -32,11 +32,16 @@ const startSchema = z.object({
     "fresh_graduate",
     "career_change",
   ]),
-  totalQuestions: z.union([z.literal(5), z.literal(8)]),
+  totalQuestions: z.union([z.literal(5), z.literal(8), z.literal(10)]).optional().default(8),
 });
 
-const SYS_BASE =
-  "You are a world-class HR interviewer, career coach, and CV writer. You help candidates for ANY job — simple manual jobs (cleaner, cashier, driver, technician, waiter) AND professional jobs (teacher, nurse, accountant, engineer, developer). Be honest, supportive, concise, practical. Always return valid JSON only when asked.";
+const SYS_INTERVIEWER =
+  "You are a SENIOR HR Director and hiring expert with 15+ years of experience interviewing candidates for ALL kinds of jobs — manual jobs (cleaner, cashier, driver, technician, waiter, security guard, delivery), service jobs (nurse, teacher, receptionist), and professional jobs (accountant, marketer, engineer, developer, data analyst). You ask SHARP, REALISTIC, JOB-SPECIFIC interview questions that real employers actually ask in the candidate's exact field. You probe weaknesses, demand concrete examples, push for measurable results, and never accept vague answers. You are bilingual (Arabic/English) and culturally aware of the MENA job market. You are honest, direct, supportive, and practical. ALWAYS return valid JSON only when asked.";
+
+const SYS_CV_EXPERT =
+  "You are a world-class CV / resume writer and ATS expert. You have reviewed 50,000+ CVs and know exactly what recruiters and ATS scanners look for. You spot weak verbs, vague achievements, missing metrics, formatting issues, ATS-killer mistakes, missing keywords, and grammar problems instantly. You rewrite CVs to sound professional WITHOUT inventing fake experience. You give honest, specific, actionable feedback. ALWAYS return valid JSON only when asked.";
+
+const SYS_BASE = SYS_INTERVIEWER;
 
 function langText(language: "ar" | "en" | "mixed", ar: string, en: string) {
   return language === "en" ? en : ar;
@@ -224,34 +229,40 @@ export const generateQuestion = createServerFn({ method: "POST" })
     const ip = getIp(getRequest().headers);
     // rate limiting disabled
     const topicGuide = [
-      "intro & motivation for THIS specific job",
-      "concrete past experience or daily task example",
-      "handling a difficult situation / conflict / customer / mistake",
-      "core skill or technical depth required by the job",
-      "future growth, learning, and fit with the company",
+      "introduce yourself & WHY this exact role at this exact company (test motivation depth)",
+      "deepest concrete past experience example tied DIRECTLY to a core duty of the target job (demand numbers/results)",
+      "a real conflict, mistake, or failure — what happened, what you did, what you learned (push for honesty)",
+      "a hard technical / practical skill the job requires — test depth, ask a mini scenario or how-would-you-handle question",
+      "handling a difficult customer, manager, deadline, or pressure situation",
+      "tradeoffs / decision-making question specific to the role (priorities under limited time/resources)",
+      "weaknesses, gaps, or risks you'd bring — and how you'd manage them",
+      "growth, salary expectation, why we should hire YOU over other candidates, and your questions for us",
     ];
     const focusTopic = topicGuide[(data.currentQuestionNumber - 1) % topicGuide.length];
     const prevList = (data.previousQuestions || []).map((q, i) => `${i + 1}. ${q}`).join("\n") || "(none)";
-    const prompt = `You are a realistic interviewer conducting question ${data.currentQuestionNumber} of ${data.totalQuestions}.
+    const prompt = `You are conducting a REAL job interview. Question ${data.currentQuestionNumber} of ${data.totalQuestions}.
 Language: ${data.language}
-Interview type: ${data.interviewType}
+Interview type/style: ${data.interviewType}
 Application context: ${JSON.stringify(data.applicationContext)}
-Candidate profile: ${JSON.stringify(data.candidateProfile)}
-Previous interview summary: ${data.previousSummary}
+Candidate profile (from their CV/info): ${JSON.stringify(data.candidateProfile)}
+Previous summary: ${data.previousSummary}
 
-PREVIOUSLY ASKED QUESTIONS (DO NOT repeat, rephrase, or ask anything semantically similar):
+PREVIOUSLY ASKED (do NOT repeat, rephrase, or ask anything similar):
 ${prevList}
 
 This question MUST focus on a NEW theme: "${focusTopic}".
-The new question must be clearly different from every previous question above — different topic, different angle, different wording.
 
 Return JSON only: {"question":"","questionType":"hr|practical|technical|behavioral|company_fit","whyThisQuestion":"","expectedGoodAnswerPoints":[]}
-Rules:
-- Tailor to the exact target job.
-- For simple jobs ask about responsibility, customer handling, punctuality, practical skills.
-- For technical jobs ask relevant technical depth.
-- ONE question only. Keep it short and natural.
-- Never repeat or rephrase any previously asked question.`;
+
+CRITICAL RULES:
+- Make the question REALISTIC and SPECIFIC to the EXACT target job. Not generic.
+- Use real things from the candidate's CV / context (a specific skill, project, gap, company, or duty they mentioned). Reference them by name when possible.
+- For technical/professional jobs: ask a mini scenario or "how would you do X" — test depth, not memorization.
+- For manual / service jobs: ask about a real on-the-job situation (a difficult customer, a busy shift, a missing inventory, etc.).
+- Push the candidate. A good interviewer's question makes the candidate think 3 seconds before answering.
+- ONE clear question. 1-3 sentences max. Natural conversational tone in the chosen language.
+- expectedGoodAnswerPoints: 3-5 specific things a great answer should contain.
+- Never repeat or rephrase any previous question.`;
     const q = await callJson<InterviewQuestion>({
       messages: [
         { role: "system", content: SYS_BASE },
@@ -391,7 +402,7 @@ Rules: Do not invent. Make weak experience sound professional without lying. Con
       finalTips: string[];
     }>({
       messages: [
-        { role: "system", content: SYS_BASE },
+        { role: "system", content: SYS_CV_EXPERT },
         { role: "user", content: prompt },
       ],
       maxTokens: 2000,
@@ -403,4 +414,109 @@ Rules: Do not invent. Make weak experience sound professional without lying. Con
       missingSections: [],
       finalTips: [data.language === "ar" ? "جرّب مرة أخرى بعد قليل." : "Please try again shortly."],
     }));
+  });
+
+// ============================================================
+// Analyze a raw CV (uploaded file or pasted text). Returns the
+// flaws found AND a fully rewritten/fixed version of the CV.
+// ============================================================
+const analyzeSchema = z.object({
+  cvText: z.string().min(20).max(MAX_CV),
+  language: z.enum(["ar", "en"]),
+  targetJob: z.string().max(120).optional(),
+});
+
+export type CvAnalysis = {
+  overallScore: number;
+  atsScore: number;
+  shortVerdict: string;
+  flaws: Array<{ title: string; severity: "high" | "medium" | "low"; explanation: string; fix: string }>;
+  missingSections: string[];
+  weakPhrases: Array<{ original: string; better: string }>;
+  improvedSummary: string;
+  improvedFullCv: string;
+  topActionItems: string[];
+};
+
+export const analyzeCv = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => analyzeSchema.parse(d))
+  .handler(async ({ data }) => {
+    const ip = getIp(getRequest().headers);
+    void ip;
+    const prompt = `You are reviewing a real candidate CV. Find every flaw and rewrite it.
+Language for ALL output: ${data.language}
+Optional target job: ${data.targetJob || "(general)"}
+
+CV TEXT:
+"""
+${data.cvText.slice(0, MAX_CV)}
+"""
+
+Return JSON only with this exact shape:
+{
+  "overallScore": 0,
+  "atsScore": 0,
+  "shortVerdict": "",
+  "flaws": [{"title":"","severity":"high|medium|low","explanation":"","fix":""}],
+  "missingSections": [],
+  "weakPhrases": [{"original":"","better":""}],
+  "improvedSummary": "",
+  "improvedFullCv": "",
+  "topActionItems": []
+}
+
+CRITICAL RULES:
+- overallScore and atsScore are 0-10. Be honest. A weak CV gets 4. A perfect one gets 9-10.
+- "flaws" must contain 4-8 SPECIFIC, REAL problems found in THIS CV (not generic advice). For each: title (short), severity, explanation (1-2 sentences why it hurts), fix (1-2 sentences exactly how to fix).
+- "weakPhrases" must extract 3-6 actual weak/vague phrases from the CV and rewrite each one as a stronger version. Use the candidate's REAL words.
+- "improvedSummary" = a fully written 3-4 sentence professional summary in ${data.language}.
+- "improvedFullCv" = a COMPLETE rewritten CV in clean plain text with clear section headers (CONTACT, SUMMARY, EXPERIENCE, EDUCATION, SKILLS, etc.). No markdown symbols. Multi-line. Tailored to the target job if provided. DO NOT invent fake jobs, dates, or numbers — only rewrite/strengthen what exists.
+- "topActionItems" = 4-6 concrete next steps the candidate should do today.
+- Write everything in the chosen Language.
+- All array items must be plain objects/strings as specified, never nested arrays.`;
+
+    const fallback: CvAnalysis = {
+      overallScore: 6,
+      atsScore: 5,
+      shortVerdict: data.language === "ar" ? "تم تحليل مبدئي. حاول مرة أخرى للحصول على تحليل أعمق." : "Initial analysis. Please retry for deeper review.",
+      flaws: [],
+      missingSections: [],
+      weakPhrases: [],
+      improvedSummary: "",
+      improvedFullCv: data.cvText,
+      topActionItems: [data.language === "ar" ? "حاول مرة أخرى بعد قليل." : "Please try again shortly."],
+    };
+
+    const raw = await callJson<CvAnalysis>({
+      messages: [
+        { role: "system", content: SYS_CV_EXPERT },
+        { role: "user", content: prompt },
+      ],
+      maxTokens: 3500,
+      temperature: 0.3,
+    }, () => fallback);
+
+    return {
+      overallScore: asScore(raw.overallScore, fallback.overallScore),
+      atsScore: asScore(raw.atsScore, fallback.atsScore),
+      shortVerdict: asText(raw.shortVerdict, fallback.shortVerdict),
+      flaws: Array.isArray(raw.flaws)
+        ? raw.flaws.slice(0, 10).map((f) => ({
+            title: asText(f?.title, ""),
+            severity: (["high", "medium", "low"].includes(f?.severity) ? f.severity : "medium") as "high" | "medium" | "low",
+            explanation: asText(f?.explanation, ""),
+            fix: asText(f?.fix, ""),
+          })).filter((f) => f.title)
+        : [],
+      missingSections: asList(raw.missingSections, []),
+      weakPhrases: Array.isArray(raw.weakPhrases)
+        ? raw.weakPhrases.slice(0, 8).map((w) => ({
+            original: asText(w?.original, ""),
+            better: asText(w?.better, ""),
+          })).filter((w) => w.original && w.better)
+        : [],
+      improvedSummary: asText(raw.improvedSummary, ""),
+      improvedFullCv: asText(raw.improvedFullCv, fallback.improvedFullCv),
+      topActionItems: asList(raw.topActionItems, fallback.topActionItems),
+    };
   });

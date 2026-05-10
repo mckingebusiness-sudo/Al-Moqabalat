@@ -41,6 +41,7 @@ function Navbar() {
     { to: "/", label: t("nav_home") },
     { to: "/interview", label: t("nav_interview") },
     { to: "/cv-builder", label: t("nav_cv") },
+    { to: "/cv-improve", label: t("nav_improve") },
     { to: "/about", label: t("nav_about") },
   ] as const;
 
@@ -137,6 +138,7 @@ function Footer() {
               <li><Link to="/" className="hover:text-foreground">{t("nav_home")}</Link></li>
               <li><Link to="/interview" className="hover:text-foreground">{t("nav_interview")}</Link></li>
               <li><Link to="/cv-builder" className="hover:text-foreground">{t("nav_cv")}</Link></li>
+              <li><Link to="/cv-improve" className="hover:text-foreground">{t("nav_improve")}</Link></li>
               <li><Link to="/about" className="hover:text-foreground">{t("nav_about")}</Link></li>
             </ul>
           </div>
