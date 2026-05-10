@@ -8,8 +8,9 @@ type Dict = Record<string, { ar: string; en: string }>;
 export const dict: Dict = {
   brand: { ar: "تمرّن AI", en: "InterviewX AI" },
   nav_home: { ar: "الرئيسية", en: "Home" },
-  nav_interview: { ar: "المقابلة", en: "Interview" },
-  nav_cv: { ar: "إنشاء CV", en: "CV Builder" },
+  nav_interview: { ar: "تدرّب على مقابلة", en: "Practice Interview" },
+  nav_cv: { ar: "اعمل CV", en: "Create CV" },
+  nav_improve: { ar: "حسّن CV", en: "Improve CV" },
   nav_about: { ar: "عن الموقع", en: "About" },
   language: { ar: "اللغة", en: "Language" },
   theme: { ar: "الوضع", en: "Theme" },
