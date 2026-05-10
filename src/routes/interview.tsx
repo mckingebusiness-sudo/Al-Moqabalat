@@ -171,15 +171,57 @@ function InterviewSetupPage() {
               <TextArea rows={2} value={form.motivation} onChange={(e) => set("motivation", e.target.value)} />
             </div>
             <div>
-              <FieldLabel>{t("cv_optional")}</FieldLabel>
+              <FieldLabel>{t("cv_upload_label")}</FieldLabel>
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                className="mb-2 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-background/30 px-4 py-4 text-sm transition hover:border-primary/60 hover:bg-accent/40"
+              >
+                {cvParsing ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                ) : cvFileName ? (
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                ) : (
+                  <Upload className="h-4 w-4 text-primary" />
+                )}
+                <span className="font-medium">
+                  {cvParsing
+                    ? t("cv_parsing")
+                    : cvFileName
+                      ? `${t("cv_loaded")} — ${cvFileName}`
+                      : t("cv_upload_hint")}
+                </span>
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".pdf,.txt,application/pdf,text/plain"
+                className="hidden"
+                onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+              />
               <TextArea
-                rows={5}
+                rows={4}
                 value={cvText}
                 onChange={(e) => setCvText(e.target.value.slice(0, 12000))}
-                placeholder={lang === "ar" ? "الصق نص الـ CV هنا…" : "Paste CV text here…"}
+                placeholder={lang === "ar" ? "أو الصق نص الـ CV هنا…" : "Or paste CV text here…"}
               />
+              {cvText.length > 0 && (
+                <div className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
+                  <span>{cvText.length}/12000</span>
+                  {cvFileName && (
+                    <GhostButton
+                      onClick={() => {
+                        setCvText("");
+                        setCvFileName(null);
+                      }}
+                    >
+                      {lang === "ar" ? "مسح" : "Clear"}
+                    </GhostButton>
+                  )}
+                </div>
+              )}
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-3">
               <div>
                 <FieldLabel>{t("language_label")}</FieldLabel>
                 <Select value={language} onChange={(e) => setLanguage(e.target.value as Language)}>
@@ -197,6 +239,17 @@ function InterviewSetupPage() {
                   <option value="behavioral">{t("type_behavioral")}</option>
                   <option value="fresh_graduate">{t("type_fresh")}</option>
                   <option value="career_change">{t("type_career")}</option>
+                </Select>
+              </div>
+              <div>
+                <FieldLabel>{t("questions_count")}</FieldLabel>
+                <Select
+                  value={String(totalQuestions)}
+                  onChange={(e) => setTotalQuestions(Number(e.target.value) as 5 | 8 | 10)}
+                >
+                  <option value="8">{t("q_standard")}</option>
+                  <option value="5">{t("q_quick")}</option>
+                  <option value="10">{lang === "ar" ? "كاملة (10)" : "Full (10)"}</option>
                 </Select>
               </div>
             </div>
