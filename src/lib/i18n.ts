@@ -313,6 +313,7 @@ export const dict: Dict = {
   tool_gap_title: { ar: "حلّل الفجوة بين مهاراتك والوظيفة", en: "Analyze your skill gap" },
   tool_gap_sub: { ar: "الصق وصف الوظيفة ومهاراتك، وهنطلعلك الفجوة وخطة 4 أسابيع.", en: "Paste the JD + your skills and get the gap + a 4-week plan." },
   tool_gap_cta: { ar: "حلّل الفجوة", en: "Analyze gap" },
+};
 
 export const useLang = create<{ lang: Lang; setLang: (l: Lang) => void }>()(
   persist(
