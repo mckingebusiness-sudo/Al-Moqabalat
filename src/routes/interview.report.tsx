@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { Printer, RotateCcw, FileText } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Download, Loader2, RotateCcw, FileText } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { GlassCard, GradientButton, GhostButton, ScoreRing } from "@/components/UI";
 import { useT } from "@/lib/i18n";
 import { useSession } from "@/lib/session-store";
+import { downloadElementAsPdf } from "@/lib/pdf-export.client";
 
 export const Route = createFileRoute("/interview/report")({
   head: () => ({ meta: [{ title: "Interview Report — InterviewX AI" }] }),
@@ -15,6 +16,8 @@ function ReportPage() {
   const t = useT();
   const navigate = useNavigate();
   const { finalReport, setup, reset } = useSession();
+  const reportRef = useRef<HTMLDivElement>(null);
+  const [pdfBusy, setPdfBusy] = useState(false);
 
   useEffect(() => {
     if (!finalReport) navigate({ to: "/interview" });
