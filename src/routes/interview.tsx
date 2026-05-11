@@ -8,7 +8,7 @@ import { useT, useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session-store";
 import { startInterview } from "@/lib/ai.functions";
 import { extractTextFromFile } from "@/lib/pdf-parse.client";
-import type { ApplicationContext, InterviewType, Language } from "@/lib/types";
+import type { ApplicationContext, Language } from "@/lib/types";
 
 export const Route = createFileRoute("/interview")({
   head: () => ({
@@ -48,8 +48,6 @@ function InterviewSetupPage() {
   const [cvFileName, setCvFileName] = useState<string | null>(null);
   const [cvParsing, setCvParsing] = useState(false);
   const [language, setLanguage] = useState<Language>(lang === "en" ? "en" : "ar");
-  const [interviewType, setInterviewType] = useState<InterviewType>("friendly_hr");
-  const [totalQuestions, setTotalQuestions] = useState<5 | 8 | 10>(8);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -85,8 +83,8 @@ function InterviewSetupPage() {
         applicationContext: form,
         cvText: cvText.trim() || undefined,
         language,
-        interviewType,
-        totalQuestions,
+        interviewType: "balanced" as const,
+        totalQuestions: 8 as const,
       };
       const res = await start({
         data: setup,
