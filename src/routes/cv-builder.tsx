@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, ArrowRight, Loader2, Plus, Printer, Sparkles, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Download, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea, Select } from "@/components/UI";
 import { useT, useLang } from "@/lib/i18n";
 import { improveCv } from "@/lib/ai.functions";
+import { downloadElementAsPdf } from "@/lib/pdf-export.client";
 import type { CvData } from "@/lib/types";
 
 export const Route = createFileRoute("/cv-builder")({
@@ -45,7 +46,9 @@ function CvBuilderPage() {
   const [cvLang, setCvLang] = useState<"ar" | "en">(lang === "en" ? "en" : "ar");
   const [aiBusy, setAiBusy] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [pdfBusy, setPdfBusy] = useState(false);
   const [targetJob, setTargetJob] = useState("");
+  const cvRef = useRef<HTMLDivElement>(null);
   const improve = useServerFn(improveCv);
 
   const stepIdx = STEPS.indexOf(step);
@@ -241,11 +244,25 @@ function CvBuilderPage() {
           {step === "preview" && (
             <>
               <div className="no-print flex justify-center">
-                <GradientButton onClick={() => window.print()}>
-                  <Printer className="h-4 w-4" /> {t("download_pdf")}
+                <GradientButton
+                  disabled={pdfBusy}
+                  onClick={async () => {
+                    if (!cvRef.current) return;
+                    setPdfBusy(true);
+                    try {
+                      await downloadElementAsPdf(cvRef.current, `${data.fullName || "CV"}.pdf`);
+                    } finally {
+                      setPdfBusy(false);
+                    }
+                  }}
+                >
+                  {pdfBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                  {t("download_pdf")}
                 </GradientButton>
               </div>
-              <CvPreview data={data} cvLang={cvLang} />
+              <div ref={cvRef}>
+                <CvPreview data={data} cvLang={cvLang} />
+              </div>
             </>
           )}
         </div>
