@@ -30,46 +30,61 @@ function ReportPage() {
     <AppShell>
       <section className="px-4 py-8">
         <div className="mx-auto max-w-4xl space-y-5">
-          <header className="text-center">
-            <h1 className="text-3xl font-bold sm:text-4xl">{t("report_title")}</h1>
-            {setup?.applicationContext.targetJob && (
-              <p className="mt-2 text-sm text-muted-foreground">{setup.applicationContext.targetJob}</p>
-            )}
-          </header>
+          <div ref={reportRef} className="space-y-5">
+            <header className="text-center">
+              <h1 className="text-3xl font-bold sm:text-4xl">{t("report_title")}</h1>
+              {setup?.applicationContext.targetJob && (
+                <p className="mt-2 text-sm text-muted-foreground">{setup.applicationContext.targetJob}</p>
+              )}
+            </header>
 
-          <GlassCard>
-            <div className="flex flex-col items-center gap-4 sm:flex-row">
-              <ScoreRing score={r.overallScore} />
-              <div className="flex-1 text-center sm:text-start">
-                <p className="text-xs font-semibold uppercase tracking-wider text-primary">{t("overall_score")}</p>
-                <p className="mt-1 text-lg font-semibold">{r.verdict}</p>
-              </div>
-            </div>
-          </GlassCard>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <ListCard title={t("top_strengths")} items={r.topStrengths} tone="ok" />
-            <ListCard title={t("top_weaknesses")} items={r.topWeaknesses} tone="warn" />
-          </div>
-
-          <ListCard title={t("improvements")} items={r.mostImportantImprovements} />
-          <ListCard title={t("practice_plan")} items={r.recommendedPracticePlan} />
-
-          {r.bestAnswerTemplate && (
             <GlassCard>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary">{t("better_answer")}</p>
-              <p className="text-sm leading-relaxed whitespace-pre-wrap">{r.bestAnswerTemplate}</p>
+              <div className="flex flex-col items-center gap-4 sm:flex-row">
+                <ScoreRing score={r.overallScore} />
+                <div className="flex-1 text-center sm:text-start">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-primary">{t("overall_score")}</p>
+                  <p className="mt-1 text-lg font-semibold">{r.verdict}</p>
+                </div>
+              </div>
             </GlassCard>
-          )}
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <ListCard title={t("cv_tips")} items={r.cvImprovementTips} />
-            <ListCard title={t("next_tips")} items={r.nextInterviewTips} />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ListCard title={t("top_strengths")} items={r.topStrengths} tone="ok" />
+              <ListCard title={t("top_weaknesses")} items={r.topWeaknesses} tone="warn" />
+            </div>
+
+            <ListCard title={t("improvements")} items={r.mostImportantImprovements} />
+            <ListCard title={t("practice_plan")} items={r.recommendedPracticePlan} />
+
+            {r.bestAnswerTemplate && (
+              <GlassCard>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary">{t("better_answer")}</p>
+                <p className="text-sm leading-relaxed whitespace-pre-wrap">{r.bestAnswerTemplate}</p>
+              </GlassCard>
+            )}
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ListCard title={t("cv_tips")} items={r.cvImprovementTips} />
+              <ListCard title={t("next_tips")} items={r.nextInterviewTips} />
+            </div>
           </div>
 
           <div className="no-print flex flex-col gap-2 sm:flex-row">
-            <GradientButton onClick={() => window.print()} className="flex-1">
-              <Printer className="h-4 w-4" /> {t("print_report")}
+            <GradientButton
+              disabled={pdfBusy}
+              onClick={async () => {
+                if (!reportRef.current) return;
+                setPdfBusy(true);
+                try {
+                  await downloadElementAsPdf(reportRef.current, "interview-report.pdf");
+                } finally {
+                  setPdfBusy(false);
+                }
+              }}
+              className="flex-1"
+            >
+              {pdfBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              {t("print_report")}
             </GradientButton>
             <GhostButton onClick={() => { reset(); navigate({ to: "/interview" }); }} className="flex-1">
               <RotateCcw className="h-4 w-4" /> {t("new_interview")}
