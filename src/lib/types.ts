@@ -13,6 +13,7 @@ export type ApplicationContext = {
 };
 
 export type InterviewType =
+  | "balanced"
   | "friendly_hr"
   | "strict_hr"
   | "technical"

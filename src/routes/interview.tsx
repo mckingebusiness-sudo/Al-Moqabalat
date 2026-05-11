@@ -219,37 +219,18 @@ function InterviewSetupPage() {
                 </div>
               )}
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div>
-                <FieldLabel>{t("language_label")}</FieldLabel>
-                <Select value={language} onChange={(e) => setLanguage(e.target.value as Language)}>
-                  <option value="ar">{t("lang_ar")}</option>
-                  <option value="en">{t("lang_en")}</option>
-                  <option value="mixed">{t("lang_mixed")}</option>
-                </Select>
-              </div>
-              <div>
-                <FieldLabel>{t("interview_type")}</FieldLabel>
-                <Select value={interviewType} onChange={(e) => setInterviewType(e.target.value as InterviewType)}>
-                  <option value="friendly_hr">{t("type_friendly")}</option>
-                  <option value="strict_hr">{t("type_strict")}</option>
-                  <option value="technical">{t("type_technical")}</option>
-                  <option value="behavioral">{t("type_behavioral")}</option>
-                  <option value="fresh_graduate">{t("type_fresh")}</option>
-                  <option value="career_change">{t("type_career")}</option>
-                </Select>
-              </div>
-              <div>
-                <FieldLabel>{t("questions_count")}</FieldLabel>
-                <Select
-                  value={String(totalQuestions)}
-                  onChange={(e) => setTotalQuestions(Number(e.target.value) as 5 | 8 | 10)}
-                >
-                  <option value="8">{t("q_standard")}</option>
-                  <option value="5">{t("q_quick")}</option>
-                  <option value="10">{lang === "ar" ? "كاملة (10)" : "Full (10)"}</option>
-                </Select>
-              </div>
+            <div>
+              <FieldLabel>{t("language_label")}</FieldLabel>
+              <Select value={language} onChange={(e) => setLanguage(e.target.value as Language)}>
+                <option value="ar">{t("lang_ar")}</option>
+                <option value="en">{t("lang_en")}</option>
+                <option value="mixed">{t("lang_mixed")}</option>
+              </Select>
+              <p className="mt-2 text-xs text-muted-foreground">
+                {lang === "ar"
+                  ? "ثابت: 8 أسئلة • مقابلة متوازنة (HR + سلوكية + عملية)"
+                  : "Fixed: 8 questions • Balanced interview (HR + behavioral + practical)"}
+              </p>
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
             <GradientButton onClick={onStart} disabled={loading} className="w-full">
