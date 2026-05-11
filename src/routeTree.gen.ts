@@ -9,24 +9,55 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SkillGapRouteImport } from './routes/skill-gap'
+import { Route as SalaryCoachRouteImport } from './routes/salary-coach'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as LinkedinRouteImport } from './routes/linkedin'
 import { Route as InterviewRouteImport } from './routes/interview'
 import { Route as CvImproveRouteImport } from './routes/cv-improve'
 import { Route as CvBuilderRouteImport } from './routes/cv-builder'
+import { Route as CoverLetterRouteImport } from './routes/cover-letter'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InterviewSessionRouteImport } from './routes/interview.session'
 import { Route as InterviewReportRouteImport } from './routes/interview.report'
 
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThankYouRoute = ThankYouRouteImport.update({
+  id: '/thank-you',
+  path: '/thank-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SkillGapRoute = SkillGapRouteImport.update({
+  id: '/skill-gap',
+  path: '/skill-gap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalaryCoachRoute = SalaryCoachRouteImport.update({
+  id: '/salary-coach',
+  path: '/salary-coach',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LinkedinRoute = LinkedinRouteImport.update({
+  id: '/linkedin',
+  path: '/linkedin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InterviewRoute = InterviewRouteImport.update({
@@ -42,6 +73,11 @@ const CvImproveRoute = CvImproveRouteImport.update({
 const CvBuilderRoute = CvBuilderRouteImport.update({
   id: '/cv-builder',
   path: '/cv-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoverLetterRoute = CoverLetterRouteImport.update({
+  id: '/cover-letter',
+  path: '/cover-letter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -68,22 +104,34 @@ const InterviewReportRoute = InterviewReportRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cover-letter': typeof CoverLetterRoute
   '/cv-builder': typeof CvBuilderRoute
   '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
+  '/linkedin': typeof LinkedinRoute
   '/privacy': typeof PrivacyRoute
+  '/salary-coach': typeof SalaryCoachRoute
+  '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
+  '/thank-you': typeof ThankYouRoute
+  '/tools': typeof ToolsRoute
   '/interview/report': typeof InterviewReportRoute
   '/interview/session': typeof InterviewSessionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cover-letter': typeof CoverLetterRoute
   '/cv-builder': typeof CvBuilderRoute
   '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
+  '/linkedin': typeof LinkedinRoute
   '/privacy': typeof PrivacyRoute
+  '/salary-coach': typeof SalaryCoachRoute
+  '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
+  '/thank-you': typeof ThankYouRoute
+  '/tools': typeof ToolsRoute
   '/interview/report': typeof InterviewReportRoute
   '/interview/session': typeof InterviewSessionRoute
 }
@@ -91,11 +139,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cover-letter': typeof CoverLetterRoute
   '/cv-builder': typeof CvBuilderRoute
   '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
+  '/linkedin': typeof LinkedinRoute
   '/privacy': typeof PrivacyRoute
+  '/salary-coach': typeof SalaryCoachRoute
+  '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
+  '/thank-you': typeof ThankYouRoute
+  '/tools': typeof ToolsRoute
   '/interview/report': typeof InterviewReportRoute
   '/interview/session': typeof InterviewSessionRoute
 }
@@ -104,33 +158,51 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/cover-letter'
     | '/cv-builder'
     | '/cv-improve'
     | '/interview'
+    | '/linkedin'
     | '/privacy'
+    | '/salary-coach'
+    | '/skill-gap'
     | '/terms'
+    | '/thank-you'
+    | '/tools'
     | '/interview/report'
     | '/interview/session'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/cover-letter'
     | '/cv-builder'
     | '/cv-improve'
     | '/interview'
+    | '/linkedin'
     | '/privacy'
+    | '/salary-coach'
+    | '/skill-gap'
     | '/terms'
+    | '/thank-you'
+    | '/tools'
     | '/interview/report'
     | '/interview/session'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/cover-letter'
     | '/cv-builder'
     | '/cv-improve'
     | '/interview'
+    | '/linkedin'
     | '/privacy'
+    | '/salary-coach'
+    | '/skill-gap'
     | '/terms'
+    | '/thank-you'
+    | '/tools'
     | '/interview/report'
     | '/interview/session'
   fileRoutesById: FileRoutesById
@@ -138,15 +210,35 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CoverLetterRoute: typeof CoverLetterRoute
   CvBuilderRoute: typeof CvBuilderRoute
   CvImproveRoute: typeof CvImproveRoute
   InterviewRoute: typeof InterviewRouteWithChildren
+  LinkedinRoute: typeof LinkedinRoute
   PrivacyRoute: typeof PrivacyRoute
+  SalaryCoachRoute: typeof SalaryCoachRoute
+  SkillGapRoute: typeof SkillGapRoute
   TermsRoute: typeof TermsRoute
+  ThankYouRoute: typeof ThankYouRoute
+  ToolsRoute: typeof ToolsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thank-you': {
+      id: '/thank-you'
+      path: '/thank-you'
+      fullPath: '/thank-you'
+      preLoaderRoute: typeof ThankYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -154,11 +246,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/skill-gap': {
+      id: '/skill-gap'
+      path: '/skill-gap'
+      fullPath: '/skill-gap'
+      preLoaderRoute: typeof SkillGapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/salary-coach': {
+      id: '/salary-coach'
+      path: '/salary-coach'
+      fullPath: '/salary-coach'
+      preLoaderRoute: typeof SalaryCoachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/linkedin': {
+      id: '/linkedin'
+      path: '/linkedin'
+      fullPath: '/linkedin'
+      preLoaderRoute: typeof LinkedinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/interview': {
@@ -180,6 +293,13 @@ declare module '@tanstack/react-router' {
       path: '/cv-builder'
       fullPath: '/cv-builder'
       preLoaderRoute: typeof CvBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cover-letter': {
+      id: '/cover-letter'
+      path: '/cover-letter'
+      fullPath: '/cover-letter'
+      preLoaderRoute: typeof CoverLetterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -230,11 +350,17 @@ const InterviewRouteWithChildren = InterviewRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CoverLetterRoute: CoverLetterRoute,
   CvBuilderRoute: CvBuilderRoute,
   CvImproveRoute: CvImproveRoute,
   InterviewRoute: InterviewRouteWithChildren,
+  LinkedinRoute: LinkedinRoute,
   PrivacyRoute: PrivacyRoute,
+  SalaryCoachRoute: SalaryCoachRoute,
+  SkillGapRoute: SkillGapRoute,
   TermsRoute: TermsRoute,
+  ThankYouRoute: ThankYouRoute,
+  ToolsRoute: ToolsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
