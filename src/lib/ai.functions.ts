@@ -25,13 +25,14 @@ const startSchema = z.object({
   cvText: z.string().max(MAX_CV).optional(),
   language: z.enum(["ar", "en", "mixed"]),
   interviewType: z.enum([
+    "balanced",
     "friendly_hr",
     "strict_hr",
     "technical",
     "behavioral",
     "fresh_graduate",
     "career_change",
-  ]),
+  ]).optional().default("balanced"),
   totalQuestions: z.union([z.literal(5), z.literal(8), z.literal(10)]).optional().default(8),
 });
 
