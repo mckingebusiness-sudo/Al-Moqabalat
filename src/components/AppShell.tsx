@@ -42,6 +42,7 @@ function Navbar() {
     { to: "/interview", label: t("nav_interview") },
     { to: "/cv-builder", label: t("nav_cv") },
     { to: "/cv-improve", label: t("nav_improve") },
+    { to: "/tools", label: t("nav_tools") },
     { to: "/about", label: t("nav_about") },
   ] as const;
 

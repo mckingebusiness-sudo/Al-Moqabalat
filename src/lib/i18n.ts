@@ -281,6 +281,38 @@ export const dict: Dict = {
   proof_3_d: { ar: "ما بنقول لك \"شكله حلو\". بنطلع كل عيب ونصلحه ونرجعلك نسخة جديدة.", en: "We don't say \"looks great\". We surface every flaw, fix it, and return a new version." },
   cta_strip_title: { ar: "جاهز تدخل المقابلة بثقة؟", en: "Ready to walk in confident?" },
   cta_strip_sub: { ar: "كل اللي محتاج تعمله: 30 ثانية إعداد، وبعدين ابدأ.", en: "30 seconds of setup, then start." },
+
+  // Tools hub + 5 tools
+  nav_tools: { ar: "أدوات مهنية", en: "Career Tools" },
+  tools_badge: { ar: "5 أدوات مجانية بالـ AI", en: "5 free AI career tools" },
+  tools_title: { ar: "أدوات تكمّل رحلتك المهنية", en: "Tools to complete your career journey" },
+  tools_sub: { ar: "خطاب تقديم، تفاوض على الراتب، تحسين LinkedIn، إيميل شكر بعد المقابلة، وتحليل الفجوة في المهارات.", en: "Cover letter, salary negotiation, LinkedIn rewrite, thank-you email, and skill gap analyzer." },
+  tools_open: { ar: "ابدأ", en: "Open" },
+
+  tool_cover_badge: { ar: "خطاب تقديم", en: "Cover Letter" },
+  tool_cover_title: { ar: "اكتب خطاب تقديم مخصص", en: "Write a tailored cover letter" },
+  tool_cover_sub: { ar: "خطاب احترافي بكلماتك خلال ثوانٍ، جاهز للإرسال.", en: "A professional letter in your words, ready to send." },
+  tool_cover_cta: { ar: "اكتب الخطاب", en: "Generate letter" },
+
+  tool_salary_badge: { ar: "تفاوض على الراتب", en: "Salary Negotiation" },
+  tool_salary_title: { ar: "اتفاوض على الراتب باحترافية", en: "Negotiate your salary like a pro" },
+  tool_salary_sub: { ar: "هنكتب لك السكربت كامل اللي تقوله للـ HR لما يقدم لك عرض.", en: "Get the full script you can literally say to HR." },
+  tool_salary_cta: { ar: "ابني السكربت", en: "Build script" },
+
+  tool_linkedin_badge: { ar: "بروفايل LinkedIn", en: "LinkedIn" },
+  tool_linkedin_title: { ar: "حسّن بروفايل LinkedIn", en: "Optimize your LinkedIn profile" },
+  tool_linkedin_sub: { ar: "5 خيارات Headline + قسم About احترافي بالكامل.", en: "5 headline options + a complete pro About section." },
+  tool_linkedin_cta: { ar: "حسّن البروفايل", en: "Rewrite profile" },
+
+  tool_thanks_badge: { ar: "إيميل شكر", en: "Thank-you Email" },
+  tool_thanks_title: { ar: "إيميل شكر بعد المقابلة", en: "Thank-you email after interview" },
+  tool_thanks_sub: { ar: "إيميل قصير ومحترم يخليك تفضل في بال الـ HR.", en: "A short polite email that keeps you top of mind." },
+  tool_thanks_cta: { ar: "اكتب الإيميل", en: "Write email" },
+
+  tool_gap_badge: { ar: "تحليل الفجوة", en: "Skill Gap" },
+  tool_gap_title: { ar: "حلّل الفجوة بين مهاراتك والوظيفة", en: "Analyze your skill gap" },
+  tool_gap_sub: { ar: "الصق وصف الوظيفة ومهاراتك، وهنطلعلك الفجوة وخطة 4 أسابيع.", en: "Paste the JD + your skills and get the gap + a 4-week plan." },
+  tool_gap_cta: { ar: "حلّل الفجوة", en: "Analyze gap" },
 };
 
 export const useLang = create<{ lang: Lang; setLang: (l: Lang) => void }>()(
