@@ -7,7 +7,7 @@ import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea
 import { useT, useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session-store";
 import { startInterview } from "@/lib/ai.functions";
-import { extractTextFromFile } from "@/lib/pdf-parse.client";
+import { extractTextFromFile } from "@/lib/pdf-parse";
 import type { ApplicationContext, Language } from "@/lib/types";
 
 export const Route = createFileRoute("/interview")({

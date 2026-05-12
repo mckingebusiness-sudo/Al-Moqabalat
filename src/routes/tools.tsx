@@ -43,8 +43,8 @@ function ToolsHub() {
       <section className="px-4 pb-14">
         <Stagger className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((tt) => (
-            <StaggerItem key={tt.to}>
-              <HoverLift>
+            <StaggerItem key={tt.to} className="h-full">
+              <HoverLift className="h-full">
                 <Link to={tt.to} className="block h-full">
                   <GlassCard className="flex h-full flex-col gap-3">
                     <div className="inline-grid h-12 w-12 place-items-center rounded-xl btn-gradient">
