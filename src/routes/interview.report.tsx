@@ -5,7 +5,7 @@ import { AppShell } from "@/components/AppShell";
 import { GlassCard, GradientButton, GhostButton, ScoreRing } from "@/components/UI";
 import { useT } from "@/lib/i18n";
 import { useSession } from "@/lib/session-store";
-import { downloadElementAsPdf } from "@/lib/pdf-export.client";
+import { downloadElementAsPdf } from "@/lib/pdf-export";
 
 export const Route = createFileRoute("/interview/report")({
   head: () => ({ meta: [{ title: "Interview Report — InterviewX AI" }] }),

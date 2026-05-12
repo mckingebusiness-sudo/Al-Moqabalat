@@ -6,7 +6,7 @@ import { AppShell } from "@/components/AppShell";
 import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea, Select } from "@/components/UI";
 import { useT, useLang } from "@/lib/i18n";
 import { improveCv } from "@/lib/ai.functions";
-import { downloadElementAsPdf } from "@/lib/pdf-export.client";
+import { downloadElementAsPdf } from "@/lib/pdf-export";
 import type { CvData } from "@/lib/types";
 
 export const Route = createFileRoute("/cv-builder")({
