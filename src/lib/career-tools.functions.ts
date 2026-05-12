@@ -107,6 +107,33 @@ Week 3: ...
 Week 4: ...
 === TOP 3 ACTIONS THIS WEEK ===
 No markdown.`;
+    case "career_roadmap":
+      return `Build a personalized career roadmap in ${lang}.
+Candidate name: ${safe("name")}
+Current role / level: ${safe("current_role")}
+Target role / level: ${safe("target_role")}
+Industry / domain: ${safe("industry")}
+Years of experience: ${safe("experience")}
+Timeframe to reach the target: ${safe("timeframe")}
+Current top skills: ${safe("skills")}
+Constraints (location, hours, budget, family, etc.): ${safe("constraints")}
+Return PLAIN TEXT with these sections (no markdown):
+=== REALITY CHECK (1-2 sentences) ===
+=== TOP SKILLS TO ACQUIRE (ranked) ===
+=== PHASE 1 — Months X-Y (title) ===
+- focus
+- 2-3 concrete projects
+- learning resources (real names)
+- networking actions
+- checkpoint
+=== PHASE 2 — Months X-Y (title) ===
+...
+=== PHASE 3 — Months X-Y (title) ===
+...
+=== PORTFOLIO / VISIBILITY PLAN ===
+=== SALARY TRAJECTORY (per phase, with currency) ===
+=== TOP 3 RISKS + MITIGATION ===
+=== FIRST 7 DAYS — DO THIS NOW ===`;
   }
 }
 
