@@ -5,9 +5,13 @@ import {
   CheckCircle2,
   FileText,
   Globe,
+  Linkedin,
+  Mail,
+  Map,
   ShieldCheck,
   Sparkles,
   Star,
+  Target,
   Wand2,
   Zap,
 } from "lucide-react";
