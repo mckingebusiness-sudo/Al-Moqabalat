@@ -284,9 +284,9 @@ export const dict: Dict = {
 
   // Tools hub + 5 tools
   nav_tools: { ar: "أدوات مهنية", en: "Career Tools" },
-  tools_badge: { ar: "5 أدوات مجانية بالـ AI", en: "5 free AI career tools" },
+  tools_badge: { ar: "6 أدوات مجانية بالـ AI", en: "6 free AI career tools" },
   tools_title: { ar: "أدوات تكمّل رحلتك المهنية", en: "Tools to complete your career journey" },
-  tools_sub: { ar: "خطاب تقديم، تفاوض على الراتب، تحسين LinkedIn، إيميل شكر بعد المقابلة، وتحليل الفجوة في المهارات.", en: "Cover letter, salary negotiation, LinkedIn rewrite, thank-you email, and skill gap analyzer." },
+  tools_sub: { ar: "خطاب تقديم، تفاوض راتب، LinkedIn، إيميل شكر، تحليل فجوة المهارات، وخريطة طريق مهنية كاملة.", en: "Cover letter, salary negotiation, LinkedIn, thank-you email, skill gap, and a full career roadmap." },
   tools_open: { ar: "ابدأ", en: "Open" },
 
   tool_cover_badge: { ar: "خطاب تقديم", en: "Cover Letter" },
