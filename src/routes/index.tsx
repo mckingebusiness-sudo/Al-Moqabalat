@@ -264,6 +264,42 @@ function HomePage() {
         </Stagger>
       </Section>
 
+      <Section title={t("tools_more_title")}>
+        <Reveal>
+          <p className="-mt-3 mb-5 text-center text-sm text-foreground/70">{t("tools_more_sub")}</p>
+        </Reveal>
+        <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" gap={0.07}>
+          {[
+            { to: "/roadmap", icon: <Map className="h-5 w-5" />, title: t("tool_road_title"), desc: t("tool_road_sub"), badge: "NEW" },
+            { to: "/cover-letter", icon: <FileText className="h-5 w-5" />, title: t("tool_cover_title"), desc: t("tool_cover_sub") },
+            { to: "/salary-coach", icon: <Briefcase className="h-5 w-5" />, title: t("tool_salary_title"), desc: t("tool_salary_sub") },
+            { to: "/linkedin", icon: <Linkedin className="h-5 w-5" />, title: t("tool_linkedin_title"), desc: t("tool_linkedin_sub") },
+            { to: "/skill-gap", icon: <Target className="h-5 w-5" />, title: t("tool_gap_title"), desc: t("tool_gap_sub") },
+            { to: "/thank-you", icon: <Mail className="h-5 w-5" />, title: t("tool_thanks_title"), desc: t("tool_thanks_sub") },
+          ].map((tool) => (
+            <StaggerItem key={tool.to} className="h-full">
+              <HoverLift className="h-full">
+                <Link to={tool.to} className="block h-full">
+                  <GlassCard className="relative flex h-full flex-col gap-3">
+                    {tool.badge && (
+                      <span className="absolute top-3 end-3 rounded-full border border-primary/40 bg-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+                        {tool.badge}
+                      </span>
+                    )}
+                    <div className="inline-grid h-10 w-10 place-items-center rounded-xl btn-gradient">
+                      {tool.icon}
+                    </div>
+                    <h3 className="font-bold">{tool.title}</h3>
+                    <p className="flex-1 text-sm text-foreground/80">{tool.desc}</p>
+                    <p className="text-sm font-semibold text-primary">{t("tools_open")} →</p>
+                  </GlassCard>
+                </Link>
+              </HoverLift>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </Section>
+
       <section className="px-4 py-12">
         <div className="mx-auto max-w-5xl">
           <Reveal>
