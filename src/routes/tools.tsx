@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Briefcase, FileText, Linkedin, Mail, Map, Target, Wand2 } from "lucide-react";
+import { Briefcase, FileText, Linkedin, Mail, Map as MapIcon, Target, Wand2 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { GlassCard } from "@/components/UI";
 import { PageFade, Stagger, StaggerItem, HoverLift } from "@/components/Motion";
