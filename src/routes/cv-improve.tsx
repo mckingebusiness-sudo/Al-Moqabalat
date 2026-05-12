@@ -26,7 +26,7 @@ import {
 import { Reveal, PageFade } from "@/components/Motion";
 import { useT, useLang } from "@/lib/i18n";
 import { analyzeCv, type CvAnalysis } from "@/lib/ai.functions";
-import { extractTextFromFile } from "@/lib/pdf-parse.client";
+import { extractTextFromFile } from "@/lib/pdf-parse";
 
 export const Route = createFileRoute("/cv-improve")({
   head: () => ({
