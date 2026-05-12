@@ -14,6 +14,7 @@ import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SkillGapRouteImport } from './routes/skill-gap'
 import { Route as SalaryCoachRouteImport } from './routes/salary-coach'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LinkedinRouteImport } from './routes/linkedin'
 import { Route as InterviewRouteImport } from './routes/interview'
@@ -48,6 +49,11 @@ const SkillGapRoute = SkillGapRouteImport.update({
 const SalaryCoachRoute = SalaryCoachRouteImport.update({
   id: '/salary-coach',
   path: '/salary-coach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/interview': typeof InterviewRouteWithChildren
   '/linkedin': typeof LinkedinRoute
   '/privacy': typeof PrivacyRoute
+  '/roadmap': typeof RoadmapRoute
   '/salary-coach': typeof SalaryCoachRoute
   '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/interview': typeof InterviewRouteWithChildren
   '/linkedin': typeof LinkedinRoute
   '/privacy': typeof PrivacyRoute
+  '/roadmap': typeof RoadmapRoute
   '/salary-coach': typeof SalaryCoachRoute
   '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/interview': typeof InterviewRouteWithChildren
   '/linkedin': typeof LinkedinRoute
   '/privacy': typeof PrivacyRoute
+  '/roadmap': typeof RoadmapRoute
   '/salary-coach': typeof SalaryCoachRoute
   '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/interview'
     | '/linkedin'
     | '/privacy'
+    | '/roadmap'
     | '/salary-coach'
     | '/skill-gap'
     | '/terms'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/interview'
     | '/linkedin'
     | '/privacy'
+    | '/roadmap'
     | '/salary-coach'
     | '/skill-gap'
     | '/terms'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/interview'
     | '/linkedin'
     | '/privacy'
+    | '/roadmap'
     | '/salary-coach'
     | '/skill-gap'
     | '/terms'
@@ -216,6 +228,7 @@ export interface RootRouteChildren {
   InterviewRoute: typeof InterviewRouteWithChildren
   LinkedinRoute: typeof LinkedinRoute
   PrivacyRoute: typeof PrivacyRoute
+  RoadmapRoute: typeof RoadmapRoute
   SalaryCoachRoute: typeof SalaryCoachRoute
   SkillGapRoute: typeof SkillGapRoute
   TermsRoute: typeof TermsRoute
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       path: '/salary-coach'
       fullPath: '/salary-coach'
       preLoaderRoute: typeof SalaryCoachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -356,6 +376,7 @@ const rootRouteChildren: RootRouteChildren = {
   InterviewRoute: InterviewRouteWithChildren,
   LinkedinRoute: LinkedinRoute,
   PrivacyRoute: PrivacyRoute,
+  RoadmapRoute: RoadmapRoute,
   SalaryCoachRoute: SalaryCoachRoute,
   SkillGapRoute: SkillGapRoute,
   TermsRoute: TermsRoute,

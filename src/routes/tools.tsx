@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Briefcase, FileText, Linkedin, Mail, Target, Wand2 } from "lucide-react";
+import { Briefcase, FileText, Linkedin, Mail, Map, Target, Wand2 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { GlassCard } from "@/components/UI";
 import { PageFade, Stagger, StaggerItem, HoverLift } from "@/components/Motion";
@@ -23,6 +23,7 @@ function ToolsHub() {
     { to: "/linkedin", icon: <Linkedin className="h-6 w-6" />, title: t("tool_linkedin_title"), desc: t("tool_linkedin_sub") },
     { to: "/thank-you", icon: <Mail className="h-6 w-6" />, title: t("tool_thanks_title"), desc: t("tool_thanks_sub") },
     { to: "/skill-gap", icon: <Target className="h-6 w-6" />, title: t("tool_gap_title"), desc: t("tool_gap_sub") },
+    { to: "/roadmap", icon: <Map className="h-6 w-6" />, title: t("tool_road_title"), desc: t("tool_road_sub") },
   ];
   return (
     <AppShell>

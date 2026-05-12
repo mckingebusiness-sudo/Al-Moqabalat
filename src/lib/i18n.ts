@@ -284,9 +284,9 @@ export const dict: Dict = {
 
   // Tools hub + 5 tools
   nav_tools: { ar: "أدوات مهنية", en: "Career Tools" },
-  tools_badge: { ar: "5 أدوات مجانية بالـ AI", en: "5 free AI career tools" },
+  tools_badge: { ar: "6 أدوات مجانية بالـ AI", en: "6 free AI career tools" },
   tools_title: { ar: "أدوات تكمّل رحلتك المهنية", en: "Tools to complete your career journey" },
-  tools_sub: { ar: "خطاب تقديم، تفاوض على الراتب، تحسين LinkedIn، إيميل شكر بعد المقابلة، وتحليل الفجوة في المهارات.", en: "Cover letter, salary negotiation, LinkedIn rewrite, thank-you email, and skill gap analyzer." },
+  tools_sub: { ar: "خطاب تقديم، تفاوض راتب، LinkedIn، إيميل شكر، تحليل فجوة المهارات، وخريطة طريق مهنية كاملة.", en: "Cover letter, salary negotiation, LinkedIn, thank-you email, skill gap, and a full career roadmap." },
   tools_open: { ar: "ابدأ", en: "Open" },
 
   tool_cover_badge: { ar: "خطاب تقديم", en: "Cover Letter" },
@@ -313,6 +313,14 @@ export const dict: Dict = {
   tool_gap_title: { ar: "حلّل الفجوة بين مهاراتك والوظيفة", en: "Analyze your skill gap" },
   tool_gap_sub: { ar: "الصق وصف الوظيفة ومهاراتك، وهنطلعلك الفجوة وخطة 4 أسابيع.", en: "Paste the JD + your skills and get the gap + a 4-week plan." },
   tool_gap_cta: { ar: "حلّل الفجوة", en: "Analyze gap" },
+
+  tool_road_badge: { ar: "خريطة طريق", en: "Career Roadmap" },
+  tool_road_title: { ar: "خريطة طريق مهنية مخصصة لك", en: "Your personalized career roadmap" },
+  tool_road_sub: { ar: "من وظيفتك الحالية للحلم — خطة بمراحل ومشاريع وراتب متوقع.", en: "From where you are to your dream role — phased plan with projects, salary, and risks." },
+  tool_road_cta: { ar: "ابني الخريطة", en: "Build my roadmap" },
+
+  tools_more_title: { ar: "أدوات احترافية كمان لرحلتك", en: "More pro tools for your journey" },
+  tools_more_sub: { ar: "خطاب تقديم، تفاوض راتب، LinkedIn، فجوة المهارات، وخريطة طريق كاملة.", en: "Cover letters, salary scripts, LinkedIn, skill gap, and a full roadmap." },
 };
 
 export const useLang = create<{ lang: Lang; setLang: (l: Lang) => void }>()(

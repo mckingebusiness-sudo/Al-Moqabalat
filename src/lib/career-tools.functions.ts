@@ -7,7 +7,8 @@ export type ToolKind =
   | "salary_coach"
   | "linkedin_bio"
   | "thank_you_email"
-  | "skill_gap";
+  | "skill_gap"
+  | "career_roadmap";
 
 const schema = z.object({
   kind: z.enum([
@@ -16,6 +17,7 @@ const schema = z.object({
     "linkedin_bio",
     "thank_you_email",
     "skill_gap",
+    "career_roadmap",
   ]),
   language: z.enum(["ar", "en"]).default("ar"),
   inputs: z.record(z.string(), z.string().max(4000)),
@@ -32,6 +34,8 @@ const SYS = {
     "You are an executive communications coach. You write a short post-interview thank-you email (90-130 words) that genuinely references the conversation, reinforces ONE specific reason this candidate fits, and ends with a calm forward-looking line. Subject line must be specific (not 'Thank you'). No flattery, no clichés, no over-eagerness.",
   skill_gap:
     "You are a senior technical recruiter and learning architect. You compare a real job description against a candidate's actual skills and produce: a calibrated fit score (0-10) with one-line rationale, 5-8 strong matches mapped to JD lines, 4-7 real gaps each tagged HIGH/MEDIUM/LOW with WHY it matters for THIS role, and a realistic 4-week plan with concrete daily/weekly actions, free resources, and a measurable checkpoint at the end of each week. No generic advice. No 'learn more about X'.",
+  career_roadmap:
+    "You are a senior career strategist and executive coach who has built personalized roadmaps for 800+ professionals moving into senior, lead, and director roles across tech, product, design, marketing, finance, and data. You write a precise, time-boxed roadmap from CURRENT role to TARGET role within the user's chosen timeframe. Output must be concrete, calendar-shaped, and personally tailored — never generic. Always include: (1) a one-line honest reality check on feasibility, (2) the 5-8 highest-leverage skills to acquire (ranked by impact), (3) a phase-by-phase plan (every 1-3 months) with specific projects, learning resources (real names: books/courses/communities), networking actions, and a measurable checkpoint, (4) a portfolio/visibility plan (what to ship publicly), (5) salary trajectory expectations per phase, (6) the top 3 risks and how to neutralize them. No fluff. No 'work hard'. No emojis.",
 } as const;
 
 function buildPrompt(kind: ToolKind, language: "ar" | "en", inputs: Record<string, string>): string {
@@ -103,6 +107,33 @@ Week 3: ...
 Week 4: ...
 === TOP 3 ACTIONS THIS WEEK ===
 No markdown.`;
+    case "career_roadmap":
+      return `Build a personalized career roadmap in ${lang}.
+Candidate name: ${safe("name")}
+Current role / level: ${safe("current_role")}
+Target role / level: ${safe("target_role")}
+Industry / domain: ${safe("industry")}
+Years of experience: ${safe("experience")}
+Timeframe to reach the target: ${safe("timeframe")}
+Current top skills: ${safe("skills")}
+Constraints (location, hours, budget, family, etc.): ${safe("constraints")}
+Return PLAIN TEXT with these sections (no markdown):
+=== REALITY CHECK (1-2 sentences) ===
+=== TOP SKILLS TO ACQUIRE (ranked) ===
+=== PHASE 1 — Months X-Y (title) ===
+- focus
+- 2-3 concrete projects
+- learning resources (real names)
+- networking actions
+- checkpoint
+=== PHASE 2 — Months X-Y (title) ===
+...
+=== PHASE 3 — Months X-Y (title) ===
+...
+=== PORTFOLIO / VISIBILITY PLAN ===
+=== SALARY TRAJECTORY (per phase, with currency) ===
+=== TOP 3 RISKS + MITIGATION ===
+=== FIRST 7 DAYS — DO THIS NOW ===`;
   }
 }
 
