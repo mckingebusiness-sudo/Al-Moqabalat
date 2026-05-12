@@ -103,8 +103,8 @@ export async function callMistral({
   json?: boolean;
 }): Promise<AiResult> {
   const keys = getApiKeys();
-  // Fastest production model from Mistral. Low latency + low cost, fits HR/CV reasoning.
-  const model = process.env.MISTRAL_MODEL || "ministral-8b-latest";
+  // Stronger but still fast: mistral-small-latest (better reasoning than 8b, similar latency).
+  const model = process.env.MISTRAL_MODEL || "mistral-small-latest";
   if (keys.length === 0) throw new Error("MISTRAL_API_KEY missing");
 
   checkGlobalBudget(maxTokens + 500);
