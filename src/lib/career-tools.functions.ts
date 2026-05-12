@@ -7,7 +7,8 @@ export type ToolKind =
   | "salary_coach"
   | "linkedin_bio"
   | "thank_you_email"
-  | "skill_gap";
+  | "skill_gap"
+  | "career_roadmap";
 
 const schema = z.object({
   kind: z.enum([
@@ -16,6 +17,7 @@ const schema = z.object({
     "linkedin_bio",
     "thank_you_email",
     "skill_gap",
+    "career_roadmap",
   ]),
   language: z.enum(["ar", "en"]).default("ar"),
   inputs: z.record(z.string(), z.string().max(4000)),
