@@ -23,6 +23,7 @@ function ToolsHub() {
     { to: "/linkedin", icon: <Linkedin className="h-6 w-6" />, title: t("tool_linkedin_title"), desc: t("tool_linkedin_sub") },
     { to: "/thank-you", icon: <Mail className="h-6 w-6" />, title: t("tool_thanks_title"), desc: t("tool_thanks_sub") },
     { to: "/skill-gap", icon: <Target className="h-6 w-6" />, title: t("tool_gap_title"), desc: t("tool_gap_sub") },
+    { to: "/roadmap", icon: <Map className="h-6 w-6" />, title: t("tool_road_title"), desc: t("tool_road_sub") },
   ];
   return (
     <AppShell>
