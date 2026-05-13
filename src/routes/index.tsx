@@ -123,7 +123,7 @@ function HomePage() {
               title={t("card_interview_title")}
               desc={t("card_interview_desc")}
               cta={t("card_interview_btn")}
-              tint="from-cyan-400/30 via-blue-500/20 to-indigo-500/20"
+              tint="from-red-500/30 via-red-700/20 to-black/40"
             />
           </StaggerItem>
           <StaggerItem>
@@ -133,7 +133,7 @@ function HomePage() {
               title={t("card_improve_title")}
               desc={t("card_improve_desc")}
               cta={t("card_improve_btn")}
-              tint="from-amber-400/30 via-pink-500/20 to-rose-500/20"
+              tint="from-red-600/40 via-rose-700/25 to-black/40"
               featured
             />
           </StaggerItem>
@@ -144,7 +144,7 @@ function HomePage() {
               title={t("card_cv_title")}
               desc={t("card_cv_desc")}
               cta={t("card_cv_btn")}
-              tint="from-fuchsia-400/30 via-purple-500/20 to-indigo-500/20"
+              tint="from-red-500/25 via-red-800/25 to-black/40"
             />
           </StaggerItem>
         </Stagger>
@@ -304,7 +304,7 @@ function HomePage() {
         <div className="mx-auto max-w-5xl">
           <Reveal>
             <div className="relative overflow-hidden rounded-3xl border border-border p-8 sm:p-12">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-fuchsia-500/15 to-cyan-400/20" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-red-700/20 to-black/40" />
               <div className="relative flex flex-col items-center gap-5 text-center">
                 <h2 className="text-balance text-3xl font-extrabold sm:text-4xl">{t("cta_strip_title")}</h2>
                 <p className="max-w-xl text-foreground/80">{t("cta_strip_sub")}</p>
@@ -318,6 +318,15 @@ function HomePage() {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      <section className="px-4 pb-10">
+        <Reveal>
+          <p className="mx-auto max-w-fit rounded-full border border-border bg-background/50 px-5 py-2 text-center text-sm font-semibold backdrop-blur">
+            {lang === "ar" ? "صُنع بإتقان بواسطة" : "Made with care by"}{" "}
+            <span className="text-gradient">Mahmoud</span>
+          </p>
+        </Reveal>
       </section>
     </AppShell>
   );

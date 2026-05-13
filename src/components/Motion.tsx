@@ -166,9 +166,9 @@ export function PageFade({
   return (
     <motion.div
       className={className}
-      initial={reduced ? { opacity: 1, ...noHorizontalShift } : { opacity: 0, y: 10, ...noHorizontalShift }}
+      initial={reduced ? { opacity: 1, ...noHorizontalShift } : { opacity: 0, y: 6, ...noHorizontalShift }}
       animate={{ opacity: 1, y: 0, ...noHorizontalShift }}
-      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
