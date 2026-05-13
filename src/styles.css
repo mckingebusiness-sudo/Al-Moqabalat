@@ -102,19 +102,26 @@
     overflow-x: clip;
     scrollbar-gutter: stable;
     background: var(--background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   body {
     background: var(--gradient-page);
     background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-weight: 450;
+    letter-spacing: -0.005em;
     min-height: 100vh;
     overflow-x: clip;
     width: 100%;
   }
   #root { min-height: 100vh; overflow-x: clip; }
-  [dir="rtl"] body { font-family: var(--font-arabic); }
-  ::selection { background: color-mix(in oklab, var(--brand-via) 30%, transparent); }
+  [dir="rtl"] body { font-family: var(--font-arabic); letter-spacing: 0; }
+  h1, h2, h3, h4 { letter-spacing: -0.02em; font-weight: 800; }
+  p { line-height: 1.7; }
+  ::selection { background: color-mix(in oklab, var(--brand-via) 40%, transparent); color: white; }
 }
 
 @layer components {
