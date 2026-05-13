@@ -10,7 +10,7 @@ const noHorizontalShift = { x: 0 };
 export function Reveal({
   children,
   delay = 0,
-  y = 24,
+  y = 16,
   className,
   as = "div",
   once = true,
@@ -43,7 +43,7 @@ export function Reveal({
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.05, rootMargin: "0px 0px -10% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -56,7 +56,7 @@ export function Reveal({
       className={className}
       initial={{ opacity: 0, y }}
       animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y }}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.35, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </MotionTag>
@@ -68,7 +68,7 @@ export function Stagger({
   children,
   className,
   delay = 0,
-  gap = 0.08,
+  gap = 0.05,
 }: {
   children: ReactNode;
   className?: string;
@@ -92,7 +92,7 @@ export function Stagger({
           io.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.05, rootMargin: "0px 0px -10% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -116,8 +116,8 @@ export function Stagger({
 }
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export function StaggerItem({
