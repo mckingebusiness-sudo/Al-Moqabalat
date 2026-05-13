@@ -98,16 +98,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-const NO_FLASH = `(function(){try{var t=localStorage.getItem('ix-theme');var d=true;if(t){try{var p=JSON.parse(t);if(p&&p.state&&p.state.theme){d=p.state.theme==='dark'}}catch(e){}}if(d){document.documentElement.classList.add('dark')}document.documentElement.style.backgroundColor=d?'oklch(0.16 0.03 265)':'oklch(0.99 0.005 250)';}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.backgroundColor='oklch(0.16 0.03 265)';}})();`;
+const NO_FLASH = `(function(){try{var t=localStorage.getItem('ix-theme');var d=true;if(t){try{var p=JSON.parse(t);if(p&&p.state&&p.state.theme){d=p.state.theme==='dark'}}catch(e){}}if(d){document.documentElement.classList.add('dark')}document.documentElement.style.backgroundColor=d?'oklch(0.13 0.01 20)':'oklch(0.99 0.003 20)';}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.backgroundColor='oklch(0.13 0.01 20)';}})();`;
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" style={{ backgroundColor: "oklch(0.16 0.03 265)" }}>
+    <html lang="en" className="dark" style={{ backgroundColor: "oklch(0.13 0.01 20)" }}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH }} />
         <HeadContent />
       </head>
-      <body style={{ backgroundColor: "oklch(0.16 0.03 265)" }}>
+      <body style={{ backgroundColor: "oklch(0.13 0.01 20)" }}>
         {children}
         <Scripts />
       </body>

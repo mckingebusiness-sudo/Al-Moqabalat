@@ -245,6 +245,38 @@ function HomePage() {
         </Stagger>
       </Section>
 
+      <Section title={t("why_diff_title")}>
+        <Reveal>
+          <p className="-mt-3 mb-6 text-center text-base text-foreground/85 sm:text-lg max-w-3xl mx-auto leading-relaxed">{t("about_lead")}</p>
+        </Reveal>
+        <Stagger className="grid gap-4 md:grid-cols-2" gap={0.06}>
+          {[
+            { t: t("about_p1_t"), d: t("about_p1_d") },
+            { t: t("about_p2_t"), d: t("about_p2_d") },
+            { t: t("about_p3_t"), d: t("about_p3_d") },
+            { t: t("about_p4_t"), d: t("about_p4_d") },
+          ].map((it, i) => (
+            <StaggerItem key={i}>
+              <HoverLift>
+                <GlassCard>
+                  <h3 className="mb-2 text-lg font-bold">{it.t}</h3>
+                  <p className="text-sm text-foreground/80 leading-relaxed">{it.d}</p>
+                </GlassCard>
+              </HoverLift>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </Section>
+
+      <Section>
+        <Reveal>
+          <GlassCard className="text-center">
+            <h3 className="text-xl font-bold sm:text-2xl">{t("built_by_title")}</h3>
+            <p className="mx-auto mt-3 max-w-2xl text-sm text-foreground/80 leading-relaxed sm:text-base">{t("built_by_desc")}</p>
+          </GlassCard>
+        </Reveal>
+      </Section>
+
       <Section title={t("faq_title")}>
         <Stagger className="grid gap-3" gap={0.06}>
           {[
