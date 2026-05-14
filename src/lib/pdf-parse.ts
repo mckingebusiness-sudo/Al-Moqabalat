@@ -4,20 +4,24 @@
 export async function extractTextFromFile(file: File): Promise<string> {
   const name = file.name.toLowerCase();
 
+  let text = "";
   if (name.endsWith(".txt") || file.type.startsWith("text/")) {
-    return await file.text();
+    text = await file.text();
+  } else if (name.endsWith(".pdf") || file.type === "application/pdf") {
+    text = await extractPdfText(file);
+  } else {
+    try {
+      text = await file.text();
+    } catch {
+      throw new Error("UNSUPPORTED_FILE");
+    }
   }
 
-  if (name.endsWith(".pdf") || file.type === "application/pdf") {
-    return await extractPdfText(file);
+  // Guard: scanned PDFs (image-based) extract no/very little text.
+  if (!text || text.trim().length < 100) {
+    throw new Error("PDF_TOO_SHORT");
   }
-
-  // Fallback: try to read as text
-  try {
-    return await file.text();
-  } catch {
-    throw new Error("UNSUPPORTED_FILE");
-  }
+  return text;
 }
 
 async function extractPdfText(file: File): Promise<string> {

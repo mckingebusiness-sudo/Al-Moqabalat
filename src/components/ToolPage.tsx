@@ -15,6 +15,7 @@ import { PageFade, Reveal } from "@/components/Motion";
 import { useT, useLang } from "@/lib/i18n";
 import { runCareerTool, type ToolKind } from "@/lib/career-tools.functions";
 import { downloadTextAsPdf } from "@/lib/pdf-export";
+import { handleServerError } from "@/lib/handle-server-error";
 
 export type ToolField = {
   key: string;
@@ -71,7 +72,8 @@ export function ToolPage({
       setOutput(res.text);
       setTimeout(() => outRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
     } catch (e) {
-      const m = (e as Error).message;
+      const m = (e as Error).message || "";
+      handleServerError(e);
       setError(m.includes("LIMIT") ? t("err_limit") : t("err_temp"));
     } finally {
       setBusy(false);

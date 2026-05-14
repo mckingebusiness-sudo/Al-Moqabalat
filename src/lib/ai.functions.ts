@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
-import { callJson, getIp } from "./mistral.server";
+import { callJson, checkIpCv, checkIpInterview, checkIpMessage, getIp } from "./mistral.server";
 import type { CandidateProfile, Evaluation, FinalReport, InterviewQuestion } from "./types";
 
 const MAX_CV = Number(process.env.MAX_CV_CHARS || 12000);
@@ -161,7 +161,7 @@ export const startInterview = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
     try {
-      // rate limiting disabled
+      checkIpInterview(ip);
     } catch {
       throw new Error("RATE_LIMIT");
     }
@@ -228,7 +228,11 @@ export const generateQuestion = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => questionSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    // rate limiting disabled
+    try {
+      checkIpMessage(ip);
+    } catch {
+      throw new Error("RATE_LIMIT");
+    }
     const topicGuide = [
       "introduce yourself & WHY this exact role at this exact company (test motivation depth)",
       "deepest concrete past experience example tied DIRECTLY to a core duty of the target job (demand numbers/results)",
@@ -293,7 +297,11 @@ export const evaluateAnswer = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => evalSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    // rate limiting disabled
+    try {
+      checkIpMessage(ip);
+    } catch {
+      throw new Error("RATE_LIMIT");
+    }
     const prompt = `Evaluate this candidate answer for the EXACT job/company context. Return JSON only.
 Language: ${data.language}
 Application context: ${JSON.stringify(data.applicationContext)}
@@ -338,7 +346,11 @@ export const finalReport = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => reportSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    // rate limiting disabled
+    try {
+      checkIpMessage(ip);
+    } catch {
+      throw new Error("RATE_LIMIT");
+    }
     const prompt = `Create a final interview report. Return JSON only.
 Language: ${data.language}
 Application context: ${JSON.stringify(data.applicationContext)}
@@ -383,7 +395,7 @@ export const improveCv = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
     try {
-      // rate limiting disabled
+      checkIpCv(ip);
     } catch {
       throw new Error("RATE_LIMIT");
     }
@@ -443,7 +455,11 @@ export const analyzeCv = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => analyzeSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    void ip;
+    try {
+      checkIpCv(ip);
+    } catch {
+      throw new Error("RATE_LIMIT");
+    }
     const prompt = `You are reviewing a real candidate CV. Find every flaw and rewrite it.
 Language for ALL output: ${data.language}
 Optional target job: ${data.targetJob || "(general)"}
