@@ -15,6 +15,7 @@ import { PageFade, Reveal } from "@/components/Motion";
 import { useT, useLang } from "@/lib/i18n";
 import { runCareerTool, type ToolKind } from "@/lib/career-tools.functions";
 import { downloadTextAsPdf } from "@/lib/pdf-export";
+import { handleServerError } from "@/lib/handle-server-error";
 
 export type ToolField = {
   key: string;
