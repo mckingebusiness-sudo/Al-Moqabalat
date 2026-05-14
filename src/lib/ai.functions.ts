@@ -228,7 +228,11 @@ export const generateQuestion = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => questionSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    // rate limiting disabled
+    try {
+      checkIpMessage(ip);
+    } catch {
+      throw new Error("RATE_LIMIT");
+    }
     const topicGuide = [
       "introduce yourself & WHY this exact role at this exact company (test motivation depth)",
       "deepest concrete past experience example tied DIRECTLY to a core duty of the target job (demand numbers/results)",
