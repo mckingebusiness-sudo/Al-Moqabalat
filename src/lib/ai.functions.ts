@@ -161,7 +161,7 @@ export const startInterview = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
     try {
-      // rate limiting disabled
+      checkIpInterview(ip);
     } catch {
       throw new Error("RATE_LIMIT");
     }
