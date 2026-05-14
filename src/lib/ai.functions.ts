@@ -346,7 +346,11 @@ export const finalReport = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => reportSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    // rate limiting disabled
+    try {
+      checkIpMessage(ip);
+    } catch {
+      throw new Error("RATE_LIMIT");
+    }
     const prompt = `Create a final interview report. Return JSON only.
 Language: ${data.language}
 Application context: ${JSON.stringify(data.applicationContext)}
