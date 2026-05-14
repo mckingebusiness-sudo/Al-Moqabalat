@@ -141,6 +141,10 @@ export const runCareerTool = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => schema.parse(d))
   .handler(async ({ data }) => {
     const prompt = buildPrompt(data.kind, data.language, data.inputs);
+    const maxTokens =
+      data.kind === "career_roadmap" || data.kind === "skill_gap" || data.kind === "linkedin_bio"
+        ? 2400
+        : 1600;
     try {
       const res = await callMistral({
         messages: [
@@ -149,17 +153,18 @@ export const runCareerTool = createServerFn({ method: "POST" })
         ],
         json: false,
         temperature: 0.5,
-        maxTokens: 1400,
+        maxTokens,
       });
       return { text: res.content.trim() };
     } catch (e) {
       const msg = (e as Error).message || "";
+      console.error("[runCareerTool]", data.kind, msg);
       if (/RATE_LIMIT|DAILY_TOKEN_LIMIT/.test(msg)) throw e;
       return {
         text:
           data.language === "ar"
-            ? "حصل خطأ مؤقت. حاول تاني بعد لحظات."
-            : "Temporary error. Please try again shortly.",
+            ? `حصل خطأ مؤقت أثناء التوليد (${msg.slice(0, 80)}). حاول تاني بعد لحظات.`
+            : `Temporary error while generating (${msg.slice(0, 80)}). Please try again shortly.`,
       };
     }
   });
