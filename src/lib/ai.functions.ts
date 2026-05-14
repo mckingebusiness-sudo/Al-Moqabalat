@@ -297,7 +297,11 @@ export const evaluateAnswer = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => evalSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    // rate limiting disabled
+    try {
+      checkIpMessage(ip);
+    } catch {
+      throw new Error("RATE_LIMIT");
+    }
     const prompt = `Evaluate this candidate answer for the EXACT job/company context. Return JSON only.
 Language: ${data.language}
 Application context: ${JSON.stringify(data.applicationContext)}
