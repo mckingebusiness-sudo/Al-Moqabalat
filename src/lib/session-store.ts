@@ -75,7 +75,9 @@ export const useSession = create<State>()(
     }),
     {
       name: "ix-session",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() =>
+        typeof window !== "undefined" ? window.localStorage : sessionStorage,
+      ),
       skipHydration: true,
       partialize: (state) => ({
         sessionId: state.sessionId,
