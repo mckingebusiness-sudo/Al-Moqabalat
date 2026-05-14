@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
-import { callJson, getIp } from "./mistral.server";
+import { callJson, checkIpCv, checkIpInterview, checkIpMessage, getIp } from "./mistral.server";
 import type { CandidateProfile, Evaluation, FinalReport, InterviewQuestion } from "./types";
 
 const MAX_CV = Number(process.env.MAX_CV_CHARS || 12000);
