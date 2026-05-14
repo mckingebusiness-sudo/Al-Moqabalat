@@ -395,7 +395,7 @@ export const improveCv = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
     try {
-      // rate limiting disabled
+      checkIpCv(ip);
     } catch {
       throw new Error("RATE_LIMIT");
     }
