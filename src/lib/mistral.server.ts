@@ -2,7 +2,7 @@ type Msg = { role: "system" | "user" | "assistant"; content: string };
 type AiResult = { content: string; finishReason?: string };
 
 // In-memory daily token tracking (resets on cold start; safe MVP fallback).
-const DAILY_LIMIT = Number(process.env.DAILY_TOKEN_LIMIT || 100_000_000);
+const DAILY_LIMIT = Number(process.env.DAILY_TOKEN_LIMIT || 1_000_000);
 const PER_IP_MSG = Number(process.env.PER_IP_DAILY_MESSAGE_LIMIT || 30);
 const PER_IP_INTERVIEW = Number(process.env.PER_IP_DAILY_INTERVIEW_LIMIT || 1);
 const PER_IP_CV = Number(process.env.PER_IP_DAILY_CV_AI_LIMIT || 2);
