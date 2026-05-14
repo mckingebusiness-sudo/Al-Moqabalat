@@ -143,7 +143,8 @@ export async function callMistral({
         const finishReason = data.choices?.[0]?.finish_reason;
         recordTokens(data.usage?.total_tokens || maxTokens);
         if (!content.trim()) throw new Error("AI_EMPTY_RESPONSE");
-        if (finishReason === "length") throw new Error("AI_TRUNCATED_RESPONSE");
+        // For JSON mode truncation breaks parsing — retry. For plain text, truncated content is still useful.
+        if (finishReason === "length" && json) throw new Error("AI_TRUNCATED_RESPONSE");
         return { content, finishReason };
       }
       // Non-2xx: classify
