@@ -68,8 +68,15 @@ function CvImprovePage() {
         return;
       }
       setCvText(text.slice(0, 12000));
-    } catch {
-      setError(t("cvi_err_file"));
+    } catch (e) {
+      const msg = (e as Error).message || "";
+      if (msg.includes("PDF_TOO_SHORT")) {
+        setError(lang === "ar"
+          ? "الـ PDF ده ممكن يكون صورة — رفّع نسخة text-based أو Word."
+          : "This PDF might be image-based — upload a text-based PDF or Word.");
+      } else {
+        setError(t("cvi_err_file"));
+      }
     } finally {
       setParsing(false);
     }
