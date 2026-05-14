@@ -455,7 +455,11 @@ export const analyzeCv = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => analyzeSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    void ip;
+    try {
+      checkIpCv(ip);
+    } catch {
+      throw new Error("RATE_LIMIT");
+    }
     const prompt = `You are reviewing a real candidate CV. Find every flaw and rewrite it.
 Language for ALL output: ${data.language}
 Optional target job: ${data.targetJob || "(general)"}
