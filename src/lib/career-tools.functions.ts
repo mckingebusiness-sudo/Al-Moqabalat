@@ -147,7 +147,9 @@ Return PLAIN TEXT with these sections (no markdown):
 === SALARY TRAJECTORY (per phase, with currency) ===
 === TOP 3 RISKS + MITIGATION ===
 === FIRST 7 DAYS — DO THIS NOW ===`;
-  }
+    }
+  })();
+  return header + "\n\n" + body;
 }
 
 export const runCareerTool = createServerFn({ method: "POST" })
