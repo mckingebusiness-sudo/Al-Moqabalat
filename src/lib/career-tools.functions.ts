@@ -155,28 +155,35 @@ export const runCareerTool = createServerFn({ method: "POST" })
     const prompt = buildPrompt(data.kind, data.language, data.inputs);
     const maxTokens =
       data.kind === "career_roadmap" || data.kind === "skill_gap" || data.kind === "linkedin_bio"
-        ? 2400
+        ? 2200
         : 1600;
+    const langGuard =
+      data.language === "ar"
+        ? "CRITICAL: The user's chosen output language is Arabic (العربية). The ENTIRE response MUST be in Arabic only. Do not output any English text. Do not use any Markdown formatting (no *, **, _, #, backticks). Plain text with line breaks and === === headers only."
+        : "CRITICAL: The output language is English. No Markdown (no *, **, _, #, backticks). Plain text only with === === headers.";
     try {
       const res = await callMistral({
         messages: [
-          { role: "system", content: SYS[data.kind] },
+          { role: "system", content: SYS[data.kind] + "\n\n" + langGuard },
           { role: "user", content: prompt },
         ],
         json: false,
-        temperature: 0.5,
+        temperature: 0.45,
         maxTokens,
       });
-      return { text: res.content.trim() };
+      // Strip any leftover markdown the model might emit despite instructions.
+      const cleaned = res.content
+        .replace(/\*\*([^*]+)\*\*/g, "$1")
+        .replace(/(^|\s)\*(?!\s)([^*\n]+?)\*(?=\s|$)/g, "$1$2")
+        .replace(/^#{1,6}\s+/gm, "")
+        .replace(/`{1,3}([^`]*)`{1,3}/g, "$1")
+        .replace(/^\s*[-•]\s*/gm, "• ")
+        .trim();
+      return { text: cleaned };
     } catch (e) {
       const msg = (e as Error).message || "";
       console.error("[runCareerTool]", data.kind, msg);
-      if (/RATE_LIMIT|DAILY_TOKEN_LIMIT/.test(msg)) throw e;
-      return {
-        text:
-          data.language === "ar"
-            ? `حصل خطأ مؤقت أثناء التوليد (${msg.slice(0, 80)}). حاول تاني بعد لحظات.`
-            : `Temporary error while generating (${msg.slice(0, 80)}). Please try again shortly.`,
-      };
+      // Surface real errors so the UI can show a proper toast via handleServerError.
+      throw e;
     }
   });
