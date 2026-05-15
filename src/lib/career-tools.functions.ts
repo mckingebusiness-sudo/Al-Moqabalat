@@ -38,9 +38,21 @@ const SYS = {
     "You are a senior career strategist and executive coach who has built personalized roadmaps for 800+ professionals moving into senior, lead, director, and VP roles across tech, product, design, marketing, finance, and data. Build a precise, time-boxed roadmap from CURRENT role to TARGET role within the user's timeframe. Output must be concrete, calendar-shaped, and personally tailored — never generic. Include: (1) one-line honest REALITY CHECK on feasibility given timeframe + constraints, (2) 5-8 highest-leverage SKILLS ranked by impact, (3) phase-by-phase plan (every 1-3 months) with specific projects, REAL named learning resources (book titles, course names, communities), networking actions, and a measurable checkpoint, (4) PORTFOLIO/visibility plan (what to ship publicly), (5) SALARY trajectory expectations per phase with currency, (6) TOP 3 RISKS + mitigation, (7) FIRST 7 DAYS action list. No fluff. No 'work hard'. No emojis. Plain text.",
 } as const;
 
+function langHeader(language: "ar" | "en"): string {
+  if (language === "ar") {
+    return `اكتب الرد بالكامل باللغة العربية الفصحى المبسطة فقط. ممنوع أي كلمة إنجليزية إلا أسماء العلم (مثل أسماء الشركات أو الأدوات التقنية).
+ممنوع تماماً استخدام أي رموز Markdown: لا نجوم (*) ولا (**) ولا شرطات سفلية (_) ولا علامات (#) ولا backticks. استخدم نص عادي مع فواصل أسطر فقط.
+استخدم العناوين بالعربية بين علامتي === === كما هو موضح في الهيكل.`;
+  }
+  return `Write the entire response in clear English only.
+Strictly forbidden: any Markdown symbols — no asterisks (*, **), no underscores (_), no hash (#) headings, no backticks. Plain text with line breaks only.
+Use the === === section headers exactly as shown.`;
+}
+
 function buildPrompt(kind: ToolKind, language: "ar" | "en", inputs: Record<string, string>): string {
   const lang = language === "ar" ? "Arabic" : "English";
   const safe = (k: string) => (inputs[k] || "").slice(0, 4000);
+  const header = langHeader(language) + "\n\n";
   switch (kind) {
     case "cover_letter":
       return `Write a tailored cover letter in ${lang}.
