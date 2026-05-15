@@ -61,8 +61,8 @@
   --brand-from: oklch(0.62 0.24 25);
   --brand-via: oklch(0.5 0.23 27);
   --brand-to: oklch(0.22 0.05 25);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Inter", sans-serif;
-  --font-arabic: "Cairo", "Tajawal", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, -apple-system, "Inter", sans-serif;
+  --font-arabic: "Cairo Variable", "Cairo", "Tajawal", ui-sans-serif, system-ui, sans-serif;
   --gradient-page: linear-gradient(135deg, oklch(0.98 0.01 20) 0%, oklch(1 0 0) 50%, oklch(0.95 0.04 25) 100%);
   --gradient-brand: linear-gradient(135deg, var(--brand-from), var(--brand-via), var(--brand-to));
   --shadow-glow: 0 20px 60px -20px color-mix(in oklab, var(--brand-via) 45%, transparent);
