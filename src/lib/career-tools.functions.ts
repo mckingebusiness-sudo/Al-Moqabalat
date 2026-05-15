@@ -52,7 +52,8 @@ Use the === === section headers exactly as shown.`;
 function buildPrompt(kind: ToolKind, language: "ar" | "en", inputs: Record<string, string>): string {
   const lang = language === "ar" ? "Arabic" : "English";
   const safe = (k: string) => (inputs[k] || "").slice(0, 4000);
-  const header = langHeader(language) + "\n\n";
+  const header = langHeader(language);
+  const body = (() => {
   switch (kind) {
     case "cover_letter":
       return `Write a tailored cover letter in ${lang}.
