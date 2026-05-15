@@ -12,6 +12,7 @@ import {
   Select,
 } from "@/components/UI";
 import { PageFade, Reveal } from "@/components/Motion";
+import { AiThinking } from "@/components/AiThinking";
 import { useT, useLang } from "@/lib/i18n";
 import { runCareerTool, type ToolKind } from "@/lib/career-tools.functions";
 import { downloadTextAsPdf } from "@/lib/pdf-export";
