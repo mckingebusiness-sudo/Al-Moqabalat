@@ -1,5 +1,3 @@
-import "@fontsource-variable/cairo";
-import "@fontsource-variable/manrope";
 import { createStart, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
