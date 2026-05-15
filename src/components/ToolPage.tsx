@@ -152,9 +152,7 @@ export function ToolPage({
 
             <GradientButton onClick={onRun} disabled={busy} className="w-full">
               {busy ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> {t("cvi_analyzing")}
-                </>
+                <AiThinking label={lang === "ar" ? "AI بيكتب لك" : "AI is writing"} />
               ) : (
                 <>
                   <Sparkles className="h-4 w-4" /> {cta}
