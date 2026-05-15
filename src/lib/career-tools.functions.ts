@@ -79,17 +79,34 @@ Return PLAIN TEXT with these sections:
 5) Graceful closing
 No markdown.`;
     case "linkedin_bio":
-      return `Write a LinkedIn profile rewrite in ${lang}.
+      return `Write a complete LinkedIn profile rewrite in ${lang}.
 Name: ${safe("name")}
 Current role / target role: ${safe("role")}
 Top skills: ${safe("skills")}
 Achievements: ${safe("achievements")}
 Years of experience: ${safe("experience")}
-Return PLAIN TEXT with:
+
+Return PLAIN TEXT with EXACTLY these sections (use === === headers literally):
 === HEADLINES (5 options, each under 220 chars) ===
-=== ABOUT SECTION (3-5 short paragraphs) ===
-=== KEYWORDS TO ADD ===
-No markdown symbols.`;
+1) ...
+2) ...
+3) ...
+4) ...
+5) ...
+
+=== ABOUT — STYLE 1: ACHIEVEMENT-LED (under 2600 chars) ===
+3-5 short paragraphs starting with the strongest quantified result.
+
+=== ABOUT — STYLE 2: STORY-LED (under 2600 chars) ===
+3-5 short paragraphs starting with a personal hook / why-story.
+
+=== ABOUT — STYLE 3: ASPIRATIONAL (under 2600 chars) ===
+3-5 short paragraphs framing the next chapter and ideal role.
+
+=== KEYWORDS (12-20 recruiter search terms, comma separated) ===
+keyword1, keyword2, ...
+
+No markdown symbols. No emojis. No buzzwords. Use only the candidate's real facts.`;
     case "thank_you_email":
       return `Write a thank-you email after a job interview in ${lang}.
 Candidate name: ${safe("name")}

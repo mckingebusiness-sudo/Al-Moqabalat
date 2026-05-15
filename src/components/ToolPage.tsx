@@ -12,6 +12,7 @@ import {
   Select,
 } from "@/components/UI";
 import { PageFade, Reveal } from "@/components/Motion";
+import { AiThinking } from "@/components/AiThinking";
 import { useT, useLang } from "@/lib/i18n";
 import { runCareerTool, type ToolKind } from "@/lib/career-tools.functions";
 import { downloadTextAsPdf } from "@/lib/pdf-export";
@@ -151,9 +152,7 @@ export function ToolPage({
 
             <GradientButton onClick={onRun} disabled={busy} className="w-full">
               {busy ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> {t("cvi_analyzing")}
-                </>
+                <AiThinking label={lang === "ar" ? "AI بيكتب لك" : "AI is writing"} />
               ) : (
                 <>
                   <Sparkles className="h-4 w-4" /> {cta}
