@@ -17,11 +17,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="blob animate-float" style={{ width: 480, height: 480, top: -120, left: -100, background: "var(--brand-from)" }} />
-        <div className="blob animate-float" style={{ width: 520, height: 520, bottom: -160, right: -120, background: "var(--brand-to)", animationDelay: "-4s" }} />
-        <div className="blob animate-float" style={{ width: 360, height: 360, top: "40%", left: "55%", background: "var(--brand-via)", animationDelay: "-8s", opacity: 0.3 }} />
-      </div>
+
       <div className="relative z-10 flex min-h-screen flex-col">
         <Navbar />
         <main className="flex-1">{children}</main>

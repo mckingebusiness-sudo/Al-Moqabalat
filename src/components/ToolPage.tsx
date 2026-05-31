@@ -82,7 +82,9 @@ export function ToolPage({
 
   function copy(text: string) {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(text).catch(() => {});
+      navigator.clipboard.writeText(text)
+        .then(() => toast.success(lang === "ar" ? "تم النسخ بنجاح!" : "Copied successfully!"))
+        .catch(() => {});
     }
   }
 
@@ -178,7 +180,7 @@ export function ToolPage({
                         ) : (
                           <Download className="h-4 w-4" />
                         )}
-                        PDF
+                        {lang === "ar" ? "تحميل PDF" : "Download PDF"}
                       </GradientButton>
                     </div>
                   </div>

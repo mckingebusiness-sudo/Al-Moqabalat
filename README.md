@@ -11,16 +11,16 @@ AI-powered Career OS for the MENA region. Mock interviews, CV builder, ATS optim
 
 ## Run locally
 ```bash
-bun install
+npm install
 cp .env.example .dev.vars
 # fill in MISTRAL_API_KEY_1
-bun dev
+npm run dev
 ```
 
 ## Deploy
 ```bash
-bun run build
-bunx wrangler deploy
+npm run build
+npx wrangler deploy
 ```
 
 ## Routes

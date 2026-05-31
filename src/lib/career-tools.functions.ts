@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getWebRequest } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { callMistral, getIp } from "./mistral.server";
 import { checkIpCv } from "./rate-limit.server";
@@ -173,7 +173,7 @@ Return PLAIN TEXT with these sections (no markdown):
 export const runCareerTool = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => schema.parse(d))
   .handler(async ({ data }) => {
-    const req = getWebRequest();
+    const req = getRequest();
     if (req) {
       const ip = getIp(req.headers);
       await checkIpCv(ip);
