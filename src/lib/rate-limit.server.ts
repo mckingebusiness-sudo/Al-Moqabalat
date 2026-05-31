@@ -39,6 +39,7 @@ async function bumpKv(namespace: string, key: string, limit: number): Promise<vo
       return;
     } catch (e) {
       if ((e as Error).message === "RATE_LIMIT") throw e;
+      if (process.env.NODE_ENV === "production") throw e;
       // Fallback to in-memory if KV fails
       console.warn("KV rate limit failed, falling back to memory:", e);
     }
@@ -84,6 +85,7 @@ export async function checkGlobalBudget(estimate: number) {
       return;
     } catch (e) {
       if ((e as Error).message === "DAILY_TOKEN_LIMIT_REACHED") throw e;
+      if (process.env.NODE_ENV === "production") throw e;
     }
   }
 
@@ -107,6 +109,7 @@ export async function recordTokens(used: number) {
       await kv.put(fullKey, (n + used).toString(), { expirationTtl: 86400 });
       return;
     } catch (e) {
+      if (process.env.NODE_ENV === "production") throw e;
       console.warn("KV recordTokens failed, falling back to memory:", e);
     }
   }
