@@ -96,7 +96,7 @@ function CvImprovePage() {
   }
 
   async function onAnalyze() {
-    if (cvText.trim().length < 50) {
+    if (cvText.trim().length < 30) {
       setError(t("cvi_err_short"));
       return;
     }

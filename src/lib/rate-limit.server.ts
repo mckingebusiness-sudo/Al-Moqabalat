@@ -14,9 +14,11 @@ const memIpMsg = new Map<string, Counter>();
 const memIpInterview = new Map<string, Counter>();
 const memIpCv = new Map<string, Counter>();
 
+import { env } from "cloudflare:workers";
+
 function getKv(): any {
-  // Support Cloudflare bindings if available on globalThis or process.env
-  return (globalThis as any).IX_STORE || (process.env as any).IX_STORE || null;
+  // Support Cloudflare bindings via worker env, fallback to globalThis or process.env
+  return (env as any)?.IX_STORE ?? (globalThis as any).IX_STORE ?? (process.env as any).IX_STORE ?? null;
 }
 
 async function bumpKv(namespace: string, key: string, limit: number): Promise<void> {

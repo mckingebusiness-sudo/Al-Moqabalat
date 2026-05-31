@@ -117,9 +117,9 @@ function Footer() {
   const t = useT();
   const { lang } = useLang();
   return (
-    <footer className="no-print mt-20 px-3 pb-6 sm:px-6">
-      <div className="glass-card mx-auto max-w-6xl px-6 py-8">
-        <div className="grid gap-6 md:grid-cols-3">
+    <footer className="no-print mt-20 border-t border-border bg-background/50 backdrop-blur">
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <div className="grid gap-8 md:grid-cols-3">
           <div>
             <div className="flex items-center gap-2 font-bold">
               <span className="grid h-8 w-8 place-items-center rounded-lg btn-gradient">
@@ -148,6 +148,17 @@ function Footer() {
             <ul className="space-y-1 text-sm text-muted-foreground">
               <li><Link to="/privacy" className="hover:text-foreground">{t("privacy")}</Link></li>
               <li><Link to="/terms" className="hover:text-foreground">{t("terms")}</Link></li>
+              <li>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("ix-session");
+                    window.location.reload();
+                  }}
+                  className="text-left hover:text-destructive"
+                >
+                  {lang === "ar" ? "حذف بياناتي" : "Delete my data"}
+                </button>
+              </li>
             </ul>
           </div>
         </div>

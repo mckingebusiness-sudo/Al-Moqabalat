@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ArrowRight, Download, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea, Select } from "@/components/UI";
 import { useT, useLang } from "@/lib/i18n";
@@ -251,6 +252,8 @@ function CvBuilderPage() {
                     setPdfBusy(true);
                     try {
                       await downloadElementAsPdf(cvRef.current, `${data.fullName || "CV"}.pdf`);
+                    } catch (err) {
+                      toast.error(t("err_temp"));
                     } finally {
                       setPdfBusy(false);
                     }

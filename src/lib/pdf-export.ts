@@ -4,7 +4,12 @@ export async function downloadElementAsPdf(
   filename: string,
 ): Promise<void> {
   if (typeof window === "undefined") return;
-  const mod = await import("html2pdf.js");
+  let mod;
+  try {
+    mod = await import("html2pdf.js");
+  } catch (err) {
+    throw new Error("PDF_LIB_FAILED");
+  }
   const html2pdf = (mod as { default: (...args: unknown[]) => unknown }).default;
   const opt = {
     margin: [10, 10, 10, 10],

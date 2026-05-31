@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Copy, Download, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import {
   GlassCard,
@@ -90,6 +91,8 @@ export function ToolPage({
     setPdfBusy(true);
     try {
       await downloadTextAsPdf(output, fileName, outLang === "ar" ? "rtl" : "ltr");
+    } catch (err) {
+      toast.error(t("err_temp"));
     } finally {
       setPdfBusy(false);
     }

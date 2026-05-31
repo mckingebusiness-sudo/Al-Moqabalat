@@ -42,8 +42,25 @@ function HomePage() {
   return (
     <AppShell>
       <PageFade>
-        <section className="relative px-4 pt-12 pb-10 sm:pt-20 sm:pb-16">
-          <div className="mx-auto max-w-5xl text-center">
+        <section className="relative px-4 pt-12 pb-10 sm:pt-20 sm:pb-32">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <div className="absolute top-20 left-[10%] text-primary/30 animate-twinkle">
+              <Star className="h-6 w-6 fill-primary/20" />
+            </div>
+            <div className="absolute top-60 right-[15%] text-primary/20 animate-float-fast">
+              <Sparkles className="h-8 w-8" />
+            </div>
+            <div className="absolute top-1/2 left-[5%] text-primary/25 animate-twinkle" style={{ animationDelay: '1s' }}>
+              <Star className="h-5 w-5" />
+            </div>
+            <div className="absolute bottom-40 right-[10%] text-primary/30 animate-float-fast" style={{ animationDelay: '2s' }}>
+              <Star className="h-7 w-7 fill-primary/20" />
+            </div>
+            <div className="absolute top-1/3 left-[80%] text-primary/20 animate-twinkle" style={{ animationDelay: '1.5s' }}>
+              <Sparkles className="h-10 w-10" />
+            </div>
+          </div>
+          <div className="relative z-10 mx-auto max-w-5xl text-center">
             <motion.div
               initial={{ opacity: 0, y: -10, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}

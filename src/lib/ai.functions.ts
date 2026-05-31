@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
-import { callJson, checkIpCv, checkIpInterview, checkIpMessage, getIp } from "./mistral.server";
+import { callJson, getIp } from "./mistral.server";
+import { checkIpCv, checkIpInterview, checkIpMessage } from "./rate-limit.server";
 import type { CandidateProfile, Evaluation, FinalReport, InterviewQuestion } from "./types";
 
 import { MAX_ANSWER_CHARS, MAX_CV_CHARS, MAX_JOB_DESCRIPTION_CHARS } from "./constants";
@@ -162,42 +163,43 @@ export const startInterview = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => startSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    try {
-      checkIpInterview(ip);
-    } catch {
-      throw new Error("RATE_LIMIT");
-    }
+    await checkIpInterview(ip);
 
     // 1) Extract candidate profile
-    const profilePrompt = `Extract a compact candidate profile for interview prep. Return JSON only.
+    const profileFallback = fallbackProfile(data.applicationContext);
+    let profile: CandidateProfile = profileFallback;
+
+    if (data.cvText && data.cvText.trim().length > 50) {
+      const profilePrompt = `Extract a compact candidate profile for interview prep. Return JSON only.
 Candidate basic info: ${JSON.stringify({
-      name: data.applicationContext.candidateName,
-      level: data.applicationContext.experienceLevel,
-      education: data.applicationContext.education,
-      skills: data.applicationContext.mainSkills,
-    })}
+        name: data.applicationContext.candidateName,
+        level: data.applicationContext.experienceLevel,
+        education: data.applicationContext.education,
+        skills: data.applicationContext.mainSkills,
+      })}
 Application context: ${JSON.stringify(data.applicationContext)}
-CV text: ${data.cvText || "(none)"}
+CV text: ${data.cvText}
 Return JSON: {"candidateName":"","estimatedLevel":"","targetJob":"","candidateSummary":"","strengthsForThisJob":[],"weaknessesForThisJob":[],"interviewFocus":[],"suggestedQuestionTopics":[],"jobFitScore":0}
 Rules: Be concise. Do not invent fake experience. If CV is weak, use form data.`;
 
-    const profileRaw = await callJson<CandidateProfile>({
-      messages: [
-        { role: "system", content: SYS_BASE },
-        { role: "user", content: profilePrompt },
-      ],
-      maxTokens: 1500,
-    }, () => fallbackProfile(data.applicationContext));
-    const profileFallback = fallbackProfile(data.applicationContext);
-    const profile: CandidateProfile = {
-      ...profileFallback,
-      ...profileRaw,
-      strengthsForThisJob: asList(profileRaw.strengthsForThisJob, profileFallback.strengthsForThisJob ?? []),
-      weaknessesForThisJob: asList(profileRaw.weaknessesForThisJob, profileFallback.weaknessesForThisJob ?? []),
-      interviewFocus: asList(profileRaw.interviewFocus, profileFallback.interviewFocus ?? []),
-      suggestedQuestionTopics: asList(profileRaw.suggestedQuestionTopics, profileFallback.suggestedQuestionTopics ?? []),
-      jobFitScore: asScore(profileRaw.jobFitScore, profileFallback.jobFitScore),
-    };
+      const profileRaw = await callJson<CandidateProfile>({
+        messages: [
+          { role: "system", content: SYS_BASE },
+          { role: "user", content: profilePrompt },
+        ],
+        maxTokens: 1500,
+      }, () => profileFallback);
+
+      profile = {
+        ...profileFallback,
+        ...profileRaw,
+        strengthsForThisJob: asList(profileRaw.strengthsForThisJob, profileFallback.strengthsForThisJob ?? []),
+        weaknessesForThisJob: asList(profileRaw.weaknessesForThisJob, profileFallback.weaknessesForThisJob ?? []),
+        interviewFocus: asList(profileRaw.interviewFocus, profileFallback.interviewFocus ?? []),
+        suggestedQuestionTopics: asList(profileRaw.suggestedQuestionTopics, profileFallback.suggestedQuestionTopics ?? []),
+        jobFitScore: asScore(profileRaw.jobFitScore, profileFallback.jobFitScore),
+      };
+    }
 
     // 2) First question
     const firstQ = await generateQuestion({
@@ -230,11 +232,7 @@ export const generateQuestion = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => questionSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    try {
-      checkIpMessage(ip);
-    } catch {
-      throw new Error("RATE_LIMIT");
-    }
+    await checkIpMessage(ip);
     const topicGuide = [
       "introduce yourself & WHY this exact role at this exact company (test motivation depth)",
       "deepest concrete past experience example tied DIRECTLY to a core duty of the target job (demand numbers/results)",
@@ -271,6 +269,7 @@ CRITICAL RULES:
 - expectedGoodAnswerPoints: 3-5 specific things a great answer should contain.
 - Never repeat or rephrase any previous question.`;
     const q = await callJson<InterviewQuestion>({
+      model: "mistral-small-latest",
       messages: [
         { role: "system", content: SYS_BASE },
         { role: "user", content: prompt },
@@ -299,11 +298,7 @@ export const evaluateAnswer = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => evalSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    try {
-      checkIpMessage(ip);
-    } catch {
-      throw new Error("RATE_LIMIT");
-    }
+    await checkIpMessage(ip);
     const prompt = `Evaluate this candidate answer for the EXACT job/company context. Return JSON only.
 Language: ${data.language}
 Application context: ${JSON.stringify(data.applicationContext)}
@@ -319,6 +314,7 @@ Rules:
 - "strengths", "weaknesses": each item MUST be a plain short string sentence, NOT an object.
 - All array items MUST be plain strings.`;
     const ev = await callJson<Evaluation>({
+      model: "mistral-small-latest",
       messages: [
         { role: "system", content: SYS_BASE },
         { role: "user", content: prompt },
@@ -348,11 +344,7 @@ export const finalReport = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => reportSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    try {
-      checkIpMessage(ip);
-    } catch {
-      throw new Error("RATE_LIMIT");
-    }
+    await checkIpMessage(ip);
     const prompt = `Create a final interview report. Return JSON only.
 Language: ${data.language}
 Application context: ${JSON.stringify(data.applicationContext)}
@@ -396,11 +388,7 @@ export const improveCv = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => cvSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    try {
-      checkIpCv(ip);
-    } catch {
-      throw new Error("RATE_LIMIT");
-    }
+    await checkIpCv(ip);
     const prompt = `Improve this CV without inventing fake experience. Return JSON only.
 Language: ${data.language}
 Optional target job: ${data.targetJob || ""}
@@ -457,11 +445,7 @@ export const analyzeCv = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => analyzeSchema.parse(d))
   .handler(async ({ data }) => {
     const ip = getIp(getRequest().headers);
-    try {
-      checkIpCv(ip);
-    } catch {
-      throw new Error("RATE_LIMIT");
-    }
+    await checkIpCv(ip);
     const prompt = `You are reviewing a real candidate CV. Find every flaw and rewrite it.
 Language for ALL output: ${data.language}
 Optional target job: ${data.targetJob || "(general)"}

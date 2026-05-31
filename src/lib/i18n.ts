@@ -32,13 +32,13 @@ export const dict: Dict = {
     ar: "8 أسئلة فنية وسلوكية، مصممة لمساعدتك على إبراز أفضل إمكانياتك.",
     en: "8 technical and behavioral questions designed to help you showcase your best potential."
   },
-  card_interview_btn: { ar: "بدء المحاكاة", en: "Start Simulation" },
+  card_interview_btn: { ar: "ابدأ مقابلة", en: "Start Interview" },
   card_cv_title: { ar: "بناء السيرة الذاتية", en: "CV Builder" },
   card_cv_desc: {
     ar: "اصنع سيرتك الذاتية بالمعايير العالمية في ثوانٍ. واضحة واحترافية.",
     en: "Create a world-class CV in seconds. Clear and professional."
   },
-  card_cv_btn: { ar: "ابنِ سيرتك", en: "Build CV" },
+  card_cv_btn: { ar: "اصنع سيرة قوية", en: "Build Strong CV" },
   card_improve_title: { ar: "تحليل السيرة الذاتية", en: "CV Analysis" },
   card_improve_desc: {
     ar: "نحلل سيرتك الحالية، نوضح نقاط التحسين، ونساعدك على تطويرها.",

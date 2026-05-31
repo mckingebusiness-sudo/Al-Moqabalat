@@ -43,15 +43,17 @@ export async function callMistral({
   temperature = 0.4,
   maxTokens = 800,
   json = true,
+  model = "mistral-medium-latest",
 }: {
   messages: Msg[];
   temperature?: number;
   maxTokens?: number;
   json?: boolean;
+  model?: string;
 }): Promise<AiResult> {
   const keys = getApiKeys();
   // Stronger reasoning while still fast for our payload sizes.
-  const model = process.env.MISTRAL_MODEL || "mistral-medium-latest";
+  const resolvedModel = process.env.MISTRAL_MODEL || model;
   if (keys.length === 0) throw new Error("MISTRAL_API_KEY missing");
 
   await checkGlobalBudget(maxTokens + 500);
@@ -64,7 +66,7 @@ export async function callMistral({
     }
   }
   const body: Record<string, unknown> = {
-    model,
+    model: resolvedModel,
     messages: msgs,
     temperature,
     max_tokens: maxTokens,
@@ -83,7 +85,7 @@ export async function callMistral({
     const key = attempts[i];
     const isLast = i === attempts.length - 1;
     try {
-      const res = await attemptCall(key, body, 60_000);
+      const res = await attemptCall(key, body, 30_000);
       if (res.ok) {
         const data = await res.json();
         const content = data.choices?.[0]?.message?.content || "";
@@ -197,13 +199,13 @@ export async function callJson<T>(
   let lastError: unknown;
   const baseTokens = request.maxTokens || 800;
   const baseTemp = request.temperature ?? 0.4;
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     try {
       const res = await callMistral({
         ...request,
         // Increase token budget on each retry; reduce temp on last try for stability
         maxTokens: i === 0 ? baseTokens : Math.min(baseTokens + i * 700, 3500),
-        temperature: i === 2 ? Math.min(baseTemp, 0.3) : baseTemp,
+        temperature: i === 1 ? Math.min(baseTemp, 0.3) : baseTemp,
       });
       return parseJson<T>(res.content);
     } catch (error) {

@@ -18,7 +18,7 @@ export async function extractTextFromFile(file: File): Promise<string> {
   }
 
   // Guard: scanned PDFs (image-based) extract no/very little text.
-  if (!text || text.trim().length < 100) {
+  if (!text || text.trim().length < 30) {
     throw new Error("PDF_TOO_SHORT");
   }
   return text;
