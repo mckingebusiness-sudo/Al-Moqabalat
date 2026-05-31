@@ -27,6 +27,7 @@ import { Reveal, PageFade } from "@/components/Motion";
 import { useT, useLang } from "@/lib/i18n";
 import { analyzeCv, type CvAnalysis } from "@/lib/ai.functions";
 import { extractTextFromFile } from "@/lib/pdf-parse";
+import { MAX_CV_CHARS } from "@/lib/constants";
 
 export const Route = createFileRoute("/cv-improve")({
   head: () => ({
@@ -59,6 +60,18 @@ function CvImprovePage() {
   async function onFile(file: File | null) {
     if (!file) return;
     setError(null);
+    
+    if (file.size > 5 * 1024 * 1024) {
+      setError(lang === "ar" ? "حجم الملف كبير جداً (الحد الأقصى 5 ميجابايت)." : "File size is too large (max 5MB).");
+      return;
+    }
+    
+    const validTypes = ["application/pdf", "text/plain"];
+    if (!validTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.pdf') && !file.name.toLowerCase().endsWith('.txt')) {
+      setError(lang === "ar" ? "نوع الملف غير مدعوم (فقط PDF أو TXT)." : "Unsupported file type (PDF or TXT only).");
+      return;
+    }
+
     setFileName(file.name);
     setParsing(true);
     try {
@@ -67,7 +80,7 @@ function CvImprovePage() {
         setError(t("cvi_err_empty"));
         return;
       }
-      setCvText(text.slice(0, 12000));
+      setCvText(text.slice(0, MAX_CV_CHARS));
     } catch (e) {
       const msg = (e as Error).message || "";
       if (msg.includes("PDF_TOO_SHORT")) {
@@ -175,11 +188,11 @@ function CvImprovePage() {
               <TextArea
                 rows={8}
                 value={cvText}
-                onChange={(e) => setCvText(e.target.value.slice(0, 12000))}
+                onChange={(e) => setCvText(e.target.value.slice(0, MAX_CV_CHARS))}
                 placeholder={t("cvi_text_ph")}
               />
               <p className="mt-1 text-xs text-muted-foreground">
-                {cvText.length}/12000
+                {cvText.length}/{MAX_CV_CHARS}
               </p>
             </div>
 
@@ -233,7 +246,7 @@ function CvImprovePage() {
                 </GlassCard>
               </Reveal>
 
-              {result.flaws.length > 0 && (
+              {(result.flaws ?? []).length > 0 && (
                 <Reveal>
                   <GlassCard>
                     <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
@@ -241,7 +254,7 @@ function CvImprovePage() {
                       {t("cvi_flaws")}
                     </h2>
                     <ul className="space-y-3">
-                      {result.flaws.map((f, i) => (
+                      {(result.flaws ?? []).map((f, i) => (
                         <li key={i} className="rounded-xl border border-border bg-background/30 p-4">
                           <div className="mb-1 flex items-center justify-between gap-2">
                             <p className="font-semibold">{f.title}</p>
@@ -259,12 +272,12 @@ function CvImprovePage() {
                 </Reveal>
               )}
 
-              {result.weakPhrases.length > 0 && (
+              {(result.weakPhrases ?? []).length > 0 && (
                 <Reveal>
                   <GlassCard>
                     <h2 className="mb-3 text-lg font-bold">{t("cvi_weak")}</h2>
                     <div className="space-y-3">
-                      {result.weakPhrases.map((w, i) => (
+                      {(result.weakPhrases ?? []).map((w, i) => (
                         <div key={i} className="grid gap-2 rounded-xl border border-border bg-background/30 p-3 sm:grid-cols-2">
                           <div>
                             <p className="text-xs font-medium text-destructive">{t("cvi_before")}</p>
@@ -281,12 +294,12 @@ function CvImprovePage() {
                 </Reveal>
               )}
 
-              {result.missingSections.length > 0 && (
+              {(result.missingSections ?? []).length > 0 && (
                 <Reveal>
                   <GlassCard>
                     <h2 className="mb-3 text-lg font-bold">{t("cvi_missing")}</h2>
                     <ul className="flex flex-wrap gap-2">
-                      {result.missingSections.map((m, i) => (
+                      {(result.missingSections ?? []).map((m, i) => (
                         <li
                           key={i}
                           className="rounded-full border border-border bg-background/40 px-3 py-1 text-xs font-medium"
@@ -338,7 +351,7 @@ function CvImprovePage() {
                 </Reveal>
               )}
 
-              {result.topActionItems.length > 0 && (
+              {(result.topActionItems ?? []).length > 0 && (
                 <Reveal>
                   <GlassCard>
                     <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
@@ -346,7 +359,7 @@ function CvImprovePage() {
                       {t("cvi_actions")}
                     </h2>
                     <ul className="space-y-2">
-                      {result.topActionItems.map((a, i) => (
+                      {(result.topActionItems ?? []).map((a, i) => (
                         <li key={i} className="flex gap-3 text-sm">
                           <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary/15 text-xs font-bold text-primary">
                             {i + 1}

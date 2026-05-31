@@ -1,60 +1,7 @@
 type Msg = { role: "system" | "user" | "assistant"; content: string };
 type AiResult = { content: string; finishReason?: string };
 
-// In-memory daily token tracking (resets on cold start; safe MVP fallback).
-const DAILY_LIMIT = Number(process.env.DAILY_TOKEN_LIMIT || 1_000_000);
-const PER_IP_MSG = Number(process.env.PER_IP_DAILY_MESSAGE_LIMIT || 30);
-const PER_IP_INTERVIEW = Number(process.env.PER_IP_DAILY_INTERVIEW_LIMIT || 1);
-const PER_IP_CV = Number(process.env.PER_IP_DAILY_CV_AI_LIMIT || 2);
-
-type Counter = { day: string; n: number };
-const globalTokens: Counter = { day: "", n: 0 };
-const ipMsg = new Map<string, Counter>();
-const ipInterview = new Map<string, Counter>();
-const ipCv = new Map<string, Counter>();
-
-function today() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function bump(map: Map<string, Counter>, key: string, limit: number) {
-  const d = today();
-  const c = map.get(key);
-  if (!c || c.day !== d) {
-    map.set(key, { day: d, n: 1 });
-    return;
-  }
-  if (c.n >= limit) throw new Error("RATE_LIMIT");
-  c.n += 1;
-}
-
-export function checkIpMessage(ip: string) {
-  bump(ipMsg, ip, PER_IP_MSG);
-}
-export function checkIpInterview(ip: string) {
-  bump(ipInterview, ip, PER_IP_INTERVIEW);
-}
-export function checkIpCv(ip: string) {
-  bump(ipCv, ip, PER_IP_CV);
-}
-
-export function checkGlobalBudget(estimate: number) {
-  const d = today();
-  if (globalTokens.day !== d) {
-    globalTokens.day = d;
-    globalTokens.n = 0;
-  }
-  if (globalTokens.n + estimate > DAILY_LIMIT) throw new Error("DAILY_TOKEN_LIMIT_REACHED");
-}
-
-export function recordTokens(used: number) {
-  const d = today();
-  if (globalTokens.day !== d) {
-    globalTokens.day = d;
-    globalTokens.n = 0;
-  }
-  globalTokens.n += used;
-}
+import { checkGlobalBudget, recordTokens } from "./rate-limit.server";
 
 // Round-robin index across requests for load distribution.
 let rrIndex = 0;
@@ -107,7 +54,7 @@ export async function callMistral({
   const model = process.env.MISTRAL_MODEL || "mistral-medium-latest";
   if (keys.length === 0) throw new Error("MISTRAL_API_KEY missing");
 
-  checkGlobalBudget(maxTokens + 500);
+  await checkGlobalBudget(maxTokens + 500);
 
   let msgs = messages;
   if (json) {
@@ -136,12 +83,12 @@ export async function callMistral({
     const key = attempts[i];
     const isLast = i === attempts.length - 1;
     try {
-      const res = await attemptCall(key, body, 45_000);
+      const res = await attemptCall(key, body, 60_000);
       if (res.ok) {
         const data = await res.json();
         const content = data.choices?.[0]?.message?.content || "";
         const finishReason = data.choices?.[0]?.finish_reason;
-        recordTokens(data.usage?.total_tokens || maxTokens);
+        await recordTokens(data.usage?.total_tokens || maxTokens);
         if (!content.trim()) throw new Error("AI_EMPTY_RESPONSE");
         // For JSON mode truncation breaks parsing — retry. For plain text, truncated content is still useful.
         if (finishReason === "length" && json) throw new Error("AI_TRUNCATED_RESPONSE");
@@ -263,7 +210,7 @@ export async function callJson<T>(
       lastError = error;
       const msg = (error as Error)?.message || "";
       // Daily token limit and explicit user-facing rate limit must surface to UI
-      if (/DAILY_TOKEN_LIMIT|^RATE_LIMIT$/i.test(msg)) throw error;
+      if (/DAILY_TOKEN_LIMIT|^RATE_LIMIT$/i.test(msg) || msg === "MISTRAL_API_KEY missing") throw error;
       // Everything else: keep retrying, then fall back gracefully
     }
   }

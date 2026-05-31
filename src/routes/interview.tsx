@@ -8,7 +8,8 @@ import { useT, useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session-store";
 import { startInterview } from "@/lib/ai.functions";
 import { extractTextFromFile } from "@/lib/pdf-parse";
-import type { ApplicationContext, Language } from "@/lib/types";
+import { MAX_CV_CHARS } from "@/lib/constants";
+import type { ApplicationContext, Language, InterviewType } from "@/lib/types";
 
 export const Route = createFileRoute("/interview")({
   head: () => ({
@@ -48,6 +49,8 @@ function InterviewSetupPage() {
   const [cvFileName, setCvFileName] = useState<string | null>(null);
   const [cvParsing, setCvParsing] = useState(false);
   const [language, setLanguage] = useState<Language>(lang === "en" ? "en" : "ar");
+  const [interviewType, setInterviewType] = useState<InterviewType>("balanced");
+  const [totalQuestions, setTotalQuestions] = useState<5 | 8 | 10>(8);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -59,7 +62,7 @@ function InterviewSetupPage() {
     setCvParsing(true);
     try {
       const text = await extractTextFromFile(file);
-      setCvText(text.slice(0, 12000));
+      setCvText(text.slice(0, MAX_CV_CHARS));
     } catch {
       setError(t("cv_parse_error"));
       setCvFileName(null);
@@ -83,8 +86,8 @@ function InterviewSetupPage() {
         applicationContext: form,
         cvText: cvText.trim() || undefined,
         language,
-        interviewType: "balanced" as const,
-        totalQuestions: 8 as const,
+        interviewType,
+        totalQuestions,
       };
       const res = await start({
         data: setup,
@@ -200,12 +203,12 @@ function InterviewSetupPage() {
               <TextArea
                 rows={4}
                 value={cvText}
-                onChange={(e) => setCvText(e.target.value.slice(0, 12000))}
+                onChange={(e) => setCvText(e.target.value.slice(0, MAX_CV_CHARS))}
                 placeholder={lang === "ar" ? "أو الصق نص الـ CV هنا…" : "Or paste CV text here…"}
               />
               {cvText.length > 0 && (
                 <div className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{cvText.length}/12000</span>
+                  <span>{cvText.length}/{MAX_CV_CHARS}</span>
                   {cvFileName && (
                     <GhostButton
                       onClick={() => {
@@ -219,18 +222,35 @@ function InterviewSetupPage() {
                 </div>
               )}
             </div>
-            <div>
-              <FieldLabel>{t("language_label")}</FieldLabel>
-              <Select value={language} onChange={(e) => setLanguage(e.target.value as Language)}>
-                <option value="ar">{t("lang_ar")}</option>
-                <option value="en">{t("lang_en")}</option>
-                <option value="mixed">{t("lang_mixed")}</option>
-              </Select>
-              <p className="mt-2 text-xs text-muted-foreground">
-                {lang === "ar"
-                  ? "ثابت: 8 أسئلة • مقابلة متوازنة (HR + سلوكية + عملية)"
-                  : "Fixed: 8 questions • Balanced interview (HR + behavioral + practical)"}
-              </p>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div>
+                <FieldLabel>{t("language_label")}</FieldLabel>
+                <Select value={language} onChange={(e) => setLanguage(e.target.value as Language)}>
+                  <option value="ar">{t("lang_ar")}</option>
+                  <option value="en">{t("lang_en")}</option>
+                  <option value="mixed">{t("lang_mixed")}</option>
+                </Select>
+              </div>
+              <div>
+                <FieldLabel>{lang === "ar" ? "نوع المقابلة" : "Interview Type"}</FieldLabel>
+                <Select value={interviewType} onChange={(e) => setInterviewType(e.target.value as InterviewType)}>
+                  <option value="balanced">{lang === "ar" ? "متوازنة" : "Balanced"}</option>
+                  <option value="friendly_hr">{lang === "ar" ? "HR ودودة" : "Friendly HR"}</option>
+                  <option value="strict_hr">{lang === "ar" ? "HR صارمة" : "Strict HR"}</option>
+                  <option value="technical">{lang === "ar" ? "تقنية" : "Technical"}</option>
+                  <option value="behavioral">{lang === "ar" ? "سلوكية" : "Behavioral"}</option>
+                  <option value="fresh_graduate">{lang === "ar" ? "حديث التخرج" : "Fresh Graduate"}</option>
+                  <option value="career_change">{lang === "ar" ? "تغيير مسار" : "Career Change"}</option>
+                </Select>
+              </div>
+              <div>
+                <FieldLabel>{lang === "ar" ? "عدد الأسئلة" : "Questions"}</FieldLabel>
+                <Select value={totalQuestions.toString()} onChange={(e) => setTotalQuestions(Number(e.target.value) as 5 | 8 | 10)}>
+                  <option value="5">5</option>
+                  <option value="8">8</option>
+                  <option value="10">10</option>
+                </Select>
+              </div>
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
             <GradientButton onClick={onStart} disabled={loading} className="w-full">

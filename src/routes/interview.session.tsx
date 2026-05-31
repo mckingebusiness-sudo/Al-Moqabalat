@@ -9,6 +9,7 @@ import { Reveal, PageFade } from "@/components/Motion";
 import { useT } from "@/lib/i18n";
 import { useSession } from "@/lib/session-store";
 import { evaluateAnswer, finalReport, generateQuestion } from "@/lib/ai.functions";
+import { MAX_ANSWER_CHARS } from "@/lib/constants";
 
 export const Route = createFileRoute("/interview/session")({
   head: () => ({ meta: [{ title: "Interview Session — InterviewX AI" }] }),
@@ -64,7 +65,7 @@ function SessionPage() {
           applicationContext: s.setup!.applicationContext,
           candidateProfile: s.profile,
           question: currentQuestion.question,
-          answer: answer.trim().slice(0, 1200),
+          answer: answer.trim().slice(0, MAX_ANSWER_CHARS),
         },
       });
       s.addAnswer(answer.trim());
@@ -222,12 +223,12 @@ function SessionPage() {
                     <TextArea
                       rows={6}
                       value={answer}
-                      onChange={(e) => setAnswer(e.target.value.slice(0, 1200))}
+                      onChange={(e) => setAnswer(e.target.value.slice(0, MAX_ANSWER_CHARS))}
                       placeholder={t("answer_ph")}
                     />
                     <div className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
-                      <span className={answer.length > 1100 ? "text-amber-500" : ""}>
-                        {answer.length}/1200
+                      <span className={answer.length > MAX_ANSWER_CHARS - 100 ? "text-amber-500" : ""}>
+                        {answer.length}/{MAX_ANSWER_CHARS}
                       </span>
                     </div>
                     <AnimatePresence>

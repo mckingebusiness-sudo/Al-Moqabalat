@@ -15,72 +15,72 @@ export const dict: Dict = {
   language: { ar: "اللغة", en: "Language" },
   theme: { ar: "الوضع", en: "Theme" },
 
-  hero_title: { ar: "ادخل المقابلة وأنت جاهز", en: "Walk into your interview ready" },
+  hero_title: { ar: "لا تترك مسيرتك المهنية للصدفة.", en: "Stop leaving your career to chance." },
   hero_sub: {
-    ar: "تدرّب مع HR ذكي بسؤال 8 جداد لكل وظيفة، وارفع CV ليتقاله بالعيوب ويصلحه. عربي وإنجليزي، مجاني، بدون تسجيل.",
-    en: "Train with a smart HR coach (8 fresh questions per job), and upload your CV to get its real flaws fixed. Arabic & English, free, no signup.",
+    ar: "محاكي المقابلات الذكي. اختبر نفسك بأسئلة صممت خصيصاً لوظيفتك، واصنع سيرة ذاتية قوية.",
+    en: "The smartest interview simulator. Test yourself against job-specific questions and build a strong CV."
   },
   hero_desc: {
-    ar: "الذكاء الاصطناعي يقرأ سيرتك ويفهم وظيفتك، ويسألك أسئلة المقابلة الحقيقية اللي بتتقال في السوق.",
-    en: "AI reads your CV, understands your target job, and asks the real interview questions employers actually ask.",
+    ar: "تحليل دقيق، تقييم احترافي، واستراتيجيات مخصصة لزيادة فرص قبولك الوظيفي. مجاني بالكامل.",
+    en: "Accurate analysis, professional feedback, and tailored strategies to boost your chances. Completely free."
   },
-  hero_cta_primary: { ar: "ابدأ مقابلة الآن", en: "Start mock interview" },
-  hero_cta_secondary: { ar: "حسّن CV بالـ AI", en: "Improve my CV" },
+  hero_cta_primary: { ar: "ابدأ المقابلة الآن", en: "Start the interview" },
+  hero_cta_secondary: { ar: "حسّن سيرتك الذاتية", en: "Improve your CV" },
 
-  card_interview_title: { ar: "تدرّب على مقابلة", en: "Practice Interview" },
+  card_interview_title: { ar: "محاكاة المقابلات", en: "Interview Simulator" },
   card_interview_desc: {
-    ar: "8 أسئلة حقيقية مخصصة لوظيفتك. ارفع CV عشان الأسئلة تكون أدق.",
-    en: "8 real questions tailored to your job. Upload your CV for sharper questions.",
+    ar: "8 أسئلة فنية وسلوكية، مصممة لمساعدتك على إبراز أفضل إمكانياتك.",
+    en: "8 technical and behavioral questions designed to help you showcase your best potential."
   },
-  card_interview_btn: { ar: "ابدأ المقابلة", en: "Start interview" },
-  card_cv_title: { ar: "اعمل CV", en: "Create CV" },
+  card_interview_btn: { ar: "بدء المحاكاة", en: "Start Simulation" },
+  card_cv_title: { ar: "بناء السيرة الذاتية", en: "CV Builder" },
   card_cv_desc: {
-    ar: "أنشئ CV أوروبي منظم بكل الأقسام في دقائق.",
-    en: "Build a clean European-style CV in minutes.",
+    ar: "اصنع سيرتك الذاتية بالمعايير العالمية في ثوانٍ. واضحة واحترافية.",
+    en: "Create a world-class CV in seconds. Clear and professional."
   },
-  card_cv_btn: { ar: "ابدأ الإنشاء", en: "Start building" },
-  card_improve_title: { ar: "حسّن CV", en: "Improve CV" },
+  card_cv_btn: { ar: "ابنِ سيرتك", en: "Build CV" },
+  card_improve_title: { ar: "تحليل السيرة الذاتية", en: "CV Analysis" },
   card_improve_desc: {
-    ar: "ارفع CV بصيغة PDF أو نص، نطلعلك العيوب وننصلحها ونديك نسخة محسّنة.",
-    en: "Upload your CV (PDF or text). We list every flaw and give you a fully improved version.",
+    ar: "نحلل سيرتك الحالية، نوضح نقاط التحسين، ونساعدك على تطويرها.",
+    en: "We analyze your current CV, highlight areas for improvement, and help you upgrade it."
   },
-  card_improve_btn: { ar: "حسّن الـ CV", en: "Improve CV" },
+  card_improve_btn: { ar: "حلّل الـ CV", en: "Analyze CV" },
 
-  how_title: { ar: "كيف يشتغل؟", en: "How it works" },
-  how_step1: { ar: "اختر هدفك: مقابلة أو CV", en: "Pick your goal: interview or CV" },
-  how_step2: { ar: "املأ بياناتك ببساطة", en: "Fill simple details" },
-  how_step3: { ar: "احصل على نتائج فورية", en: "Get instant results" },
+  how_title: { ar: "كيف تعمل المنصة؟", en: "How it works" },
+  how_step1: { ar: "حدد الهدف: مقابلة أو سيرة ذاتية", en: "Choose your goal: Interview or CV" },
+  how_step2: { ar: "زود النظام ببياناتك", en: "Provide your details" },
+  how_step3: { ar: "احصل على التقييم الفوري", en: "Get instant feedback" },
 
-  why_title: { ar: "ليه يساعدك؟", en: "Why it helps" },
-  why_1: { ar: "مناسب لأي وظيفة، بسيطة أو متخصصة", en: "Works for any job, simple or specialized" },
-  why_2: { ar: "تقييم فوري وصادق ونصائح عملية", en: "Instant honest feedback and practical tips" },
-  why_3: { ar: "CV احترافي جاهز للتحميل", en: "Professional CV ready to download" },
+  why_title: { ar: "مميزات النظام", en: "System Features" },
+  why_1: { ar: "خوارزميات مخصصة لكل قطاع مهني", en: "Algorithms tuned for every sector" },
+  why_2: { ar: "ملاحظات دقيقة تصنع الفارق", en: "Accurate feedback that makes a difference" },
+  why_3: { ar: "مخرجات بدرجة احترافية عالمية", en: "World-class professional outputs" },
 
-  jobs_title: { ar: "وظائف مدعومة", en: "Supported jobs" },
+  jobs_title: { ar: "قوة لا تعرف الحدود", en: "Limitless Power" },
   jobs_desc: {
-    ar: "كاشير، فني صيانة، عامل مغسلة، محاسب، مدرس، ممرض، ساعي، Frontend، Backend، Data، أي وظيفة تكتبها.",
-    en: "Cashier, technician, cleaner, accountant, teacher, nurse, driver, frontend, backend, data — any job you type.",
+    ar: "من مهندس برمجيات في وادي السيليكون إلى مدير مبيعات في دبي. النظام جاهز لاختبارك في أي تخصص تسند إليه.",
+    en: "From a Silicon Valley engineer to a Dubai sales executive. The system is armed to test you in any discipline."
   },
 
-  bilingual_title: { ar: "عربي وإنجليزي", en: "Arabic & English" },
+  bilingual_title: { ar: "ثنائية اللغة باحترافية", en: "Professional Bilingual Support" },
   bilingual_desc: {
-    ar: "واجهة كاملة بالعربي مع دعم RTL، وكمان English.",
-    en: "Full Arabic UI with RTL, plus English.",
+    ar: "واجهة متكاملة باللغتين العربية والإنجليزية. مصطلحات دقيقة تناسب سوق العمل.",
+    en: "Seamless native Arabic and English interfaces. Accurate market terminology."
   },
 
-  privacy_title: { ar: "خصوصيتك أولاً", en: "Privacy first" },
+  privacy_title: { ar: "خصوصية تامة لبياناتك", en: "Total Data Privacy" },
   privacy_desc: {
-    ar: "ما نخزنش CV الخاص بيك بشكل دائم. مفتاح الـ AI محمي على السيرفر.",
-    en: "We don't store your CV permanently. AI key is protected server-side.",
+    ar: "بياناتك بأمان. لا يتم تخزينها أو مشاركتها، وتُحذف بعد الجلسة مباشرة.",
+    en: "Your data is safe. It is not stored or shared, and gets deleted right after the session."
   },
 
-  faq_title: { ar: "أسئلة شائعة", en: "FAQ" },
-  faq_q1: { ar: "هل لازم أعمل حساب؟", en: "Do I need an account?" },
-  faq_a1: { ar: "لأ، تقدر تستخدم الموقع مباشرة.", en: "No, use it directly." },
-  faq_q2: { ar: "هل الموقع مجاني؟", en: "Is it free?" },
-  faq_a2: { ar: "آه، مجاني في النسخة الحالية.", en: "Yes, free in this version." },
-  faq_q3: { ar: "هل بتخزنوا الـ CV بتاعي؟", en: "Do you store my CV?" },
-  faq_a3: { ar: "لأ، بنستخدمه مؤقتاً علشان نحسن النتائج.", en: "No, used temporarily to improve results." },
+  faq_title: { ar: "استفسارات حاسمة", en: "Critical Inquiries" },
+  faq_q1: { ar: "هل يتطلب الأمر إنشاء حساب؟", en: "Is an account required?" },
+  faq_a1: { ar: "كلا. نحن نكره التعقيد. استخدم الأداة فوراً.", en: "Negative. We hate friction. Use it instantly." },
+  faq_q2: { ar: "ما هي التكلفة الحقيقية؟", en: "What's the catch?" },
+  faq_a2: { ar: "مجاني بالكامل للوقت الحالي. استغل الفرصة قبل تسعير النظام.", en: "Fully free for now. Exploit the system before monetization." },
+  faq_q3: { ar: "أين تذهب بيانات سيرتي الذاتية؟", en: "Where does my CV data go?" },
+  faq_a3: { ar: "إلى النسيان. نحن نحللها ونمسحها فور انتهاء الجلسة لضمان سرية معلوماتك.", en: "Into oblivion. We analyze and purge instantly to secure your intel." },
 
   footer_made: { ar: "صُنع بواسطة", en: "Made by" },
   footer_links: { ar: "روابط", en: "Links" },
@@ -269,83 +269,83 @@ export const dict: Dict = {
   sev_low: { ar: "بسيط", en: "Low" },
 
   // Landing extras
-  stat_users: { ar: "متدرّب", en: "candidates trained" },
-  stat_questions: { ar: "سؤال مقابلة", en: "interview questions" },
-  stat_cvs: { ar: "CV تم تحسينه", en: "CVs improved" },
-  proof_title: { ar: "ليه آلاف اختاروا تمرّن AI؟", en: "Why thousands chose us" },
-  proof_1_t: { ar: "أسئلة بجد لوظيفتك", en: "Questions that match YOUR job" },
-  proof_1_d: { ar: "مش أسئلة عامة. الـ AI بيقرأ الـ CV ويسأل أسئلة المقابلة الحقيقية في مجالك.", en: "Not generic. AI reads your CV and asks the real questions employers ask in your field." },
-  proof_2_t: { ar: "تقييم صريح بعد كل إجابة", en: "Honest feedback after every answer" },
-  proof_2_d: { ar: "نقول لك القوة، الضعف، وإجابة محسنّة جاهزة تقولها.", en: "We tell you strengths, weaknesses, and an improved answer you can literally say." },
-  proof_3_t: { ar: "تحسين CV بالعيوب", en: "CV improvement that lists every flaw" },
-  proof_3_d: { ar: "ما بنقول لك \"شكله حلو\". بنطلع كل عيب ونصلحه ونرجعلك نسخة جديدة.", en: "We don't say \"looks great\". We surface every flaw, fix it, and return a new version." },
-  cta_strip_title: { ar: "جاهز تدخل المقابلة بثقة؟", en: "Ready to walk in confident?" },
-  cta_strip_sub: { ar: "كل اللي محتاج تعمله: 30 ثانية إعداد، وبعدين ابدأ.", en: "30 seconds of setup, then start." },
+  stat_users: { ar: "مرشح تم اختباره", en: "candidates tested" },
+  stat_questions: { ar: "سؤال تم إطلاقه", en: "questions fired" },
+  stat_cvs: { ar: "سيرة تم تفكيكها", en: "CVs dissected" },
+  proof_title: { ar: "لماذا تختار منصتنا؟", en: "Why Choose Our Platform?" },
+  proof_1_t: { ar: "أسئلة مخصصة لوظيفتك بدقة", en: "Questions tailored to your job" },
+  proof_1_d: { ar: "لا توجد أسئلة عامة. نظامنا يقرأ سيرتك ويطرح أسئلة في صميم تخصصك.", en: "No generic questions. Our system reads your CV and asks highly relevant questions." },
+  proof_2_t: { ar: "تقييم احترافي ومباشر", en: "Professional and Direct Feedback" },
+  proof_2_d: { ar: "نخبرك بنقاط قوتك ونقاط ضعفك، ونقدم لك الإجابة النموذجية للنجاح في المقابلة.", en: "We highlight your strengths and weaknesses, providing the ideal answer for success." },
+  proof_3_t: { ar: "هندسة السيرة الذاتية باحترافية", en: "Professional CV Engineering" },
+  proof_3_d: { ar: "سنوضح لك نقاط التحسين ونعيد كتابتها لتكون جاهزة للحصول على أفضل العروض.", en: "We highlight areas for improvement and rewrite it to secure the best offers." },
+  cta_strip_title: { ar: "هل أنت مستعد للمقابلة؟", en: "Are you ready for the interview?" },
+  cta_strip_sub: { ar: "30 ثانية من الإعداد تفصلك عن تجربة مقابلة احترافية تحسن من مهاراتك.", en: "30 seconds of setup separate you from a professional interview experience." },
 
   // Tools hub + 5 tools
-  nav_tools: { ar: "أدوات مهنية", en: "Career Tools" },
-  tools_badge: { ar: "6 أدوات مجانية بالـ AI", en: "6 free AI career tools" },
-  tools_title: { ar: "أدوات تكمّل رحلتك المهنية", en: "Tools to complete your career journey" },
-  tools_sub: { ar: "خطاب تقديم، تفاوض راتب، LinkedIn، إيميل شكر، تحليل فجوة المهارات، وخريطة طريق مهنية كاملة.", en: "Cover letter, salary negotiation, LinkedIn, thank-you email, skill gap, and a full career roadmap." },
-  tools_open: { ar: "ابدأ", en: "Open" },
+  nav_tools: { ar: "الأدوات المهنية", en: "Career Tools" },
+  tools_badge: { ar: "6 أدوات ذكاء اصطناعي متطورة", en: "6 Advanced AI Tools" },
+  tools_title: { ar: "أدوات لهندسة مسيرتك المهنية", en: "Tools to Engineer Your Career" },
+  tools_sub: { ar: "خطابات تقديم احترافية، نصوص تفاوض فعالة، وتحليل دقيق للمهارات.", en: "Professional cover letters, effective negotiation scripts, and precise skill gap analysis." },
+  tools_open: { ar: "افتح الأداة", en: "Open Tool" },
 
-  tool_cover_badge: { ar: "خطاب تقديم", en: "Cover Letter" },
-  tool_cover_title: { ar: "اكتب خطاب تقديم مخصص", en: "Write a tailored cover letter" },
-  tool_cover_sub: { ar: "خطاب احترافي بكلماتك خلال ثوانٍ، جاهز للإرسال.", en: "A professional letter in your words, ready to send." },
-  tool_cover_cta: { ar: "اكتب الخطاب", en: "Generate letter" },
+  tool_cover_badge: { ar: "الانطباع الأول", en: "First Impression" },
+  tool_cover_title: { ar: "خطابات تقديم احترافية", en: "Professional Cover Letters" },
+  tool_cover_sub: { ar: "صغ خطاباً بكلماتك يبرز مهاراتك بشكل احترافي.", en: "Craft a letter that highlights your skills professionally." },
+  tool_cover_cta: { ar: "اكتب الخطاب", en: "Draft Letter" },
 
-  tool_salary_badge: { ar: "تفاوض على الراتب", en: "Salary Negotiation" },
-  tool_salary_title: { ar: "اتفاوض على الراتب باحترافية", en: "Negotiate your salary like a pro" },
-  tool_salary_sub: { ar: "هنكتب لك السكربت كامل اللي تقوله للـ HR لما يقدم لك عرض.", en: "Get the full script you can literally say to HR." },
-  tool_salary_cta: { ar: "ابني السكربت", en: "Build script" },
+  tool_salary_badge: { ar: "تحديد القيمة", en: "Value Proposition" },
+  tool_salary_title: { ar: "تفاوض باحترافية", en: "Professional Negotiation" },
+  tool_salary_sub: { ar: "النص المناسب للوصول لأفضل عرض وظيفي.", en: "The right script to land the best job offer." },
+  tool_salary_cta: { ar: "ابدأ التفاوض", en: "Start Negotiation" },
 
-  tool_linkedin_badge: { ar: "بروفايل LinkedIn", en: "LinkedIn" },
-  tool_linkedin_title: { ar: "حسّن بروفايل LinkedIn", en: "Optimize your LinkedIn profile" },
-  tool_linkedin_sub: { ar: "5 خيارات Headline + قسم About احترافي بالكامل.", en: "5 headline options + a complete pro About section." },
-  tool_linkedin_cta: { ar: "حسّن البروفايل", en: "Rewrite profile" },
+  tool_linkedin_badge: { ar: "هويتك الرقمية", en: "Digital Identity" },
+  tool_linkedin_title: { ar: "طور حسابك على LinkedIn", en: "Upgrade Your LinkedIn" },
+  tool_linkedin_sub: { ar: "5 عناوين مميزة ونبذة احترافية تلفت انتباه مسؤولي التوظيف.", en: "5 standout headlines and a professional bio to attract recruiters." },
+  tool_linkedin_cta: { ar: "حسّن حسابك", en: "Enhance Profile" },
 
-  tool_thanks_badge: { ar: "إيميل شكر", en: "Thank-you Email" },
-  tool_thanks_title: { ar: "إيميل شكر بعد المقابلة", en: "Thank-you email after interview" },
-  tool_thanks_sub: { ar: "إيميل قصير ومحترم يخليك تفضل في بال الـ HR.", en: "A short polite email that keeps you top of mind." },
-  tool_thanks_cta: { ar: "اكتب الإيميل", en: "Write email" },
+  tool_thanks_badge: { ar: "الخطوة الأخيرة", en: "Final Step" },
+  tool_thanks_title: { ar: "رسالة ما بعد المقابلة", en: "Post-Interview Message" },
+  tool_thanks_sub: { ar: "رسالة قصيرة وذكية تعزز فرصتك في القبول.", en: "A smart, brief message to boost your acceptance chances." },
+  tool_thanks_cta: { ar: "صُغ الرسالة", en: "Draft Message" },
 
-  tool_gap_badge: { ar: "تحليل الفجوة", en: "Skill Gap" },
-  tool_gap_title: { ar: "حلّل الفجوة بين مهاراتك والوظيفة", en: "Analyze your skill gap" },
-  tool_gap_sub: { ar: "الصق وصف الوظيفة ومهاراتك، وهنطلعلك الفجوة وخطة 4 أسابيع.", en: "Paste the JD + your skills and get the gap + a 4-week plan." },
-  tool_gap_cta: { ar: "حلّل الفجوة", en: "Analyze gap" },
+  tool_gap_badge: { ar: "تحديد النواقص", en: "Gap Detection" },
+  tool_gap_title: { ar: "تحليل فجوة المهارات", en: "Skill Gap Analysis" },
+  tool_gap_sub: { ar: "قارن مهاراتك بمتطلبات الوظيفة واحصل على خطة تطوير لمدة 4 أسابيع.", en: "Compare your skills to the JD and get a 4-week development plan." },
+  tool_gap_cta: { ar: "اكتشف الفجوات", en: "Discover Gaps" },
 
-  tool_road_badge: { ar: "خريطة طريق", en: "Career Roadmap" },
-  tool_road_title: { ar: "خريطة طريق مهنية مخصصة لك", en: "Your personalized career roadmap" },
-  tool_road_sub: { ar: "من وظيفتك الحالية للحلم — خطة بمراحل ومشاريع وراتب متوقع.", en: "From where you are to your dream role — phased plan with projects, salary, and risks." },
-  tool_road_cta: { ar: "ابني الخريطة", en: "Build my roadmap" },
+  tool_road_badge: { ar: "خريطة الطريق", en: "Roadmap" },
+  tool_road_title: { ar: "ارسم مسارك المهني بوضوح", en: "Map Your Career Path Clearly" },
+  tool_road_sub: { ar: "خطة منظمة للوصول لهدفك: مشاريع، إنجازات، وخطوات مدروسة.", en: "A structured plan to reach your goal: projects, achievements, and calculated steps." },
+  tool_road_cta: { ar: "ارسم الخريطة", en: "Draw Map" },
 
-  tools_more_title: { ar: "أدوات احترافية كمان لرحلتك", en: "More pro tools for your journey" },
-  tools_more_sub: { ar: "خطاب تقديم، تفاوض راتب، LinkedIn، فجوة المهارات، وخريطة طريق كاملة.", en: "Cover letters, salary scripts, LinkedIn, skill gap, and a full roadmap." },
+  tools_more_title: { ar: "هل أنت مستعد للبدء؟", en: "Are you ready to start?" },
+  tools_more_sub: { ar: "استخدم أدواتنا المتكاملة للتميز في سوق العمل.", en: "Use our integrated tools to stand out in the job market." },
 
-  why_diff_title: { ar: "ليه الموقع ده مختلف؟", en: "Why this platform is different" },
+  why_diff_title: { ar: "لماذا نحن مختلفون؟", en: "Why Are We Different?" },
   about_lead: {
-    ar: "InterviewX مش مجرد موقع أسئلة جاهزة. كل سؤال، كل تقييم، وكل سطر في CV بيتولّد من ذكاء اصطناعي قوي بيقرأ سياقك الحقيقي: وظيفتك، شركتك، خبرتك، ولغتك.",
-    en: "InterviewX isn't a quiz of canned questions. Every question, every score, every CV line is generated by a strong AI that reads your real context: your role, target company, experience, and language.",
+    ar: "نحن نقدم تجربة تفاعلية مخصصة تعتمد على الذكاء الاصطناعي لتحليل وظيفتك وسيرتك الذاتية وتقديم أسئلة تحاكي الواقع بدقة.",
+    en: "We offer a personalized interactive experience powered by AI to analyze your job and CV, providing highly realistic questions."
   },
-  about_p1_t: { ar: "بُني لسوق العمل العربي والعالمي", en: "Built for MENA and global markets" },
+  about_p1_t: { ar: "مصمم لاحتياجات سوق العمل", en: "Tailored to Job Market Needs" },
   about_p1_d: {
-    ar: "بنفهم الفرق بين مقابلة كاشير في القاهرة، Backend Engineer في دبي، أو Product Manager في برلين. الأسئلة بتختلف، النصايح بتختلف، والتفاوض بيختلف.",
-    en: "We get the difference between interviewing for cashier in Cairo, backend engineer in Dubai, or PM in Berlin. Questions differ, advice differs, negotiation differs.",
+    ar: "نحن نفهم الفرق بين هندسة البرمجيات والمبيعات. التدريبات تختلف، ونحن نكيف التجربة.",
+    en: "We know the difference between software engineering and sales. Practices vary, and we adapt the experience."
   },
-  about_p2_t: { ar: "تقييم صادق، مش تشجيع فاضي", en: "Honest evaluation, not empty praise" },
+  about_p2_t: { ar: "تقييم موضوعي وصريح", en: "Objective and Direct Assessment" },
   about_p2_d: {
-    ar: "ما بنقولش \"إجابة رائعة\" لو الإجابة ضعيفة. بنقولك بالظبط فين الخلل، وإزاي تقولها أحسن المرة الجاية.",
-    en: "We don't say \"great answer\" when it's weak. We tell you exactly what failed and the better version to say next time.",
+    ar: "سنوفر لك تقييماً صريحاً يوضح نقاط ضعفك بدقة، مع توجيهك للإجابة النموذجية لتطوير مستواك.",
+    en: "We provide an honest assessment highlighting your weaknesses accurately, guiding you to the ideal answer to improve your level."
   },
-  about_p3_t: { ar: "كل أداة لها ذكاء مخصص", en: "Each tool has its own specialist AI" },
+  about_p3_t: { ar: "أدوات متخصصة لكل خطوة", en: "Specialized Tools for Every Step" },
   about_p3_d: {
-    ar: "خطاب التقديم بيكتبه مدرب توظيف. تفاوض الراتب بيقوده مفاوض راتب. LinkedIn بيحسّنه استراتيجي بروفايل. كل أداة System Prompt مختلف.",
-    en: "Cover letters by a hiring writer. Salary scripts by a negotiator. LinkedIn by a profile strategist. Each tool has a different system prompt.",
+    ar: "كل أداة مصممة بعناية لمساعدتك في خطوة معينة، من كتابة السيرة الذاتية إلى التحضير للمقابلات.",
+    en: "Each tool is carefully designed to assist you in a specific step, from writing a CV to preparing for interviews."
   },
-  about_p4_t: { ar: "خصوصية كاملة وبدون حسابات", en: "Full privacy, no accounts" },
+  about_p4_t: { ar: "سرية تامة لمعلوماتك", en: "Total Data Confidentiality" },
   about_p4_d: {
-    ar: "ما بنطلبش إيميل ولا كلمة سر ولا بطاقة. CV بيتم تحليله ويتنسي. كل حاجة بتحصل على المتصفح بتاعك.",
-    en: "No email, no password, no card. Your CV is analyzed and forgotten. Everything happens in your browser session.",
+    ar: "لا تسجيل، لا بطاقات ائتمان. بياناتك تُمسح بمجرد إغلاق المتصفح لضمان خصوصيتك.",
+    en: "No signups, no credit cards. Your data is purged the moment you close the browser to ensure privacy."
   },
 
   built_by_title: { ar: "صُنع باحترام بواسطة Mahmoud", en: "Made with respect by Mahmoud" },
@@ -364,6 +364,7 @@ export const useLang = create<{ lang: Lang; setLang: (l: Lang) => void }>()(
         if (typeof document !== "undefined") {
           document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
           document.documentElement.lang = lang;
+          document.cookie = `ix-lang=${lang}; path=/; max-age=31536000`;
         }
       },
     }),

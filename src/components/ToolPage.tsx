@@ -73,9 +73,7 @@ export function ToolPage({
       setOutput(res.text);
       setTimeout(() => outRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
     } catch (e) {
-      const m = (e as Error).message || "";
       handleServerError(e);
-      setError(m.includes("LIMIT") ? t("err_limit") : t("err_temp"));
     } finally {
       setBusy(false);
     }

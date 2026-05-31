@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getWebRequest } from "@tanstack/react-start";
 import { z } from "zod";
-import { callMistral } from "./mistral.server";
-
+import { callMistral, getIp } from "./mistral.server";
+import { checkIpCv } from "./rate-limit.server";
 export type ToolKind =
   | "cover_letter"
   | "salary_coach"
@@ -172,6 +173,11 @@ Return PLAIN TEXT with these sections (no markdown):
 export const runCareerTool = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => schema.parse(d))
   .handler(async ({ data }) => {
+    const req = getWebRequest();
+    if (req) {
+      const ip = getIp(req.headers);
+      await checkIpCv(ip);
+    }
     const prompt = buildPrompt(data.kind, data.language, data.inputs);
     const maxTokens =
       data.kind === "career_roadmap" || data.kind === "skill_gap" || data.kind === "linkedin_bio"

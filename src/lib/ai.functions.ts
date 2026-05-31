@@ -4,9 +4,11 @@ import { z } from "zod";
 import { callJson, checkIpCv, checkIpInterview, checkIpMessage, getIp } from "./mistral.server";
 import type { CandidateProfile, Evaluation, FinalReport, InterviewQuestion } from "./types";
 
-const MAX_CV = Number(process.env.MAX_CV_CHARS || 12000);
-const MAX_ANS = Number(process.env.MAX_ANSWER_CHARS || 1200);
-const MAX_JD = Number(process.env.MAX_JOB_DESCRIPTION_CHARS || 3000);
+import { MAX_ANSWER_CHARS, MAX_CV_CHARS, MAX_JOB_DESCRIPTION_CHARS } from "./constants";
+
+const MAX_CV = Number(process.env.MAX_CV_CHARS || MAX_CV_CHARS);
+const MAX_ANS = Number(process.env.MAX_ANSWER_CHARS || MAX_ANSWER_CHARS);
+const MAX_JD = Number(process.env.MAX_JOB_DESCRIPTION_CHARS || MAX_JOB_DESCRIPTION_CHARS);
 
 const appCtxSchema = z.object({
   candidateName: z.string().max(100).optional(),

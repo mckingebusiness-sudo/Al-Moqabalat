@@ -1,4 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import {
   Outlet,
   Link,
@@ -78,12 +80,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "InterviewX AI — تمرّن AI" },
       { property: "og:description", content: "AI mock interviews + European-style CV builder. Bilingual Arabic/English. By Mahmoud Said." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "InterviewX AI — تمرّن AI" },
       { name: "twitter:description", content: "AI mock interviews + European-style CV builder. Bilingual Arabic/English. By Mahmoud Said." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a97fd675-5911-48d1-a10f-a5db4ad219ba/id-preview-cfd06f24--085fe98f-ea71-4450-803d-4d3823c6a777.lovable.app-1778414140815.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a97fd675-5911-48d1-a10f-a5db4ad219ba/id-preview-cfd06f24--085fe98f-ea71-4450-803d-4d3823c6a777.lovable.app-1778414140815.png" },
+      { property: "og:image", content: "/og-image.png" },
+      { name: "twitter:image", content: "/og-image.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -92,17 +93,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" },
     ],
   }),
+  beforeLoad: async () => {
+    const lang = await getSsrLang();
+    return { lang };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
+const getSsrLang = createServerFn({ method: "GET" }).handler(async () => {
+  const req = getRequest();
+  const cookie = req.headers.get("cookie") || "";
+  const match = cookie.match(/ix-lang=(ar|en)/);
+  return match ? (match[1] as "ar" | "en") : "ar";
+});
+
 const NO_FLASH = `(function(){try{var t=localStorage.getItem('ix-theme');var d=true;if(t){try{var p=JSON.parse(t);if(p&&p.state&&p.state.theme){d=p.state.theme==='dark'}}catch(e){}}if(d){document.documentElement.classList.add('dark')}document.documentElement.style.backgroundColor=d?'oklch(0.13 0.01 20)':'oklch(0.99 0.003 20)';}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.backgroundColor='oklch(0.13 0.01 20)';}})();`;
 
 function RootShell({ children }: { children: React.ReactNode }) {
+  const { lang } = Route.useRouteContext();
   return (
-    <html lang="en" className="dark" style={{ backgroundColor: "oklch(0.13 0.01 20)" }}>
+    <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"} className="dark" style={{ backgroundColor: "oklch(0.13 0.01 20)" }}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH }} />
         <HeadContent />
