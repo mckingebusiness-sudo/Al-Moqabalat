@@ -12,6 +12,11 @@ import {
   Sparkles,
   Upload,
   Wand2,
+  AlertOctagon,
+  Info,
+  Lightbulb,
+  Check,
+  ListFilter
 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import {
@@ -22,6 +27,7 @@ import {
   TextInput,
   TextArea,
   Select,
+  ToolHelp,
 } from "@/components/UI";
 import { Reveal, PageFade } from "@/components/Motion";
 import { useT, useLang } from "@/lib/i18n";
@@ -54,6 +60,8 @@ function CvImprovePage() {
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [result, setResult] = useState<CvAnalysis | null>(null);
+  const [filterSeverity, setFilterSeverity] = useState<"all" | "high" | "medium" | "low">("all");
+  const [resolvedFlaws, setResolvedFlaws] = useState<number[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const analyze = useServerFn(analyzeCv);
 
@@ -103,6 +111,8 @@ function CvImprovePage() {
     setError(null);
     setBusy(true);
     setResult(null);
+    setResolvedFlaws([]);
+    setFilterSeverity("all");
     try {
       const res = await analyze({
         data: {
@@ -151,6 +161,9 @@ function CvImprovePage() {
       </PageFade>
 
       <section className="px-4 pb-10">
+        <ToolHelp>
+          {lang === "ar" ? "ارفع سيرتك الذاتية أو الصق النص، وسيقوم الذكاء الاصطناعي بتحليلها واكتشاف نقاط الضعف وصياغة الكلمات بشكل أفضل، وتجهيز نسخة محسنة بالكامل." : "Upload your CV or paste the text. AI will analyze it, detect weaknesses, rewrite weak phrases, and generate a fully improved version."}
+        </ToolHelp>
         <div className="mx-auto max-w-4xl">
           <GlassCard className="space-y-5">
             <div>
@@ -248,26 +261,140 @@ function CvImprovePage() {
 
               {(result.flaws ?? []).length > 0 && (
                 <Reveal>
-                  <GlassCard>
-                    <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
-                      <AlertTriangle className="h-5 w-5 text-amber-500" />
-                      {t("cvi_flaws")}
-                    </h2>
-                    <ul className="space-y-3">
-                      {(result.flaws ?? []).map((f, i) => (
-                        <li key={i} className="rounded-xl border border-border bg-background/30 p-4">
-                          <div className="mb-1 flex items-center justify-between gap-2">
-                            <p className="font-semibold">{f.title}</p>
-                            <SeverityChip s={f.severity} />
+                  <GlassCard className="p-0 overflow-hidden">
+                    <div className="bg-background/40 p-5 sm:p-6 border-b border-border">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                            <AlertTriangle className="h-6 w-6 text-amber-500" />
                           </div>
-                          <p className="text-sm text-foreground/80">{f.explanation}</p>
-                          <p className="mt-2 text-sm">
-                            <span className="font-semibold text-primary">{t("cvi_fix")}: </span>
-                            {f.fix}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
+                          <div>
+                            <h2 className="text-xl font-bold">{t("cvi_flaws")}</h2>
+                            <p className="text-sm text-muted-foreground mt-0.5">
+                              {lang === "ar" ? "حددنا هذه النقاط كأخطاء تضعف سيرتك الذاتية." : "We identified these points as weaknesses."}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex flex-wrap items-center gap-2">
+                          <button
+                            onClick={() => setFilterSeverity("all")}
+                            className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-all ${filterSeverity === "all" ? "bg-primary/20 text-primary border-primary/30" : "bg-background/30 border-border text-foreground/70 hover:bg-background/50"}`}
+                          >
+                            {lang === "ar" ? "الكل" : "All"} <span className="opacity-70 ml-1">({result.flaws.length})</span>
+                          </button>
+                          <button
+                            onClick={() => setFilterSeverity("high")}
+                            className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-all ${filterSeverity === "high" ? "bg-destructive/20 text-destructive border-destructive/30" : "bg-background/30 border-border text-foreground/70 hover:bg-background/50"}`}
+                          >
+                            {lang === "ar" ? "حرج" : "High"} <span className="opacity-70 ml-1">({result.flaws.filter(f => f.severity === "high").length})</span>
+                          </button>
+                          <button
+                            onClick={() => setFilterSeverity("medium")}
+                            className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-all ${filterSeverity === "medium" ? "bg-amber-500/20 text-amber-500 border-amber-500/30" : "bg-background/30 border-border text-foreground/70 hover:bg-background/50"}`}
+                          >
+                            {lang === "ar" ? "متوسط" : "Medium"} <span className="opacity-70 ml-1">({result.flaws.filter(f => f.severity === "medium").length})</span>
+                          </button>
+                          <button
+                            onClick={() => setFilterSeverity("low")}
+                            className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-all ${filterSeverity === "low" ? "bg-emerald-500/20 text-emerald-500 border-emerald-500/30" : "bg-background/30 border-border text-foreground/70 hover:bg-background/50"}`}
+                          >
+                            {lang === "ar" ? "بسيط" : "Low"} <span className="opacity-70 ml-1">({result.flaws.filter(f => f.severity === "low").length})</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-5 sm:p-6 bg-background/20">
+                      <div className="grid gap-4">
+                        {(result.flaws ?? [])
+                          .map((f, i) => ({ ...f, originalIndex: i }))
+                          .filter(f => filterSeverity === "all" || f.severity === filterSeverity)
+                          .map((f) => {
+                            const isResolved = resolvedFlaws.includes(f.originalIndex);
+                            const toggleResolve = () => {
+                              setResolvedFlaws(prev => prev.includes(f.originalIndex) ? prev.filter(id => id !== f.originalIndex) : [...prev, f.originalIndex]);
+                            };
+                            
+                            const severityStyles = {
+                              high: { border: "border-destructive/30", bg: "bg-destructive/5", iconText: "text-destructive", iconBg: "bg-destructive/10" },
+                              medium: { border: "border-amber-500/30", bg: "bg-amber-500/5", iconText: "text-amber-500", iconBg: "bg-amber-500/10" },
+                              low: { border: "border-emerald-500/30", bg: "bg-emerald-500/5", iconText: "text-emerald-500", iconBg: "bg-emerald-500/10" },
+                            };
+                            const s = severityStyles[f.severity] || severityStyles.medium;
+                            
+                            return (
+                              <motion.div 
+                                layout
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: isResolved ? 0.6 : 1, y: 0 }}
+                                key={f.originalIndex} 
+                                className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${isResolved ? 'border-border bg-background/20 grayscale-[0.3]' : `${s.border} ${s.bg} shadow-sm`}`}
+                              >
+                                {isResolved && (
+                                  <div className="absolute inset-0 z-0 bg-background/40 pointer-events-none" />
+                                )}
+                                
+                                <div className="relative z-10 flex flex-col sm:flex-row gap-5 p-5">
+                                  {/* Icon & Toggle */}
+                                  <div className="flex shrink-0 flex-row sm:flex-col items-center justify-between sm:justify-start gap-4">
+                                    <div className={`p-3 rounded-full border ${isResolved ? 'border-border bg-muted text-muted-foreground' : `${s.iconBg} ${s.border} ${s.iconText}`}`}>
+                                      {f.severity === 'high' ? <AlertOctagon className="h-5 w-5" /> : f.severity === 'medium' ? <AlertTriangle className="h-5 w-5" /> : <Info className="h-5 w-5" />}
+                                    </div>
+                                    
+                                    <button
+                                      onClick={toggleResolve}
+                                      className={`flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-bold transition-all sm:h-10 sm:w-10 sm:justify-center sm:px-0 sm:text-transparent ${
+                                        isResolved 
+                                          ? "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] border-transparent hover:bg-emerald-600" 
+                                          : "bg-background border border-border text-foreground hover:border-primary/50 hover:bg-accent"
+                                      }`}
+                                      title={isResolved ? "Mark as unresolved" : "Mark as resolved"}
+                                    >
+                                      <Check className={`h-4 w-4 ${isResolved ? 'sm:text-white' : 'sm:text-foreground'}`} strokeWidth={3} />
+                                      <span className="sm:hidden">{isResolved ? (lang === "ar" ? "تم الحل" : "Resolved") : (lang === "ar" ? "حل؟" : "Fix?")}</span>
+                                    </button>
+                                  </div>
+                                  
+                                  {/* Content */}
+                                  <div className="flex-1 space-y-4">
+                                    <div>
+                                      <div className="flex items-center gap-2 mb-1">
+                                        <h3 className={`text-lg font-bold leading-tight ${isResolved ? 'line-through decoration-muted-foreground/40' : ''}`}>
+                                          {f.title}
+                                        </h3>
+                                        <SeverityChip s={f.severity} />
+                                      </div>
+                                      <p className="text-sm text-foreground/80 leading-relaxed">{f.explanation}</p>
+                                    </div>
+                                    
+                                    <div className={`rounded-xl p-4 border transition-colors ${isResolved ? 'bg-background/30 border-border/50' : 'bg-primary/5 border-primary/20 shadow-[inset_0_1px_4px_rgba(0,0,0,0.03)]'}`}>
+                                      <div className="flex items-start gap-3">
+                                        <Lightbulb className={`h-5 w-5 shrink-0 mt-0.5 ${isResolved ? 'text-muted-foreground' : 'text-primary'}`} />
+                                        <div>
+                                          <p className="text-xs font-bold uppercase tracking-wider mb-1 text-primary/80">
+                                            {t("cvi_fix")}
+                                          </p>
+                                          <p className="text-sm font-medium leading-relaxed">
+                                            {f.fix}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            );
+                          })}
+                          
+                        {(result.flaws ?? []).filter(f => filterSeverity === "all" || f.severity === filterSeverity).length === 0 && (
+                          <div className="text-center py-10 text-muted-foreground border border-dashed border-border rounded-xl">
+                            <CheckCircle2 className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                            <p>{lang === "ar" ? "لا توجد عيوب بهذا التصنيف." : "No flaws found in this category."}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </GlassCard>
                 </Reveal>
               )}

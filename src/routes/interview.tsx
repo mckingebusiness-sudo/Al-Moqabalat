@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { CheckCircle2, Loader2, Play, Upload } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
-import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea, Select } from "@/components/UI";
+import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea, Select, ToolHelp } from "@/components/UI";
 import { useT, useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session-store";
 import { startInterview } from "@/lib/ai.functions";
@@ -118,6 +118,10 @@ function InterviewSetupPage() {
             <h1 className="text-3xl font-bold sm:text-4xl">{t("setup_title")}</h1>
             <p className="mt-2 text-sm text-muted-foreground">{t("setup_desc")}</p>
           </header>
+
+          <ToolHelp>
+            {lang === "ar" ? "أداة محاكاة المقابلة الشخصية. أدخل بياناتك أو ارفع سيرتك الذاتية، وحدد نوع المقابلة، وسيقوم الذكاء الاصطناعي بإجراء مقابلة صوتية/نصية معك لتدريبك وتجهيزك للمقابلة الحقيقية." : "AI Mock Interview tool. Enter your details or upload your CV, select the interview type, and the AI will conduct a voice/text interview to train and prepare you for the real one."}
+          </ToolHelp>
 
           <GlassCard className="space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">

@@ -9,13 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WarRoomRouteImport } from './routes/war-room'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SkillGapRouteImport } from './routes/skill-gap'
 import { Route as SalaryCoachRouteImport } from './routes/salary-coach'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
+import { Route as ProofTailorRouteImport } from './routes/proof-tailor'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as NetworkingSniperRouteImport } from './routes/networking-sniper'
 import { Route as LinkedinRouteImport } from './routes/linkedin'
 import { Route as InterviewRouteImport } from './routes/interview'
 import { Route as CvImproveRouteImport } from './routes/cv-improve'
@@ -26,6 +29,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as InterviewSessionRouteImport } from './routes/interview.session'
 import { Route as InterviewReportRouteImport } from './routes/interview.report'
 
+const WarRoomRoute = WarRoomRouteImport.update({
+  id: '/war-room',
+  path: '/war-room',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsRoute = ToolsRouteImport.update({
   id: '/tools',
   path: '/tools',
@@ -56,9 +64,19 @@ const RoadmapRoute = RoadmapRouteImport.update({
   path: '/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProofTailorRoute = ProofTailorRouteImport.update({
+  id: '/proof-tailor',
+  path: '/proof-tailor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NetworkingSniperRoute = NetworkingSniperRouteImport.update({
+  id: '/networking-sniper',
+  path: '/networking-sniper',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LinkedinRoute = LinkedinRouteImport.update({
@@ -115,13 +133,16 @@ export interface FileRoutesByFullPath {
   '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
   '/linkedin': typeof LinkedinRoute
+  '/networking-sniper': typeof NetworkingSniperRoute
   '/privacy': typeof PrivacyRoute
+  '/proof-tailor': typeof ProofTailorRoute
   '/roadmap': typeof RoadmapRoute
   '/salary-coach': typeof SalaryCoachRoute
   '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/tools': typeof ToolsRoute
+  '/war-room': typeof WarRoomRoute
   '/interview/report': typeof InterviewReportRoute
   '/interview/session': typeof InterviewSessionRoute
 }
@@ -133,13 +154,16 @@ export interface FileRoutesByTo {
   '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
   '/linkedin': typeof LinkedinRoute
+  '/networking-sniper': typeof NetworkingSniperRoute
   '/privacy': typeof PrivacyRoute
+  '/proof-tailor': typeof ProofTailorRoute
   '/roadmap': typeof RoadmapRoute
   '/salary-coach': typeof SalaryCoachRoute
   '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/tools': typeof ToolsRoute
+  '/war-room': typeof WarRoomRoute
   '/interview/report': typeof InterviewReportRoute
   '/interview/session': typeof InterviewSessionRoute
 }
@@ -152,13 +176,16 @@ export interface FileRoutesById {
   '/cv-improve': typeof CvImproveRoute
   '/interview': typeof InterviewRouteWithChildren
   '/linkedin': typeof LinkedinRoute
+  '/networking-sniper': typeof NetworkingSniperRoute
   '/privacy': typeof PrivacyRoute
+  '/proof-tailor': typeof ProofTailorRoute
   '/roadmap': typeof RoadmapRoute
   '/salary-coach': typeof SalaryCoachRoute
   '/skill-gap': typeof SkillGapRoute
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/tools': typeof ToolsRoute
+  '/war-room': typeof WarRoomRoute
   '/interview/report': typeof InterviewReportRoute
   '/interview/session': typeof InterviewSessionRoute
 }
@@ -172,13 +199,16 @@ export interface FileRouteTypes {
     | '/cv-improve'
     | '/interview'
     | '/linkedin'
+    | '/networking-sniper'
     | '/privacy'
+    | '/proof-tailor'
     | '/roadmap'
     | '/salary-coach'
     | '/skill-gap'
     | '/terms'
     | '/thank-you'
     | '/tools'
+    | '/war-room'
     | '/interview/report'
     | '/interview/session'
   fileRoutesByTo: FileRoutesByTo
@@ -190,13 +220,16 @@ export interface FileRouteTypes {
     | '/cv-improve'
     | '/interview'
     | '/linkedin'
+    | '/networking-sniper'
     | '/privacy'
+    | '/proof-tailor'
     | '/roadmap'
     | '/salary-coach'
     | '/skill-gap'
     | '/terms'
     | '/thank-you'
     | '/tools'
+    | '/war-room'
     | '/interview/report'
     | '/interview/session'
   id:
@@ -208,13 +241,16 @@ export interface FileRouteTypes {
     | '/cv-improve'
     | '/interview'
     | '/linkedin'
+    | '/networking-sniper'
     | '/privacy'
+    | '/proof-tailor'
     | '/roadmap'
     | '/salary-coach'
     | '/skill-gap'
     | '/terms'
     | '/thank-you'
     | '/tools'
+    | '/war-room'
     | '/interview/report'
     | '/interview/session'
   fileRoutesById: FileRoutesById
@@ -227,17 +263,27 @@ export interface RootRouteChildren {
   CvImproveRoute: typeof CvImproveRoute
   InterviewRoute: typeof InterviewRouteWithChildren
   LinkedinRoute: typeof LinkedinRoute
+  NetworkingSniperRoute: typeof NetworkingSniperRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProofTailorRoute: typeof ProofTailorRoute
   RoadmapRoute: typeof RoadmapRoute
   SalaryCoachRoute: typeof SalaryCoachRoute
   SkillGapRoute: typeof SkillGapRoute
   TermsRoute: typeof TermsRoute
   ThankYouRoute: typeof ThankYouRoute
   ToolsRoute: typeof ToolsRoute
+  WarRoomRoute: typeof WarRoomRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/war-room': {
+      id: '/war-room'
+      path: '/war-room'
+      fullPath: '/war-room'
+      preLoaderRoute: typeof WarRoomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools': {
       id: '/tools'
       path: '/tools'
@@ -280,11 +326,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/proof-tailor': {
+      id: '/proof-tailor'
+      path: '/proof-tailor'
+      fullPath: '/proof-tailor'
+      preLoaderRoute: typeof ProofTailorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/networking-sniper': {
+      id: '/networking-sniper'
+      path: '/networking-sniper'
+      fullPath: '/networking-sniper'
+      preLoaderRoute: typeof NetworkingSniperRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/linkedin': {
@@ -375,13 +435,16 @@ const rootRouteChildren: RootRouteChildren = {
   CvImproveRoute: CvImproveRoute,
   InterviewRoute: InterviewRouteWithChildren,
   LinkedinRoute: LinkedinRoute,
+  NetworkingSniperRoute: NetworkingSniperRoute,
   PrivacyRoute: PrivacyRoute,
+  ProofTailorRoute: ProofTailorRoute,
   RoadmapRoute: RoadmapRoute,
   SalaryCoachRoute: SalaryCoachRoute,
   SkillGapRoute: SkillGapRoute,
   TermsRoute: TermsRoute,
   ThankYouRoute: ThankYouRoute,
   ToolsRoute: ToolsRoute,
+  WarRoomRoute: WarRoomRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

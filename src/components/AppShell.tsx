@@ -37,9 +37,10 @@ function Navbar() {
     { to: "/", label: t("nav_home") },
     { to: "/interview", label: t("nav_interview") },
     { to: "/cv-builder", label: t("nav_cv") },
-    { to: "/cv-improve", label: t("nav_improve") },
+    { to: "/war-room", label: lang === "ar" ? "غرفة العمليات" : "War Room" },
+    { to: "/proof-tailor", label: lang === "ar" ? "تفصيل CV" : "Tailor CV" },
+    { to: "/networking-sniper", label: lang === "ar" ? "قناص العلاقات" : "Networking" },
     { to: "/tools", label: t("nav_tools") },
-    { to: "/about", label: t("nav_about") },
   ] as const;
 
   return (
@@ -133,10 +134,10 @@ function Footer() {
             <div className="mb-2 text-sm font-semibold">{t("footer_links")}</div>
             <ul className="space-y-1 text-sm text-muted-foreground">
               <li><Link to="/" className="hover:text-foreground">{t("nav_home")}</Link></li>
-              <li><Link to="/interview" className="hover:text-foreground">{t("nav_interview")}</Link></li>
-              <li><Link to="/cv-builder" className="hover:text-foreground">{t("nav_cv")}</Link></li>
-              <li><Link to="/cv-improve" className="hover:text-foreground">{t("nav_improve")}</Link></li>
-              <li><Link to="/about" className="hover:text-foreground">{t("nav_about")}</Link></li>
+              <li><Link to="/war-room" className="hover:text-foreground">{lang === "ar" ? "غرفة التقديم" : "War Room"}</Link></li>
+              <li><Link to="/proof-tailor" className="hover:text-foreground">{lang === "ar" ? "CV بالدليل" : "Proof Tailor"}</Link></li>
+              <li><Link to="/networking-sniper" className="hover:text-foreground">{lang === "ar" ? "قناص العلاقات" : "Networking"}</Link></li>
+              <li><Link to="/tools" className="hover:text-foreground">{t("nav_tools")}</Link></li>
             </ul>
           </div>
           <div>

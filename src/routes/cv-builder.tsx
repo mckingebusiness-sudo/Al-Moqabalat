@@ -4,7 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ArrowRight, Download, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
-import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea, Select } from "@/components/UI";
+import { GlassCard, GradientButton, GhostButton, FieldLabel, TextInput, TextArea, Select, ToolHelp } from "@/components/UI";
 import { useT, useLang } from "@/lib/i18n";
 import { improveCv } from "@/lib/ai.functions";
 import { downloadElementAsPdf } from "@/lib/pdf-export";
@@ -96,11 +96,15 @@ function CvBuilderPage() {
   return (
     <AppShell>
       <section className="px-4 py-8">
-        <div className="mx-auto max-w-5xl space-y-5">
+        <div className="mx-auto max-w-7xl space-y-5 w-full">
           <header className="text-center">
             <h1 className="text-3xl font-bold sm:text-4xl">{t("cv_title")}</h1>
             <p className="mt-2 text-sm text-muted-foreground">{t("cv_desc")}</p>
           </header>
+
+          <ToolHelp>
+            {t("cv_builder_help")}
+          </ToolHelp>
 
           <div className="no-print flex flex-wrap items-center justify-center gap-2">
             {STEPS.map((s, i) => (

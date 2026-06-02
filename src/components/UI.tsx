@@ -109,3 +109,25 @@ export function ScoreRing({ score }: { score: number }) {
     </div>
   );
 }
+
+import { Info } from "lucide-react";
+import { useLang } from "@/lib/i18n";
+
+export function ToolHelp({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const { lang } = useLang();
+  
+  return (
+    <div className="mx-auto max-w-3xl mb-8">
+      <button onClick={() => setOpen(!open)} className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary-light transition-colors">
+        <Info className="h-4 w-4" />
+        {lang === "ar" ? (open ? "إخفاء الشرح" : "شرح الأداة (كيف تعمل؟)") : (open ? "Hide explanation" : "Tool Explanation (How it works?)")}
+      </button>
+      {open && (
+        <div className="mt-3 p-4 rounded-xl bg-primary/10 border border-primary/20 text-sm text-foreground/90 leading-relaxed text-left rtl:text-right">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}

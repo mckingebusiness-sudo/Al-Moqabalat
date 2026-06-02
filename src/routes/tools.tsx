@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Briefcase, FileText, Linkedin, Mail, Map as MapIcon, Target, Wand2 } from "lucide-react";
+import { Briefcase, FileText, Linkedin, Mail, Map as MapIcon, Target, Wand2, CheckCircle } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { GlassCard } from "@/components/UI";
 import { PageFade, Stagger, StaggerItem, HoverLift } from "@/components/Motion";
-import { useT } from "@/lib/i18n";
+import { useT, useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/tools")({
   head: () => ({
@@ -17,13 +17,77 @@ export const Route = createFileRoute("/tools")({
 
 function ToolsHub() {
   const t = useT();
+  const { lang } = useLang();
   const tools = [
-    { to: "/cover-letter", icon: <FileText className="h-6 w-6" />, title: t("tool_cover_title"), desc: t("tool_cover_sub") },
-    { to: "/salary-coach", icon: <Briefcase className="h-6 w-6" />, title: t("tool_salary_title"), desc: t("tool_salary_sub") },
-    { to: "/linkedin", icon: <Linkedin className="h-6 w-6" />, title: t("tool_linkedin_title"), desc: t("tool_linkedin_sub") },
-    { to: "/thank-you", icon: <Mail className="h-6 w-6" />, title: t("tool_thanks_title"), desc: t("tool_thanks_sub") },
-    { to: "/skill-gap", icon: <Target className="h-6 w-6" />, title: t("tool_gap_title"), desc: t("tool_gap_sub") },
-    { to: "/roadmap", icon: <MapIcon className="h-6 w-6" />, title: t("tool_road_title"), desc: t("tool_road_sub") },
+    {
+      to: "/war-room",
+      icon: <Target className="h-8 w-8" />,
+      title: lang === "ar" ? "غرفة عمليات التقديم" : "Application War Room",
+      desc:
+        lang === "ar"
+          ? "تتبع طلباتك، حلل الفجوات، واعرف ماذا تسأل في المقابلة."
+          : "Track applications, find gaps against the JD, and prep strategic questions.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: أضف تفاصيل الوظيفة والسيرة الذاتية، وسيقوم الذكاء الاصطناعي بتشخيص نقاط ضعفك وكتابة إيميل متابعة لك."
+          : "How to use: Add job details and your CV, and AI will diagnose your gaps and draft a follow-up email."
+    },
+    {
+      to: "/networking-sniper",
+      icon: <Target className="h-8 w-8" />,
+      title: lang === "ar" ? "قناص العلاقات (Networking)" : "Networking Sniper",
+      desc:
+        lang === "ar"
+          ? "تواصل مع صناع القرار برسائل لينكدإن وإيميلات لا تُرفض."
+          : "Reach out to decision-makers with cold emails and LinkedIn notes that convert.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: أدخل اسم المسؤول وبيانات الوظيفة ليولد النظام لك إيميل تواصل مباشر ورسالة LinkedIn جاهزة للنسخ."
+          : "How to use: Enter the recruiter's name and job details to instantly generate a cold email and a LinkedIn connection note."
+    },
+    {
+      to: "/proof-tailor",
+      icon: <CheckCircle className="h-8 w-8" />,
+      title: lang === "ar" ? "تفصيل CV بالدليل" : "Proof-Based Resume Tailor",
+      desc:
+        lang === "ar"
+          ? "حلل الوظيفة ضد سيرتك بالدليل قبل أي تعديل. بدون كذب أو هلوسة."
+          : "Audit your CV against a job with evidence before rewriting. No hallucinated experience.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: الصق الوظيفة المستهدفة وسيرتك، وسيطابق النظام خبراتك الحقيقية مع المتطلبات خطوة بخطوة."
+          : "How to use: Paste the JD and your CV. The system will map your real experience directly to the job requirements."
+    },
+    { 
+      to: "/cv-builder", 
+      icon: <FileText className="h-8 w-8" />, 
+      title: t("cv_title"), 
+      desc: t("cv_desc"),
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: أدخل بياناتك أو استخدم الذكاء الاصطناعي لتحسينها، وحمل نسختك بصيغة PDF فوراً."
+          : "How to use: Enter your details, optionally use AI to improve them, and download as PDF instantly."
+    },
+    { 
+      to: "/cv-improve", 
+      icon: <Wand2 className="h-8 w-8" />, 
+      title: t("card_improve_title"), 
+      desc: t("card_improve_desc"),
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: ارفع ملف السيرة أو الصق النص ليقوم النظام باكتشاف الأخطاء وتصحيحها في لحظات."
+          : "How to use: Upload a file or paste your CV text for an instant AI audit and rewrite."
+    },
+    { 
+      to: "/", 
+      icon: <CheckCircle className="h-8 w-8" />, 
+      title: t("card_interview_title"), 
+      desc: t("card_interview_desc"),
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: ابدأ مقابلة من الرئيسية، وسيطرح عليك المحاكي 8 أسئلة لتقييم إجاباتك."
+          : "How to use: Start an interview from the home page to get 8 targeted questions and receive feedback."
+    }
   ];
   return (
     <AppShell>
@@ -42,18 +106,23 @@ function ToolsHub() {
         </section>
       </PageFade>
       <section className="px-4 pb-14">
-        <Stagger className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((tt) => (
             <StaggerItem key={tt.to} className="h-full">
               <HoverLift className="h-full">
                 <Link to={tt.to} className="block h-full">
-                  <GlassCard className="flex h-full flex-col gap-3">
-                    <div className="inline-grid h-12 w-12 place-items-center rounded-xl btn-gradient">
+                  <GlassCard className="flex h-full flex-col gap-4 p-6 sm:p-8">
+                    <div className="inline-grid h-16 w-16 place-items-center rounded-2xl btn-gradient mb-2">
                       {tt.icon}
                     </div>
-                    <h3 className="text-lg font-bold">{tt.title}</h3>
-                    <p className="flex-1 text-sm text-foreground/80">{tt.desc}</p>
-                    <p className="mt-2 text-sm font-semibold text-primary">{t("tools_open")} →</p>
+                    <h3 className="text-2xl font-bold">{tt.title}</h3>
+                    <p className="text-base text-foreground/80 leading-relaxed">{tt.desc}</p>
+                    {tt.howToUse && (
+                      <div className="mt-4 pt-4 border-t border-border/50">
+                        <p className="text-sm text-muted-foreground leading-relaxed">{tt.howToUse}</p>
+                      </div>
+                    )}
+                    <p className="mt-4 text-sm font-semibold text-primary">{t("tools_open")} →</p>
                   </GlassCard>
                 </Link>
               </HoverLift>
