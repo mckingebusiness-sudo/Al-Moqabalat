@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { callMistral, getIp } from "./mistral.server";
-import { checkIpCv } from "./rate-limit.server";
+import { checkIpTool } from "./rate-limit.server";
 export type ToolKind =
   | "cover_letter"
   | "salary_coach"
@@ -30,7 +30,7 @@ const SYS = {
   salary_coach:
     "You are the top salary negotiation coach in MENA, Europe, and the US, with 500+ closed offers ranging from $40k to $400k. You write a complete, sayable script the candidate can read out loud verbatim: (1) opening anchor that frames value, (2) market-based justification with a real benchmark range and the candidate's specific leverage, (3) exact counter-offer phrasing including a SPECIFIC number based on their target, (4) full fallback ladder (base→bonus→equity→signing bonus→benefits→remote days→start date→title), (5) graceful close that protects the relationship. Confident, never apologetic, never aggressive. Use the candidate's REAL numbers. No fluff. No emojis. Plain text.",
   linkedin_bio:
-    "You are the top-1% LinkedIn profile strategist who has rewritten 1000+ profiles that landed interviews at FAANG, McKinsey, BCG, and high-growth startups. Output exactly: 5 ultra-specific HEADLINE options under 220 chars each (each with a different angle: outcome-driven / role+stack / niche authority / problem solved / personality-led), then a 3-5 paragraph ABOUT section (hook → proof with numbers → unique value prop → social proof or credentials → clear CTA), then a KEYWORDS block of 12-20 high-signal terms recruiters actually search. No emojis unless asked. No buzzwords. Never use 'results-driven', 'passionate', 'synergy'. Use the candidate's real achievements only. Plain text.",
+    "You are the top-1% LinkedIn profile strategist who has rewritten 1000+ profiles that landed interviews at FAANG, McKinsey, BCG, and high-growth startups. Output exactly: 5 ultra-specific HEADLINE options under 220 chars each (each with a different angle: outcome-driven / role+stack / niche authority / problem solved / personality-led), then THREE distinct ABOUT sections — (1) achievement-led, (2) story-led, and (3) aspirational — each written as 3-5 short paragraphs and kept under 2600 chars, then a KEYWORDS block of 12-20 high-signal terms recruiters actually search. No emojis unless asked. No buzzwords. Never use 'results-driven', 'passionate', 'synergy'. Use the candidate's real achievements only. Plain text.",
   thank_you_email:
     "You are an executive communications coach who has written post-interview emails for partners at McKinsey, MDs at Goldman, and VPs at Google. Write a short post-interview thank-you email (90-130 words) that: references ONE specific moment from the conversation, reinforces ONE specific reason this candidate fits THIS role, and ends with a calm, forward-looking line. Subject line must be specific and concrete (NEVER 'Thank you' or 'Following up'). No flattery, no clichés, no over-eagerness, no emojis. Plain text only.",
   skill_gap:
@@ -176,13 +176,17 @@ export const runCareerTool = createServerFn({ method: "POST" })
     const req = getRequest();
     if (req) {
       const ip = getIp(req.headers);
-      await checkIpCv(ip);
+      // Each tool kind has its own daily quota so one tool never silently
+      // exhausts another (C2).
+      await checkIpTool(`career_${data.kind}`, ip);
     }
     const prompt = buildPrompt(data.kind, data.language, data.inputs);
     const maxTokens =
-      data.kind === "career_roadmap" || data.kind === "skill_gap" || data.kind === "linkedin_bio"
-        ? 2200
-        : 1600;
+      data.kind === "linkedin_bio"
+        ? 3500
+        : data.kind === "career_roadmap" || data.kind === "skill_gap"
+          ? 2200
+          : 1600;
     const langGuard =
       data.language === "ar"
         ? "CRITICAL: The user's chosen output language is Arabic (العربية). The ENTIRE response MUST be in Arabic only. Do not output any English text. Do not use any Markdown formatting (no *, **, _, #, backticks). Plain text with line breaks and === === headers only."

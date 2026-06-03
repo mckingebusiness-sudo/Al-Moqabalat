@@ -9,7 +9,7 @@ export const Route = createFileRoute("/tools")({
   head: () => ({
     meta: [
       { title: "Career Tools — InterviewX AI" },
-      { name: "description", content: "5 free AI career tools: cover letter, salary negotiation, LinkedIn bio, thank-you email, skill gap analyzer." },
+      { name: "description", content: "Free AI career tools: cover letter, salary negotiation, LinkedIn bio, thank-you email, skill gap analyzer, and career roadmap." },
     ],
   }),
   component: ToolsHub,
@@ -57,6 +57,84 @@ function ToolsHub() {
         lang === "ar"
           ? "كيفية الاستخدام: الصق الوظيفة المستهدفة وسيرتك، وسيطابق النظام خبراتك الحقيقية مع المتطلبات خطوة بخطوة."
           : "How to use: Paste the JD and your CV. The system will map your real experience directly to the job requirements."
+    },
+    {
+      to: "/cover-letter",
+      icon: <Mail className="h-8 w-8" />,
+      title: lang === "ar" ? "مولد خطاب التغطية" : "Cover Letter Generator",
+      desc:
+        lang === "ar"
+          ? "خطاب تغطية مخصص لكل وظيفة بأدلة رقمية وبدون عبارات مستهلكة."
+          : "A tailored, recruiter-grade cover letter for each job, with quantified proof and zero clichés.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: أدخل اسمك والوظيفة والشركة ونبذة عن خبرتك، وسيصيغ النظام خطاباً احترافياً جاهزاً."
+          : "How to use: Enter your name, target job, company, and a short background, and get a polished cover letter instantly."
+    },
+    {
+      to: "/salary-coach",
+      icon: <Briefcase className="h-8 w-8" />,
+      title: lang === "ar" ? "مدرب التفاوض على الراتب" : "Salary Negotiation Coach",
+      desc:
+        lang === "ar"
+          ? "سكربت تفاوض كامل تقرأه حرفياً للحصول على راتب أعلى."
+          : "A word-for-word negotiation script you can read out loud to land a higher offer.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: أدخل العرض الحالي وراتبك المستهدف وخبرتك، وستحصل على سكربت تفاوض بأرقام واضحة."
+          : "How to use: Enter the offer, your target salary, and experience to get an exact negotiation script with numbers."
+    },
+    {
+      to: "/linkedin",
+      icon: <Linkedin className="h-8 w-8" />,
+      title: lang === "ar" ? "محسّن بروفايل لينكدإن" : "LinkedIn Profile Optimizer",
+      desc:
+        lang === "ar"
+          ? "5 عناوين احترافية وثلاث صيغ لقسم النبذة مع كلمات مفتاحية."
+          : "5 sharp headlines plus three About variations and recruiter-ready keywords.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: أدخل دورك الحالي ومهاراتك وإنجازاتك، وسيعيد النظام صياغة بروفايلك بالكامل."
+          : "How to use: Enter your role, skills, and achievements to get a full headline, About, and keywords rewrite."
+    },
+    {
+      to: "/thank-you",
+      icon: <Mail className="h-8 w-8" />,
+      title: lang === "ar" ? "إيميل الشكر بعد المقابلة" : "Post-Interview Thank-You Email",
+      desc:
+        lang === "ar"
+          ? "إيميل شكر قصير ومحدد يعزز فرصتك بعد المقابلة."
+          : "A short, specific thank-you email that reinforces your fit after the interview.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: أدخل اسم المحاور والشركة وأبرز ما دار في المقابلة، وسيكتب النظام إيميل شكر احترافي."
+          : "How to use: Enter the interviewer, company, and what you discussed to get a polished thank-you email."
+    },
+    {
+      to: "/skill-gap",
+      icon: <Target className="h-8 w-8" />,
+      title: lang === "ar" ? "محلل فجوة المهارات" : "Skill Gap Analyzer",
+      desc:
+        lang === "ar"
+          ? "قارن مهاراتك بمتطلبات الوظيفة واحصل على خطة تعلّم لـ 4 أسابيع."
+          : "Compare your skills to the JD and get an honest fit score plus a 4-week learning plan.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: الصق وصف الوظيفة ومهاراتك الحالية، وسيحدد النظام الفجوات وخطة لسدها."
+          : "How to use: Paste the JD and your current skills to get a gap breakdown and a weekly plan to close them."
+    },
+    {
+      to: "/roadmap",
+      icon: <MapIcon className="h-8 w-8" />,
+      title: lang === "ar" ? "خريطة المسار المهني" : "Career Roadmap Planner",
+      desc:
+        lang === "ar"
+          ? "خطة مرحلية مخصصة للانتقال من دورك الحالي إلى الدور المستهدف."
+          : "A time-boxed, phase-by-phase plan to move from your current role to your target role.",
+      howToUse:
+        lang === "ar"
+          ? "كيفية الاستخدام: أدخل دورك الحالي والمستهدف والمدة الزمنية، وسيبني النظام خريطة مرحلية بموارد ومشاريع حقيقية."
+          : "How to use: Enter your current and target roles plus a timeframe to get a phased roadmap with real resources."
     },
     { 
       to: "/cv-builder", 

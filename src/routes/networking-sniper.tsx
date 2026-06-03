@@ -191,7 +191,7 @@ function NetworkingSniperPage() {
                         <Copy className="h-3.5 w-3.5 mr-2" /> {lang === "ar" ? "نسخ" : "Copy"}
                       </GhostButton>
                     </div>
-                    <pre className="whitespace-pre-wrap rounded-xl border border-border bg-background/40 p-5 text-sm leading-relaxed font-sans text-left" dir="ltr">
+                    <pre className={`whitespace-pre-wrap rounded-xl border border-border bg-background/40 p-5 text-sm leading-relaxed font-sans ${lang === "ar" ? "text-right" : "text-left"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
                       {result.emailDraft}
                     </pre>
                   </GlassCard>
@@ -207,10 +207,10 @@ function NetworkingSniperPage() {
                         <Copy className="h-3.5 w-3.5 mr-2" /> {lang === "ar" ? "نسخ" : "Copy"}
                       </GhostButton>
                     </div>
-                    <pre className="whitespace-pre-wrap rounded-xl border border-border bg-background/40 p-5 text-sm leading-relaxed font-sans text-left" dir="ltr">
+                    <pre className={`whitespace-pre-wrap rounded-xl border border-border bg-background/40 p-5 text-sm leading-relaxed font-sans ${lang === "ar" ? "text-right" : "text-left"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
                       {result.linkedinMessage}
                     </pre>
-                    <p className="text-xs text-muted-foreground mt-3 flex justify-end">
+                    <p className={`text-xs mt-3 flex justify-end ${result.linkedinMessage.length > 300 ? "text-red-400" : "text-muted-foreground"}`}>
                       {result.linkedinMessage.length} / 300
                     </p>
                   </GlassCard>

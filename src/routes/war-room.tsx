@@ -379,7 +379,7 @@ function WarRoomPage() {
                             <h4 className="font-semibold mb-3">
                               {lang === "ar" ? "مسودة إيميل المتابعة" : "Follow-up Email Draft"}
                             </h4>
-                            <pre className="whitespace-pre-wrap rounded-xl border border-border bg-background/40 p-4 text-sm leading-relaxed font-sans text-left" dir="ltr">
+                            <pre className={`whitespace-pre-wrap rounded-xl border border-border bg-background/40 p-4 text-sm leading-relaxed font-sans ${lang === "ar" ? "text-right" : "text-left"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
                               {selectedApp.aiDiagnosis.followUpEmailDraft}
                             </pre>
                           </div>
