@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
-import { callJson } from "./mistral.server";
+import { callJson, getIp } from "./mistral.server";
+import { checkIpTool } from "./rate-limit.server";
 
 const analyzeAppSchema = z.object({
   masterCv: z.string().min(10),
@@ -11,6 +13,12 @@ const analyzeAppSchema = z.object({
 export const analyzeApplication = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => analyzeAppSchema.parse(d))
   .handler(async ({ data }) => {
+    // Rate limit: protect this AI endpoint from abuse / cost attacks (C1).
+    const req = getRequest();
+    if (req) {
+      await checkIpTool("war_room", getIp(req.headers));
+    }
+
     const prompt = `You are an expert tech recruiter and interview coach.
 Analyze the following Job Description against the candidate's Master CV.
 
@@ -38,7 +46,9 @@ Return a JSON object with this exact structure:
       }>(
         {
           messages: [{ role: "user", content: prompt }],
-          model: "mistral-medium-latest"
+          model: "mistral-medium-latest",
+          // Enough room for gaps + questions + a full follow-up email draft (F5).
+          maxTokens: 2000
         },
         () => ({
           gaps: ["Could not analyze gaps."],

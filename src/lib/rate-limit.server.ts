@@ -2,6 +2,9 @@ const DAILY_LIMIT = Number(process.env.DAILY_TOKEN_LIMIT || 1_000_000);
 const PER_IP_MSG = Number(process.env.PER_IP_DAILY_MESSAGE_LIMIT || 30);
 const PER_IP_INTERVIEW = Number(process.env.PER_IP_DAILY_INTERVIEW_LIMIT || 1);
 const PER_IP_CV = Number(process.env.PER_IP_DAILY_CV_AI_LIMIT || 2);
+// Per-tool daily limit. Each AI tool gets its OWN counter so using one tool
+// never silently exhausts the others (see audit finding C2).
+const PER_IP_TOOL = Number(process.env.PER_IP_DAILY_TOOL_LIMIT || 5);
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -10,9 +13,18 @@ function today() {
 // In-memory fallback
 type Counter = { day: string; n: number };
 const memGlobal: Counter = { day: "", n: 0 };
-const memIpMsg = new Map<string, Counter>();
-const memIpInterview = new Map<string, Counter>();
-const memIpCv = new Map<string, Counter>();
+// Generic per-namespace fallback registry so every namespace (msg, interview,
+// cv, or a per-tool namespace like "tool:war_room") keeps its own isolated
+// counter without a hard-coded map per namespace.
+const memMaps = new Map<string, Map<string, Counter>>();
+function memMap(namespace: string): Map<string, Counter> {
+  let m = memMaps.get(namespace);
+  if (!m) {
+    m = new Map<string, Counter>();
+    memMaps.set(namespace, m);
+  }
+  return m;
+}
 
 function getKv(): any {
   // Support Cloudflare bindings via worker env, fallback to globalThis or process.env
@@ -45,12 +57,12 @@ async function bumpKv(namespace: string, key: string, limit: number): Promise<vo
     }
   }
 
-  // In-memory fallback
-  let map: Map<string, Counter>;
-  if (namespace === "msg") map = memIpMsg;
-  else if (namespace === "interview") map = memIpInterview;
-  else map = memIpCv;
-
+  // In-memory fallback (development only)
+  const map = memMap(namespace);
+  // Opportunistically drop stale day entries to avoid unbounded growth.
+  for (const [k, v] of map) {
+    if (v.day !== d) map.delete(k);
+  }
   const c = map.get(key);
   if (!c || c.day !== d) {
     map.set(key, { day: d, n: 1 });
@@ -70,6 +82,12 @@ export async function checkIpInterview(ip: string) {
 
 export async function checkIpCv(ip: string) {
   await bumpKv("cv", ip, PER_IP_CV);
+}
+
+// Per-tool limiter: each tool keeps an independent daily quota so that using
+// one AI tool does not consume another tool's budget.
+export async function checkIpTool(tool: string, ip: string, limit: number = PER_IP_TOOL) {
+  await bumpKv(`tool:${tool}`, ip, limit);
 }
 
 export async function checkGlobalBudget(estimate: number) {

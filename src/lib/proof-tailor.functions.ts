@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { callJson, getIp } from "./mistral.server";
-import { checkIpCv } from "./rate-limit.server";
+import { checkIpTool } from "./rate-limit.server";
 
 const proofTailorSchema = z.object({
   language: z.enum(["ar", "en"]).default("ar"),
@@ -33,8 +33,10 @@ export type ProofTailorResult = {
 export const runProofTailor = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => proofTailorSchema.parse(d))
   .handler(async ({ data }) => {
+    // Dedicated counter: this tool runs 3 AI calls, so it must not share the
+    // CV counter with other tools (C2).
     const ip = getIp(getRequest().headers);
-    await checkIpCv(ip);
+    await checkIpTool("proof_tailor", ip);
 
     // Stage 1: Extract Requirements
     const reqPrompt = `

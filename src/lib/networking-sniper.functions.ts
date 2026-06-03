@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
-import { callJson } from "./mistral.server";
+import { callJson, getIp } from "./mistral.server";
+import { checkIpTool } from "./rate-limit.server";
 
 const networkingSniperSchema = z.object({
   masterCv: z.string().min(10).optional(),
@@ -15,6 +17,12 @@ const networkingSniperSchema = z.object({
 export const runNetworkingSniper = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => networkingSniperSchema.parse(d))
   .handler(async ({ data }) => {
+    // Rate limit: protect this AI endpoint from abuse / cost attacks (C1).
+    const req = getRequest();
+    if (req) {
+      await checkIpTool("networking", getIp(req.headers));
+    }
+
     const prompt = `You are an expert career coach and networking strategist.
 The user wants to reach out to a professional on LinkedIn or via Email.
 Draft highly effective, non-spammy outreach messages.
@@ -41,6 +49,7 @@ Return a JSON object with:
 
 Respond ONLY in ${data.language === "ar" ? "Arabic" : "English"}.
 Never use placeholders like [Insert Name], use the provided target info.
+The linkedinMessage MUST be 300 characters or fewer.
 `;
 
     try {
